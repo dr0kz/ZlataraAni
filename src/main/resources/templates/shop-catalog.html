@@ -1,0 +1,146 @@
+<style>
+    @font-face {
+        font-family: "FontAwesome";
+        font-weight: normal;
+        font-style: normal;
+        src: url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?v=4.3.0");
+        src: url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?#iefix&v=4.3.0") format("embedded-opentype"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff2?v=4.3.0") format("woff2"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff?v=4.3.0") format("woff"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.ttf?v=4.3.0") format("truetype"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular") format("svg");
+    }
+
+    .myClass:before {
+        font-family: FontAwesome;
+        content: "\f024";
+    }
+</style>
+<body class="relative">
+<!-- Preloader -->
+<div class="loader-mask">
+    <div class="loader">
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<main class="main-wrapper">
+    <!-- Page Title -->
+    <section class="mt-50 text-center bg-img overlay"
+             style="background-image: url('/assets/img/gold123.jpg')">
+        <div class="container relative clearfix">
+            <div class="title-holder">
+                <div class="title-text">
+                    <h1 class="uppercase" style="color: black">Каталог</h1>
+                </div>
+            </div>
+    </section>
+    <div class="content-wrapper oh">
+        <!-- Catalogue -->
+        <section class="section-wrap pt-80 pb-40 catalogue">
+            <div class="container relative">
+                <!-- Filter -->
+                <div class="shop-filter">
+                    <div class="filter-show hidden-xs">
+                        <span>Прикажи:</span>
+                        <a href="#" class="active">12</a>
+                        <a href="#">24</a>
+                        <a href="#">сите</a>
+                    </div>
+                    <form class="ecommerce-ordering flex flex-row">
+                        <select>
+                            <option value="default-sorting">Стандардно сортирање</option>
+                            <option value="price-low-to-high">Највисока цена прво</option>
+                            <option value="price-high-to-low">Најниска цена прво</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 catalogue-col right mb-50">
+                        <div class="shop-catalogue grid-view">
+                            <div class="row items-grid">
+                                <div th:each="product : ${products}" class="col-md-3 col-xs-6 product product-grid">
+                                    <div class="product-item clearfix relative">
+                                        <!--                                        <a th:href="@{'/admin/products?id={id}'(id=${product.getId()})}"-->
+                                        <!--                                           class="btn btn-md btn-dark" type="button" sec:authorize="isAuthenticated()"-->
+                                        <!--                                           style="position:absolute;top:0;right:0; z-index: 12"><span>Edit</span>-->
+                                        <!--                                        </a>-->
+                                        <div class="product-img hover-trigger">
+                                            <a th:href="@{'/proizvodi/{id}'(id=${product.getId()})}"
+                                               style="position: relative;">
+                                                <img onmouseenter="mouseEnter(this)" onmouseleave="mouseLeave(this)"
+                                                     th:src="@{${product.getImagePath()+product.getInitialPhoto()}}"
+                                                     alt=""
+                                                     th:class="${product.getHoverPhoto()!=''} ? 'front-image' : ''"/>
+                                                <img style="position: absolute;top:0;left:0;z-index: -1"
+                                                     th:src="@{${product.getImagePath()+product.getHoverPhoto()}}"
+                                                     alt=""/>
+                                            </a>
+                                            <div th:if="${product.isNew && product.stocks!=0}" class="product-label">
+                                                <span class="sale">НОВО</span>
+                                            </div>
+                                            <div th:if="${product.stocks==0}" class="product-label">
+                                                <span class="out-of-stock">НЕМА НА ЗАЛИХА</span>
+                                            </div>
+                                            <!--                                            <div class="hover-2">-->
+                                            <!--                                                <div class="product-actions">-->
+                                            <!--                                                    <a href="#" class="product-add-to-wishlist">-->
+                                            <!--                                                        <i class="fa fa-heart"></i>-->
+                                            <!--                                                    </a>-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </div>-->
+                                            <a th:href="@{'/products/{id}'(id=${product.getId()})}"
+                                               class="product-quickview">Приказ</a>
+                                        </div>
+                                        <div class="product-details">
+                                            <h3 class="product-title">
+                                                <a th:text="${product.getName()}" href="shop-single.html">Mantle Brown
+                                                    Bag</a>
+                                            </h3>
+
+
+                                        </div>
+
+                                        <span class="price">
+                                            <del th:if="${product.isOnDiscount}">
+                                                <span th:text="${product.price +' ден'}"></span>
+                                            </del>
+                                            <ins>
+                      <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice(): product.getPrice())+' ден'}"
+                            class="amount">$150.00</span>
+                    </ins>
+                  </span>
+                                    </div>
+                                </div>
+                                <!-- end product -->
+                            </div>
+                            <!-- end row -->
+                        </div>
+                        <!-- end grid mode -->
+                        <!-- Pagination -->
+                        <div class="pagination-wrap clearfix">
+                            <p class="result-count">Приказ: 12 од 80</p>
+                            <nav class="pagination right clearfix">
+                                <a href="#"><i class="fa fa-angle-left"></i></a>
+                                <span class="page-numbers current">1</span>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <a href="#">4</a>
+                                <a href="#"><i class="fa fa-angle-right"></i></a>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
+        </section>
+        <!-- end catalog -->
+    </div>
+    <!-- end content wrapper -->
+</main>
+<!-- end main wrapper -->
+<!-- jQuery Scripts -->
+</body>
+</html>

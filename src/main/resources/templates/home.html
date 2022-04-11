@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="relative">
+
+<!-- Preloader -->
+<div class="loader-mask">
+    <div class="loader">
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <h1>Понуда на денот</h1>
+                <p>Проверете ги следните продукти по неверојатна цена</p>
+                <div class="deal-of-the-day-products">
+                    <a th:href="@{'/proizvodi/{id}'(id=${product.getId()})}"
+                       style="padding:10px; border:1px solid gold; border-radius:10px;"
+                       th:each="product : ${dealOfTheDayProducts}">
+                        <img height="150" width="150" th:src="${product.getImagePath()+product.getInitialPhoto()}"/>
+                        <div>
+                            <h6 th:text="${product.getName()}"></h6>
+                            <p th:text="${(product.isOnDiscount ? product.calculateDiscountPrice()  : product.getPrice())+' ден.'}"></p>
+                        </div>
+                    </a>
+                </div>
+                <a class="pre-order-btn" href="#">Види повеќе</a>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="main-wrapper">
+    <div class="content-wrapper oh">
+        <!-- Hero Slider -->
+        <section class="hero-wrap text-center relative">
+            <div id="owl-hero" class="owl-carousel owl-theme light-arrows slider-animated">
+                <div class="hero-slide overlay" th:style="'background-image:url(/assets/banner2.jpg)'">
+                    <div class="container">
+                        <div class="hero-holder">
+                            <div class="hero-message">
+                                <h1 class="hero-title nocaps">Златара АНИ</h1>
+                                <h2 class="hero-subtitle lines">Најдоброто од злато и накит</h2>
+                                <div class="buttons-holder">
+                                    <a href="#" class="btn btn-lg btn-transparent"><span>Види повеќе</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-slide overlay" th:style="'background-image:url(/assets/banner1.jpg)'">
+                    <div class="container">
+                        <div class="hero-holder">
+                            <div class="hero-message">
+                                <h1 class="hero-title nocaps">Ексклузивни продукти</h1>
+                                <h2 class="hero-subtitle lines">Проверете го нашиот каталог</h2>
+                                <div class="buttons-holder">
+
+                                    <a href="#" class="btn btn-lg btn-transparent"><span>Провери каталог</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-slide overlay" th:style="'background-image:url(/assets/banner3.jpg)'">
+                    <div class="container">
+                        <div class="hero-holder">
+                            <div class="hero-message">
+                                <h1 class="hero-title nocaps">Уживајте во онлајн шопинг</h1>
+                                <h2 class="hero-subtitle lines">Имаме прекрасен избор</h2>
+                                <div class="buttons-holder">
+                                    <a href="#" class="btn btn-lg btn-transparent"><span>Види повеќе</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> <!-- end hero slider -->
+
+        <!-- Promo Banners -->
+        <section class="section-wrap promo-banners pb-30">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-xs-4 col-xxs-12 mb-30 promo-banner">
+                        <a href="#">
+                            <img src="/assets/img/shop/collection_2.jpg" width="360" height="620" alt="">
+                            <div class="overlay"></div>
+                            <div class="promo-inner valign">
+                                <h2>За Неа</h2>
+                                <span>Најпродавани зделки</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-4 col-xxs-12 mb-30 promo-banner">
+                        <a href="#">
+                            <img src="/assets/img/shop/collection_3.jpg" width="360" height="620" alt="">
+                            <div class="overlay"></div>
+                            <div class="promo-inner valign">
+                                <h2>Додатоци</h2>
+                                <span>Топ Трендови</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-4 col-xxs-12 mb-30 promo-banner">
+                        <a href="#">
+                            <img src="/assets/img/shop/collection_1.jpg" width="360" height="620" alt="">
+                            <div class="overlay"></div>
+                            <div class="promo-inner valign">
+                                <h2>За него</h2>
+                                <span>Нова Колекција</span>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section> <!-- end promo banners -->
+
+
+        <!-- Trendy Products -->
+        <section class="section-wrap-sm new-arrivals pb-50">
+            <div class="container">
+
+                <div class="row heading-row">
+                    <div class="col-md-12 text-center">
+                        <span class="subheading">Топ артикли за оваа година</span>
+                        <h2 class="heading bottom-line">
+                            Производи на попуст
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="owl-related-items" class="owl-carousel owl-theme">
+                        <div th:each="p : ${discountProducts}" class="product">
+                            <div class="product-item hover-trigger">
+                                <div class="product-img">
+                                    <a th:href="@{'/products/{id}'(id=${p.getId()})}" style="position: relative;">
+                                        <img onmouseenter="mouseEnter(this)" onmouseleave="mouseLeave(this)"
+                                             th:src="@{${p.getImagePath()+p.getInitialPhoto()}}"
+                                             alt=""
+                                             th:class="${p.getHoverPhoto()!=''} ? 'front-image' : ''"/>
+                                        <img style="position: absolute;top:0;left:0;z-index: -1"
+                                             th:src="@{${p.getImagePath()+p.getHoverPhoto()}}"
+                                             alt=""/>
+                                    </a>
+                                    <div class="hover-2">
+                                        <div class="product-actions">
+                                            <a href="#" class="product-add-to-wishlist">
+                                                <i class="fa fa-heart"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div th:if="${p.isNew && p.stocks!=0}" class="product-label">
+                                        <span class="sale">НОВО</span>
+                                    </div>
+                                    <div th:if="${p.stocks==0}" class="product-label">
+                                        <span class="out-of-stock">НЕМА НА ЗАЛИХА</span>
+                                    </div>
+                                    <a th:href="@{'/products/{id}'(id=${p.getId()})}" class="product-quickview">Quick
+                                        View</a>
+                                </div>
+                                <div class="product-details">
+                                    <h3 class="product-title">
+                                        <a th:text="${p.getName()}" href="shop-single.html">Mantle Brown Bag</a>
+                                    </h3>
+                                    <span class="category">
+                                        <a th:text="${p.getCategory().getName()}"
+                                           href="catalogue-grid.html">Accessories</a>
+                                    </span>
+
+                                </div>
+
+                                <span class="price"><ins>
+                      <span th:text="${(p.isOnDiscount ? p.calculateDiscountPrice(): p.getPrice())+'ден.'}"
+                            class="amount">$150.00</span>
+                    </ins>
+                  </span>
+                            </div>
+                        </div>
+
+                    </div> <!-- end slider -->
+
+                </div>
+            </div>
+        </section> <!-- end trendy products -->
+        <section class="brands-bar">
+            <div class="container">
+                <div class="row middle-xs center-xs ">
+                    <div class="row heading-row">
+                        <div class="col-md-12 text-center">
+                            <!--                            <span class="subheading">Hot items of this year</span>-->
+                            <h2 class="heading bottom-line">
+                                Нашите брендови на часовници
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:20px;padding-bottom:20px;">
+
+                        <div class="col-lg-3"><a><img style="width:100%" class="img img-responsive"
+                                                      th:src="@{/assets/img/casiologo.png}"></a></div>
+                        <div class="col-lg-3"><a><img style="width:100%" class="img img-responsive"
+                                                      th:src="@{/assets/img/danielcleinlogo.png}"></a></div>
+                        <a>
+                        </a>
+                        <div class="col-lg-3"><a><img style="width:100%" class="img img-responsive"
+                                                      th:src="@{/assets/img/espritlogo.png}"></a></div>
+                        <div class="col-lg-3"><a><img style="width:100%" class="img img-responsive"
+                                                      th:src="@{/assets/img/obakulogo.png}"></a></div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Testimonials -->
+
+
+        <!-- Newsletter -->
+    </div> <!-- end content wrapper -->
+</main> <!-- end main wrapper -->
+<!-- jQuery Scripts -->
+<script>
+    $(document).ready(function () {
+        $('#myModal').modal('show');
+    });
+</script>
+</body>
+</html>

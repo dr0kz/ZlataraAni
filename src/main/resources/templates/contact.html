@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    @font-face {
+        font-family: "FontAwesome";
+        font-weight: normal;
+        font-style : normal;
+        src : url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?v=4.3.0");
+        src : url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?#iefix&v=4.3.0") format("embedded-opentype"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff2?v=4.3.0") format("woff2"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff?v=4.3.0") format("woff"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.ttf?v=4.3.0") format("truetype"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular") format("svg");
+    }
+
+    .myClass:before {
+        font-family: FontAwesome;
+        content: "\f024";
+    }
+</style>
+<body class="relative">
+
+<!-- Preloader -->
+<div class="loader-mask">
+    <div class="loader">
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+<main class="main-wrapper">
+
+    <section class="mt-50 text-center bg-img overlay"
+             style="background-image: url('/assets/img/gold123.jpg')">
+        <div class="container relative clearfix">
+            <div class="title-holder">
+                <div class="title-text">
+                    <h1 class="uppercase" style="color: black">Контакт</h1>
+                </div>
+            </div>
+    </section>
+
+    <div class="content-wrapper oh">
+
+        <!-- Contact -->
+        <section class="section-wrap contact pb-40">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-8 mb-40">
+                        <form id="contact-form" action="#">
+
+                            <div class="contact-name">
+                                <input name="name" id="name" type="text" placeholder="Вашето име и презиме*">
+                            </div>
+                            <div class="contact-email">
+                                <input name="mail" id="mail" type="email" placeholder="Вашата е-пошта*">
+                            </div>
+                            <div class="contact-subject">
+                                <input name="subject" id="subject" type="text" placeholder="Вашиот наслов">
+                            </div>
+
+                            <textarea name="comment" id="comment" placeholder="Message" rows="9"></textarea>
+                            <input type="submit" class="btn btn-lg btn-dark btn-submit" value="Вашиот коментар" id="submit-message">
+                            <div id="msg" class="message"></div>
+                        </form>
+                    </div> <!-- end col -->
+
+                    <div class="col-md-3 col-md-offset-1 col-sm-5 mb-40">
+                        <div class="contact-item">
+                            <h6>Адреса</h6>
+                            <address>Златара АНИ.<br>
+                                Гевгелиски Партизански Одреди бр. 6<br>
+                                Гевгелија<br>
+                                1480</address>
+                        </div> <!-- end address -->
+
+                        <div class="contact-item">
+                            <h6>Информации</h6>
+                            <ul>
+                                <li>
+                                    <i class="fa fa-envelope"></i><a href="mailto:theme@support.com">mailANI@gmail.com</a>
+                                </li>
+                                <li>
+                                    <i class="fa fa-phone"></i><span>076/808-111</span>
+                                </li>
+
+                            </ul>
+                        </div> <!-- end information -->
+
+                        <div class="contact-item">
+                            <h6>Работно време</h6>
+                            <ul>
+                                <li>Понеделник-Петок: од 09:00 до 17:00</li>
+                                <li>Сабота: од 09:00 до 14:00</li>
+                                <li>Недела: неработен ден</li>
+                            </ul>
+                        </div> <!-- end business hours -->
+                    </div>
+
+                </div>
+            </div>
+        </section> <!-- end contact -->
+        <!-- Google Map -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3004.6871562457186!2d22.501937551124165!3d41.14135491907192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1356240dacd94ca3%3A0x48c97f2827135!2z0JPQtdCy0LPQtdC70LjRgdC60LggzqDQsNGA0YLQuNC30LDQvdGB0LrQuCDOn9C00YDQtdC0LCDQk9C10LLQs9C10LvQuNGY0LA!5e0!3m2!1smk!2smk!4v1648804162910!5m2!1smk!2smk"  style="border:0;width:100%" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+
+        <!-- Newsletter -->
+
+    </div> <!-- end content wrapper -->
+</main> <!-- end main wrapper -->
+<!-- jQuery Scripts -->
+</body>
+</html>

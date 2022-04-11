@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Златара АНИ</title>
+
+    <meta charset="utf-8">
+    <!--[if IE]>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/magnific-popup.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/font-icons.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/sliders.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}"/>
+
+
+    <link th:href="@{/assets/sass/_blog.scss}">
+    <link th:href="@{/assets/sass/_footer.scss}">
+    <link th:href="@{/assets/sass/_general.scss}">
+    <link th:href="@{/assets/sass/_layout.scss}">
+    <link th:href="@{/assets/sass/_mixins.scss}">
+    <link th:href="@{/assets/sass/_navigation.scss}">
+    <link th:href="@{/assets/sass/_responsive.scss}">
+    <link th:href="@{/assets/sass/_shop.scss}">
+    <link th:href="@{/assets/sass/_shortcodes.scss}">
+    <link th:href="@{/assets/sass/_spacings.scss}">
+    <link th:href="@{/assets/sass/_typography.scss}">
+    <link th:href="@{/assets/sass/_variables.scss}">
+    <link th:href="@{/assets/sass/style.scss}">
+    <!-- Google Fonts -->
+    <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/plugins.js}"></script>
+
+
+    <style>
+        .front-image {
+            opacity: 1;
+            transition: all 1s ease;
+        }
+
+        .myStyle {
+            opacity: 0;
+        }
+    </style>
+    <script>
+        function mouseLeave(arg) {
+            if (arg.classList.contains("front-image"))
+                arg.classList.remove("myStyle");
+        }
+
+        function mouseEnter(arg) {
+            if (arg.classList.contains("front-image"))
+                arg.classList.add("myStyle");
+        }
+    </script>
+</head>
+
+
+<body>
+
+<header class="nav-type-1">
+
+    <!-- Fullscreen search -->
+    <div class="search-wrap">
+        <div class="search-inner">
+            <div class="search-cell">
+                <form method="get" action="/">
+                    <div class="search-field-holder">
+                        <input type="search" class="form-control main-search-input" placeholder="Пребарувај">
+                        <i class="ui-close search-close" id="search-close"></i>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- end fullscreen search -->
+
+    <!--    KOLACINJA-->
+    <div th:if="${!isCookieAccepted}" id="alertCookiePolicy" class="alert-cookie-policy">
+        <div class="alerto alert-secondary" role="alert">
+            <div class="row">
+                <div class="col-sm-12 cookieInfo">
+                    <span class="mr-auto">Веб страната на златара АНИ користи колачиња за да се осигура дека ќе го
+                        добиете
+                        најдоброто искуство на нашата веб страна. Прочитајте ја нашата политика на колачиња доколку ви треба поголемо објаснување
+                        .</span>
+                    <!--                <a href="/politika-na-kolacinja" class="alert-link cookieLink">линк</a>-->
+                </div>
+                <div class="col-sm-12 button-cookie">
+                    <button onclick="acceptCookie()" id="btnAcceptCookiePolicy"
+                            class=" btn-primary align-center button-mar" data-dismiss="alert"
+                            type="button" aria-label="Close">Се согласувам
+                    </button>
+
+                    <button  onclick="location.href = '/politika-na-kolacinja';" id="btnDeclineCookiePolicy" class="  align-center" data-dismiss="alert"
+                            type="button" aria-label="Close">Политика на колачиња
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div> <!-- end top bar -->
+
+    <nav class="navbar navbar-static-top">
+        <div class="navigation sticky offset scrolling" id="sticky-nav">
+            <div class="container relative">
+
+                <div class="row flex-parent">
+
+                    <div class="navbar-header flex-child">
+                        <!-- Logo -->
+                        <div class="logo-container">
+                            <div class="logo-wrap">
+                                <a href="/">
+                                    <img class="logo-dark"
+                                         width="105"
+                                         height="19"
+                                         src="/assets/img/logo_dark.png"
+                                         alt="logo">
+                                </a>
+                            </div>
+                        </div>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                                data-target="#navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <!-- Mobile cart -->
+                        <div class="nav-cart mobile-cart hidden-lg hidden-md">
+                            <div class="nav-cart-outer">
+                                <div class="nav-cart-inner">
+                                    <a href="/orders/cart" class="nav-cart-icon">
+                                        <span class="nav-cart-badge">2</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end navbar-header -->
+
+                    <div class="nav-wrap flex-child">
+                        <div class="collapse navbar-collapse text-center" id="navbar-collapse">
+
+                            <ul class="nav navbar-nav">
+
+                                <li class="dropdown" th:each="element : ${categoriesMap}">
+                                    <a th:href="@{'/kategorii/{parentCategoryUrl}'(parentCategoryUrl=${element.key.getUrl()})}"
+                                       th:text="${element.key.getName()}"></a>
+                                    <i class="fa fa-angle-down dropdown-trigger"></i>
+                                    <ul class="dropdown-menu" th:if="${element.value.size()!=0}">
+                                        <li th:each="category : ${element.value}">
+                                            <a th:href="@{'/kategorii/{parentCategoryUrl}/{categoryUrl}' (parentCategoryUrl=${element.key.getUrl()},categoryUrl=${category.getUrlName()})}"
+                                               th:text="${category.getName()}"></a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown">
+                                    <a href="/za-nas">За нас</a>
+                                    <i class="fa fa-angle-down dropdown-trigger"></i>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="/kontakt">Контакт</a>
+                                    <i class="fa fa-angle-down dropdown-trigger"></i>
+                                </li><!-- end elements -->
+
+
+                                <!-- Mobile search -->
+                                <li id="mobile-search" class="hidden-lg hidden-md">
+                                    <form method="get" class="mobile-search">
+                                        <input type="search" class="form-control" placeholder="Search...">
+                                        <button type="submit" class="search-button">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </form>
+                                </li>
+
+                            </ul> <!-- end menu -->
+                        </div> <!-- end collapse -->
+                    </div> <!-- end col -->
+
+                    <div class="flex-child flex-right nav-right hidden-sm hidden-xs">
+                        <ul>
+
+                            <li class="nav-search-wrap style-2 hidden-sm hidden-xs">
+                                <a href="#" class="nav-search search-trigger">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </li>
+                            <li class="nav-cart">
+                                <div class="nav-cart-outer">
+                                    <div class="nav-cart-inner">
+                                        <a th:text="${productsInCartSize}" href="/orders/cart" class="nav-cart-icon">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="nav-cart-container">
+                                    <div th:if="${productsInCart.size()!=0}">
+                                        <div class="nav-cart-items">
+
+                                            <div th:each="productQuantity : ${productsInCart}"
+                                                 class="nav-cart-item clearfix">
+                                                <div class="nav-cart-img">
+                                                    <a href="#">
+                                                        <img th:src="${productQuantity.product.getImagePath()+productQuantity.product.getInitialPhoto()}"
+                                                             alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="nav-cart-title">
+                                                    <a href="#" th:text="${productQuantity.product.getName()}">
+
+                                                    </a>
+                                                    <div class="nav-cart-price">
+                                                        <span th:text="${productQuantity.getQuantity() + ' x'}"></span>
+                                                        <span th:text="${productQuantity.product.getPrice()}"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="nav-cart-remove">
+                                                    <a href="#" class="remove"><i class="ui-close"></i></a>
+                                                </div>
+                                            </div>
+
+                                        </div> <!-- end cart items -->
+
+                                        <div class="nav-cart-summary">
+                                            <span>Cart Subtotal</span>
+                                            <span class="total-price" th:text="${productsInCartTotalPrice}"></span>
+                                        </div>
+
+                                        <div class="nav-cart-actions mt-20">
+                                            <a href="/orderCart" class="btn btn-md btn-dark"><span>Види кошничка</span></a>
+                                            <a href="/orderCart/shop-checkout" class="btn btn-md btn-color mt-10"><span>Продолжи кон наплата</span></a>
+                                        </div>
+                                    </div>
+                                    <div th:if="${productsInCart.size()==0}">
+                                        <span>Вашата кошничка е празна</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div> <!-- end row -->
+            </div> <!-- end container -->
+        </div> <!-- end navigation -->
+    </nav> <!-- end navbar -->
+</header>
+<section th:include="${bodyContent}"/>
+<!-- Footer Type-1 -->
+<footer class="footer footer-type-1"
+        th:style="'background-image:url(src/main/resources/static/assets/img/gold123.jpg)'">
+    <div class="container">
+        <div class="footer-widgets">
+            <div class="row" style="text-align: center">
+
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="widget footer-about-us">
+                        <img src="img/logo_dark.png" alt="" class="logo">
+                        <p class="mb-30">Заследете не на социјалните мрежи</p>
+                        <div class="footer-socials">
+                            <div class="social-icons nobase">
+                                <a href="https://www.instagram.com/zlatara_ani_gevgelija/"><i
+                                        class="fa fa-instagram"></i></a>
+                                <a href="https://www.facebook.com/zlataraani"><i class="fa fa-facebook"></i></a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end about us -->
+
+                <div class="col-md-2 col-md-offset-1 col-sm-6 col-xs-12">
+                    <div class="widget footer-links">
+                        <h5 class="widget-title bottom-line left-align grey">Информации</h5>
+                        <ul class="list-no-dividers">
+                            <li><a href="#">За нас</a></li>
+                            <li><a href="#">Контакт</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="col-md-2 col-sm-6 col-xs-12">
+                    <div class="widget footer-links">
+                        <h5 class="widget-title bottom-line left-align grey">Корисни линкови</h5>
+                        <ul class="list-no-dividers">
+                            <li><a href="#">За него</a></li>
+                            <li><a href="#">За неа</a></li>
+                            <li><a href="#">Додатоци</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-2 col-sm-6 col-xs-12">
+                    <div class="widget footer-links">
+                        <h5 class="widget-title bottom-line left-align grey">Сервиси</h5>
+                        <ul class="list-no-dividers">
+                            <li><a href="#">Политика на колачиња</a></li>
+                            <li><a href="#">Политика на приватност</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- end container -->
+
+    <div class="bottom-footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-sm-6 copyright sm-text-center">
+                <span>
+                  &copy; <script>document.querySelector(".copyright span").innerHTML += new Date().getFullYear();</script> Zenna  |  Made by <a
+                        href="https://deothemes.com">DeoThemes</a>
+                </span>
+                </div>
+
+                <div class="col-sm-6 col-xs-12 footer-payment-systems text-right sm-text-center mt-sml-10"
+                     style="display: none;">
+                    <i class="fa fa-cc-paypal"></i>
+                    <i class="fa fa-cc-visa"></i>
+                    <i class="fa fa-cc-mastercard"></i>
+                    <i class="fa fa-cc-discover"></i>
+                    <i class="fa fa-cc-amex"></i>
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- end bottom footer -->
+</footer> <!-- end footer -->
+<div id="back-to-top">
+    <a href="#top"><i class="fa fa-angle-up"></i></a>
+</div>
+
+<script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/gmap3.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/scripts.js}"></script>
+<script>
+    function acceptCookie() {
+        $.ajax({
+            type: "post",
+            url: "/api/cookies/accept-cookies"
+        })
+    }
+
+    $(document).ready(function () {
+        cookiesPolicyPrompt();
+
+        function cookiesPolicyPrompt() {
+            $('#btnAcceptCookiePolicy').on('click', function () {
+                $("#alertCookiePolicy").hide("slow");
+            });
+        }
+    });
+</script>
+</body>
+</html>

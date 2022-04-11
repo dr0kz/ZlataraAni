@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<style>
+    @font-face {
+        font-family: "FontAwesome";
+        font-weight: normal;
+        font-style: normal;
+        src: url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?v=4.3.0");
+        src: url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?#iefix&v=4.3.0") format("embedded-opentype"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff2?v=4.3.0") format("woff2"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff?v=4.3.0") format("woff"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.ttf?v=4.3.0") format("truetype"),
+        url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular") format("svg");
+    }
+
+    .myClass:before {
+        font-family: FontAwesome;
+        content: "\f024";
+    }
+</style>
+
+
+<body class="relative">
+<main class="main-wrapper">
+    <hr>
+    <div class="content-wrapper oh">
+
+        <!-- Single Product -->
+        <section class="section-wrap pb-10 pt-10 single-product">
+            <div class="container-fluid semi-fluid">
+                <div class="row">
+
+                    <div class="col-md-6 col-xs-12 product-slider mb-60">
+
+                        <div style="position:relative;">
+                            <div class="haha gallery-cell" th:each="image : ${product.getImages()}">
+                                <a th:href="${product.getImagePath()+image}" class="lightbox-img">
+                                    <img th:value="${product.getImagePath()+image}"
+                                         th:src="@{${product.getImagePath()+image}}"/>
+                                    <i class="ui-zoom zoom-icon"></i>
+                                </a>
+                            </div>
+                        </div> <!-- end gallery main -->
+
+                        <div class="gallery-thumbs">
+                            <div class="gallery-cell" th:each="image : ${product.getImages()}">
+                                <img class="clickme" th:value="${product.getImagePath()+image}"
+                                     th:src="@{${product.getImagePath()+image}}"/>
+                            </div>
+                        </div> <!-- end gallery thumbs -->
+
+                    </div> <!-- end col img slider -->
+
+                    <div class="col-md-6 col-xs-12 product-description-wrap">
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="home.html">Home</a>
+                            </li>
+                            <li>
+                                <a href="home.html">Shop</a>
+                            </li>
+                            <li class="active">
+                                Catalog
+                            </li>
+                        </ol>
+                        <input type="hidden" id="productId" th:value="${product.getId()}"/>
+                        <h2 th:text="${product.getName()}" class="product-title"></h2>
+                        <p style="font-weight: 500;font-size:16px; color:black;" th:text="${product.getCode()}"></p>
+                        <hr>
+                        <span class="price">
+                <del th:if="${product.isOnDiscount}">
+                  <span th:text="${product.getPrice()+'ден.'}"></span>
+                </del>
+                <ins>
+                  <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice() : product.getPrice())+'ден.'}"
+                        class="amount"></span>
+                </ins>
+              </span>
+
+                        <!--                        <p class="short-description" th:text="${product.getDescription()}">Our Shop is a very slick and-->
+                        <!--                            clean e-Our Theme is a very slick and clean e-commerce template with endless possibilities.-->
+                        <!--                            Creating an awesome website with this Theme is easy than you can imagine. Our Theme is a-->
+                        <!--                            very slick and clean e-commerce template with endless possibilities.</p>-->
+
+
+                        <form th:action="@{/orderCart/add}" th:method="PUT">
+                            <div class="product-actions">
+                                <span>Количина:</span>
+                                <div class="quantity buttons_added">
+                                    <input id="quantity" name="quantity" type="number" step="1" min="0" value="1"
+                                           title="Qty"
+                                           class="input-text qty text"/>
+                                    <div class="quantity-adjust">
+                                        <a href="#" class="plus">
+                                            <i class="fa fa-angle-up"></i>
+                                        </a>
+                                        <a href="#" class="minus">
+                                            <i class="fa fa-angle-down"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="productId" th:value="${product.getId()}">
+                                <button type="submit"
+                                        class="btn btn-dark btn-lg add-to-cart"><span>Додади во кошничка</span></button>
+                            </div>
+                        </form>
+
+
+                        <div class="product_meta">
+                            <span class="brand_as">Категорија: <a href="#" th:text="${product.getCategory().getName()}">Men T-shirt</a></span>
+                        </div>
+
+                        <!-- Accordion -->
+                        <div class="panel-group accordion mb-50" id="accordion">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                       class="minus">Опис<span>&nbsp;</span>
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in">
+                                    <div class="panel-body" th:text="${product.description}">
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="socials-share clearfix">
+                                <span>Сподели:</span>
+                                <div class="social-icons nobase">
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-google"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div> <!-- end col product description -->
+                    </div> <!-- end row -->
+
+                </div> <!-- end container -->
+        </section> <!-- end single product -->
+
+
+        <!-- Related Products -->
+        <section class="section-wrap pt-0 shop-items-slider">
+            <div class="container">
+                <div class="row heading-row">
+                    <div class="col-md-12 text-center">
+                        <h2 class="heading bottom-line">
+                            Поврзани продукти
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="owl-related-items" class="owl-carousel owl-theme">
+                        <div th:each="p : ${relatedProducts}" class="product">
+                            <div class="product-item hover-trigger">
+                                <div class="product-img">
+                                    <a th:href="@{'/products/{id}'(id=${p.getId()})}" style="position: relative;">
+                                        <img onmouseenter="mouseEnter(this)" onmouseleave="mouseLeave(this)"
+                                             th:src="@{${p.getImagePath()+p.getInitialPhoto()}}"
+                                             alt=""
+                                             th:class="${p.getHoverPhoto()!=''} ? 'front-image' : ''"/>
+                                        <img style="position: absolute;top:0;left:0;z-index: -1"
+                                             th:src="@{${p.getImagePath()+p.getHoverPhoto()}}"
+                                             alt=""/>
+                                    </a>
+                                    <!--                                    <div class="hover-2">-->
+                                    <!--                                        <div class="product-actions">-->
+                                    <!--                                            <a href="#" class="product-add-to-wishlist">-->
+                                    <!--                                                <i class="fa fa-heart"></i>-->
+                                    <!--                                            </a>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+                                    <div th:if="${p.isNew && p.stocks!=0}" class="product-label">
+                                        <span class="sale">НОВО</span>
+                                    </div>
+                                    <div th:if="${p.stocks==0}" class="product-label">
+                                        <span class="out-of-stock">НЕМА НА ЗАЛИХА</span>
+                                    </div>
+                                    <a th:href="@{'/products/{id}'(id=${p.getId()})}"
+                                       class="product-quickview">Приказ</a>
+                                </div>
+                                <div class="product-details">
+                                    <h3 class="product-title">
+                                        <a th:text="${p.getName()}" href="shop-single.html"></a>
+                                    </h3>
+                                    <span class="category">
+                      <a th:text="${p.getCategory().getName()}" href="catalogue-grid.html"></a>
+                    </span>
+                                </div>
+                                <span class="price">
+                    <ins>
+                      <span th:text="${(p.isOnDiscount ? p.calculateDiscountPrice(): p.getPrice())+'ден.'}"
+                            class="amount">$150.00</span>
+                    </ins>
+                  </span>
+                            </div>
+                        </div>
+                    </div> <!-- end slider -->
+
+                </div>
+            </div>
+        </section> <!-- end related products -->
+
+    </div> <!-- end content wrapper -->
+</main> <!-- end main wrapper -->
+
+<!-- jQuery Scripts -->
+
+<script>
+    $(document).ready(function () {
+        $('.clickme').first().addClass("gallery-thumbs-selected-image")
+        $('.haha').each(function () {
+            $(this).addClass("hidden")
+        })
+        $('.haha').first().removeClass("hidden")
+
+        $('.clickme').click(function () {
+            $('.clickme').each(function (index, value) {
+                $(value).removeClass("gallery-thumbs-selected-image")
+            })
+            $(this).addClass("gallery-thumbs-selected-image")
+            let src = $(this).attr('src')
+
+            $('.haha').each(function (index, value) {
+                if ($(value).find('a').find('img').attr('src') !== src) {
+                    $(this).addClass('hidden')
+                } else {
+                    $(this).removeClass('hidden')
+                }
+            })
+        })
+    })
+</script>
+
+</body>
+</html>

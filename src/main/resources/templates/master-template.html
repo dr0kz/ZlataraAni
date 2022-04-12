@@ -29,6 +29,9 @@
     <link th:href="@{/assets/sass/_typography.scss}">
     <link th:href="@{/assets/sass/_variables.scss}">
     <link th:href="@{/assets/sass/style.scss}">
+    <!--    Slider Logoa scripti momentalno neka sedat vo home.html-->
+
+
     <!-- Google Fonts -->
     <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/assets/js/plugins.js}"></script>
@@ -94,7 +97,7 @@
                     </button>
 
                     <button  onclick="location.href = '/politika-na-kolacinja';" id="btnDeclineCookiePolicy" class="  align-center" data-dismiss="alert"
-                            type="button" aria-label="Close">Политика на колачиња
+                             type="button" aria-label="Close">Политика на колачиња
                     </button>
                 </div>
             </div>
@@ -185,11 +188,11 @@
                     <div class="flex-child flex-right nav-right hidden-sm hidden-xs">
                         <ul>
 
-                            <li class="nav-search-wrap style-2 hidden-sm hidden-xs">
-                                <a href="#" class="nav-search search-trigger">
-                                    <i class="fa fa-search"></i>
-                                </a>
-                            </li>
+<!--                            <li class="nav-search-wrap style-2 hidden-sm hidden-xs">-->
+<!--                                <a href="#" class="nav-search search-trigger">-->
+<!--                                    <i class="fa fa-search"></i>-->
+<!--                                </a>-->
+<!--                            </li>-->
                             <li class="nav-cart">
                                 <div class="nav-cart-outer">
                                     <div class="nav-cart-inner">
@@ -258,7 +261,11 @@
 
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <div class="widget footer-about-us">
-                        <img src="img/logo_dark.png" alt="" class="logo">
+                        <img class="logo-dark"
+                             width="105"
+                             height="19"
+                             src="/assets/img/logo_dark.png"
+                             alt="logo">
                         <p class="mb-30">Заследете не на социјалните мрежи</p>
                         <div class="footer-socials">
                             <div class="social-icons nobase">
@@ -273,7 +280,7 @@
 
                 <div class="col-md-2 col-md-offset-1 col-sm-6 col-xs-12">
                     <div class="widget footer-links">
-                        <h5 class="widget-title bottom-line left-align grey">Информации</h5>
+                        <h5 class="widget-title bottom-line  grey">Информации</h5>
                         <ul class="list-no-dividers">
                             <li><a href="#">За нас</a></li>
                             <li><a href="#">Контакт</a></li>
@@ -284,7 +291,7 @@
 
                 <div class="col-md-2 col-sm-6 col-xs-12">
                     <div class="widget footer-links">
-                        <h5 class="widget-title bottom-line left-align grey">Корисни линкови</h5>
+                        <h5 class="widget-title bottom-line  grey">Корисни линкови</h5>
                         <ul class="list-no-dividers">
                             <li><a href="#">За него</a></li>
                             <li><a href="#">За неа</a></li>
@@ -296,9 +303,9 @@
 
                 <div class="col-md-2 col-sm-6 col-xs-12">
                     <div class="widget footer-links">
-                        <h5 class="widget-title bottom-line left-align grey">Сервиси</h5>
+                        <h5 class="widget-title bottom-line  grey">Сервиси</h5>
                         <ul class="list-no-dividers">
-                            <li><a href="#">Политика на колачиња</a></li>
+                            <li><a href="/politika-na-kolacinja">Политика на колачиња</a></li>
                             <li><a href="#">Политика на приватност</a></li>
                         </ul>
                     </div>

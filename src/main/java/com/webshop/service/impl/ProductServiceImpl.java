@@ -188,7 +188,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(description);
         product.setStocks(stocks);
         product.setPrice(price);
-        product.setDiscountPrice(discountPrice);
+        product.setDiscountPercentage(discountPrice);
         product.setIsNew(isNew);
         product.setIsOnDiscount(isOnDiscount);
         product.setIsDealOfTheDay(isDealOfTheDay);

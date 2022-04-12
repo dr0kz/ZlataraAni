@@ -3,8 +3,8 @@
 <head>
     <!--    scriptive ne mi gi cita na master template, za slider logoa se, neka sedat tuka momentalno-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet"/>
 
     <script type="text/javascript">
         $(document).on('ready', function () {
@@ -158,19 +158,22 @@
                         </h2>
                     </div>
                 </div>
-                <div class="wrapper">
+                <!--                <div class="wrapper">-->
+                <!--                    <div class="box">-->
+                <!--                        <div class="circle">-->
+                <!--                            <span class="circle__content">20%</span>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
 
-                    <div class="box">
-                        <div class="circle">
-                            <span class="circle__content">20%</span>
-                        </div>
-                    </div>
-
-                </div>
+                <!--                </div>-->
 
                 <div class="row">
                     <div id="owl-related-items" class="owl-carousel owl-theme">
                         <div th:each="p : ${discountProducts}" class="product">
+                            <div class="circle">
+                                <span style="font-size:17px;" class="circle__content"
+                                      th:text="${'-'+p.discountPercentage+'%'}"></span>
+                            </div>
                             <div class="product-item hover-trigger">
                                 <div class="product-img">
                                     <a th:href="@{'/products/{id}'(id=${p.getId()})}" style="position: relative;">
@@ -195,24 +198,26 @@
                                     <div th:if="${p.stocks==0}" class="product-label">
                                         <span class="out-of-stock">НЕМА НА ЗАЛИХА</span>
                                     </div>
-                                    <a th:href="@{'/products/{id}'(id=${p.getId()})}" class="product-quickview">Quick
-                                        View</a>
+                                    <a th:href="@{'/products/{id}'(id=${p.getId()})}" class="product-quickview"></a>
                                 </div>
                                 <div class="product-details">
                                     <h3 class="product-title">
-                                        <a th:text="${p.getName()}" href="shop-single.html">Mantle Brown Bag</a>
+                                        <a th:text="${p.getName()}" href="shop-single.html"></a>
                                     </h3>
                                     <span class="category">
                                         <a th:text="${p.getCategory().getName()}"
-                                           href="catalogue-grid.html">Accessories</a>
+                                           href="catalogue-grid.html"></a>
                                     </span>
-
                                 </div>
 
-                                <span class="price"><ins>
-                      <span th:text="${(p.isOnDiscount ? p.calculateDiscountPrice(): p.getPrice())+'ден.'}"
-                            class="amount">$150.00</span>
-                    </ins>
+                                <span class="price">
+                                    <del th:if="${p.isOnDiscount}">
+                                        <span th:text="${p.price+' ден'}"></span>
+                                    </del>
+                                    <ins>
+                                    <span th:text="${(p.isOnDiscount ? p.calculateDiscountPrice(): p.getPrice())+' ден'}"
+                                          class="amount"></span>
+                                    </ins>
                   </span>
                             </div>
                         </div>
@@ -223,29 +228,7 @@
             </div>
         </section>
         <!-- end trendy products -->
-        <section class="information">
-            <div class="container">
 
-                <div class="row" style="justify-content:center">
-                    <div class="col-lg-4 inform" >
-                        <i class="fa fa-truck" style="color: white;font-size: 4rem;" aria-hidden="true"></i>
-                        <h5><small  style="color: white;">Достава низ Целa Македонија </small></h5>
-                        <p class="whites">Достава низ цела Македонија </p>
-                    </div>
-                    <div class="col-lg-4 inform">
-                        <i class="fa fa-trophy" style="color: white;font-size: 4rem;" aria-hidden="true"></i>
-                        <h5><small  style="color: white;">Светски Бренд</small></h5>
-                        <p class="whites">Производство и продажба на накит со врвен квалитет </p>
-                    </div>
-                    <div class="col-lg-4 inform">
-                        <i class="fa fa-globe" style="color: white;font-size: 4rem;" aria-hidden="true"></i>
-                        </i>
-                        <h5><small style="color: white;">Безбедно Плаќање</small></h5>
-                        <p class="whites">Плаќањето се врши на безбеден начин со сигурна достава. </p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <section class="brands-bar">
             <div class="container">
@@ -283,7 +266,29 @@
             </div>
         </section>
         <!-- Testimonials -->
+        <section class="information">
+            <div class="container">
 
+                <div class="row" style="justify-content:center">
+                    <div class="col-lg-4 inform">
+                        <i class="fa fa-truck" style="color: white;font-size: 4rem;" aria-hidden="true"></i>
+                        <h5><small style="color: white;">Достава низ Целa Македонија </small></h5>
+                        <p class="whites">Достава низ цела Македонија </p>
+                    </div>
+                    <div class="col-lg-4 inform">
+                        <i class="fa fa-trophy" style="color: white;font-size: 4rem;" aria-hidden="true"></i>
+                        <h5><small style="color: white;">Светски Бренд</small></h5>
+                        <p class="whites">Производство и продажба на накит со врвен квалитет </p>
+                    </div>
+                    <div class="col-lg-4 inform">
+                        <i class="fa fa-globe" style="color: white;font-size: 4rem;" aria-hidden="true"></i>
+                        </i>
+                        <h5><small style="color: white;">Безбедно Плаќање</small></h5>
+                        <p class="whites">Плаќањето се врши на безбеден начин со сигурна достава. </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Newsletter -->
     </div> <!-- end content wrapper -->

@@ -28,7 +28,7 @@ public class Product {
     @Column(nullable = false)
     private Integer price;
 
-    private Integer discountPrice;
+    private Integer discountPercentage;
 
     private LocalDateTime isDealOfTheDayStartDateTime;
 
@@ -59,7 +59,7 @@ public class Product {
     }
 
     public Product(String name, String code, String description,
-                   Integer stocks, Integer price, Integer discountPrice, Boolean isNew,
+                   Integer stocks, Integer price, Integer discountPercentage, Boolean isNew,
                    Boolean isOnDiscount, Boolean isDealOfTheDay, String initialPhoto,
                    String hoverPhoto, List<String> images, Category category) {
         this.name = name;
@@ -67,7 +67,7 @@ public class Product {
         this.description = description;
         this.stocks = stocks;
         this.price = price;
-        this.discountPrice = discountPrice;
+        this.discountPercentage = discountPercentage;
         this.isNew = isNew;
         this.isOnDiscount = isOnDiscount;
         this.isDealOfTheDay = isDealOfTheDay;
@@ -82,7 +82,7 @@ public class Product {
     }
 
     public Integer calculateDiscountPrice(){
-        return price- price*discountPrice/100;
+        return price- price* discountPercentage /100;
     }
 
 }

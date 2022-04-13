@@ -796,7 +796,7 @@ header .flex-child.flex-right {
 
 .logo,
 .logo-dark {
-	max-height: 18px; }
+	 }
 
 .navbar-header,
 .nav-wrap {
@@ -863,13 +863,13 @@ header .flex-child.flex-right {
 	min-width: 230px;
 	margin: 0;
 	padding: 20px 0;
-	background-color: #171717;
+	background-color: #ffffff;
 	border: none;
 	border-radius: 0;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
 .dropdown-menu li > a {
 	padding: 9px 30px;
-	color: #878787;
+	color: #000000;
 	font-size: 11px;
 	transition: all 0.3s ease-in-out;
 	font-family: "Montserrat", sans-serif;
@@ -895,7 +895,9 @@ header .flex-child.flex-right {
 .dropdown-menu > li > a:hover,
 .megamenu .menu-list > li > a:hover,
 .megamenu-wide .menu-list > li > a:hover {
-	background-color: transparent; }
+	background-color: #d5d5d5;
+	color:black !important;
+}
 
 .megamenu-item {
 	border-right: 1px solid #353535;
@@ -4250,7 +4252,7 @@ abbr.required {
 /* FOOTER
  */
 footer{
-	background-color: #f5f5f5;
+	background-color: #ffffff;
 }
 /*-------------------------------------------------------*/
 .footer-widgets {

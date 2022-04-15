@@ -6,6 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 @Controller
 @RequestMapping("/")
@@ -39,6 +42,16 @@ public class HomeController {
     @GetMapping("/kontakt")
     public String getContactPage(Model model){
         model.addAttribute("bodyContent","contact");
+        return "master-template";
+    }
+    @GetMapping("/dzoke1")
+    public String getPageDzoke1(HttpServletRequest request, HttpServletResponse response, Model model){
+        model.addAttribute("bodyContent","shop-catalog-sidebar");
+        return "master-template";
+    }
+    @GetMapping("/dzoke2")
+    public String getPageDzoke2(HttpServletRequest request, HttpServletResponse response, Model model){
+        model.addAttribute("bodyContent","shop-catalog");
         return "master-template";
     }
 }

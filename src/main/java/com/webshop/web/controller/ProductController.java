@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -42,7 +43,7 @@ public class ProductController {
                              @RequestParam(required = false) MultipartFile initialPhoto,
                              @RequestParam(required = false) MultipartFile hoverPhoto,
                              @RequestParam(required = false) MultipartFile[] images
-    ) {
+    ) throws IOException {
         if (id != null) {
             this.productService.editProduct(id,name, code, description,
                     stocks, price, discountPrice,

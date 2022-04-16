@@ -35,19 +35,19 @@
                     <div class="col-md-6 col-xs-12 product-slider mb-60">
 
                         <div style="position:relative;">
-                            <div class="haha gallery-cell" th:each="image : ${product.getImages()}">
-                                <a th:href="${product.getImagePath()+image}" class="lightbox-img">
-                                    <img th:value="${product.getImagePath()+image}"
-                                         th:src="@{${product.getImagePath()+image}}"/>
+                            <div class="haha gallery-cell" th:each="image : ${product.getPhotosEncoded()}">
+                                <a th:href="*{image}" class="lightbox-img">
+                                    <img th:value="*{image}"
+                                         th:src="*{image}"/>
                                     <i class="ui-zoom zoom-icon"></i>
                                 </a>
                             </div>
                         </div> <!-- end gallery main -->
 
                         <div class="gallery-thumbs">
-                            <div class="gallery-cell" th:each="image : ${product.getImages()}">
-                                <img class="clickme" th:value="${product.getImagePath()+image}"
-                                     th:src="@{${product.getImagePath()+image}}"/>
+                            <div class="gallery-cell" th:each="image : ${product.getPhotosEncoded()}">
+                                <img class="clickme" th:value="*{image}"
+                                     th:src="*{image}"/>
                             </div>
                         </div> <!-- end gallery thumbs -->
 
@@ -162,11 +162,11 @@
                                 <div class="product-img">
                                     <a th:href="@{'/products/{id}'(id=${p.getId()})}" style="position: relative;">
                                         <img onmouseenter="mouseEnter(this)" onmouseleave="mouseLeave(this)"
-                                             th:src="@{${p.getImagePath()+p.getInitialPhoto()}}"
+                                             th:src="*{p.getInitialPhotoEncoded()}"
                                              alt=""
-                                             th:class="${p.getHoverPhoto()!=''} ? 'front-image' : ''"/>
+                                             th:class="${p.getHoverPhoto()!=null} ? 'front-image' : ''"/>
                                         <img style="position: absolute;top:0;left:0;z-index: -1"
-                                             th:src="@{${p.getImagePath()+p.getHoverPhoto()}}"
+                                             th:src="*{p.getHoverPhotoEncoded()}"
                                              alt=""/>
                                     </a>
                                     <!--                                    <div class="hover-2">-->

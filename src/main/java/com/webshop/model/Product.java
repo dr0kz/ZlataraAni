@@ -3,9 +3,12 @@ package com.webshop.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -41,27 +44,26 @@ public class Product {
     @Column(nullable = false)
     private Boolean isDealOfTheDay; //otkako ke namesti, 24h da stoi na pocetna i da odbrojuva vreme(frontend)
 
-    @Column(nullable = false)
-    private String initialPhoto;
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Image initialPhoto;
 
-    private String hoverPhoto;
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Image hoverPhoto;
 
-    @ElementCollection
-    private List<String> images;
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Image> images;
 
     @ManyToOne
     private Category category;
 
-    public static final String UPLOAD_DIR = "/src/main/resources/static/assets/images/product-photos";
 
     public Product() {
-        this.images = new ArrayList<>();
     }
 
     public Product(String name, String code, String description,
                    Integer stocks, Integer price, Integer discountPercentage, Boolean isNew,
-                   Boolean isOnDiscount, Boolean isDealOfTheDay, String initialPhoto,
-                   String hoverPhoto, List<String> images, Category category) {
+                   Boolean isOnDiscount, Boolean isDealOfTheDay, Image initialPhoto,
+                   Image hoverPhoto, List<Image> images, Category category) {
         this.name = name;
         this.code = code;
         this.description = description;
@@ -77,12 +79,23 @@ public class Product {
         this.category = category;
     }
 
-    public String getImagePath(){
-        return "/assets/images/product-photos/"+this.id+"/";
+    public Integer calculateDiscountPrice() {
+        return price - price * discountPercentage / 100;
     }
 
-    public Integer calculateDiscountPrice(){
-        return price- price* discountPercentage /100;
+    public String getInitialPhotoEncoded() {
+        return "data:image/png;base64," + Base64.getEncoder().encodeToString(this.initialPhoto.getImage());
+    }
+
+    public String getHoverPhotoEncoded() {
+        return "data:image/png;base64," + Base64.getEncoder().encodeToString(this.hoverPhoto.getImage());
+    }
+
+    @Transactional
+    public List<String> getPhotosEncoded() {
+        return this.images.stream()
+                .map(t -> "data:image/png;base64," + Base64.getEncoder().encodeToString(t.getImage()))
+                .collect(Collectors.toList());
     }
 
 }

@@ -40,7 +40,7 @@
                     <a th:href="@{'/proizvodi/{id}'(id=${product.getId()})}"
                        style="padding:10px; border:1px solid gold; border-radius:10px;"
                        th:each="product : ${dealOfTheDayProducts}">
-                        <img height="150" width="150" th:src="${product.getImagePath()+product.getInitialPhoto()}"/>
+                        <img height="150" width="150" th:src="*{product.getInitialPhotoEncoded()}"/>
                         <div>
                             <h6 th:text="${product.getName()}"></h6>
                             <p th:text="${(product.isOnDiscount ? product.calculateDiscountPrice()  : product.getPrice())+' ден.'}"></p>
@@ -178,11 +178,11 @@
                                 <div class="product-img">
                                     <a th:href="@{'/products/{id}'(id=${p.getId()})}" style="position: relative;">
                                         <img onmouseenter="mouseEnter(this)" onmouseleave="mouseLeave(this)"
-                                             th:src="@{${p.getImagePath()+p.getInitialPhoto()}}"
+                                             th:src="*{p.getInitialPhotoEncoded()}"
                                              alt=""
-                                             th:class="${p.getHoverPhoto()!=''} ? 'front-image' : ''"/>
+                                             th:class="${p.getHoverPhoto()!=null} ? 'front-image' : ''"/>
                                         <img style="position: absolute;top:0;left:0;z-index: -1"
-                                             th:src="@{${p.getImagePath()+p.getHoverPhoto()}}"
+                                             th:src="*{p.getHoverPhotoEncoded()}"
                                              alt=""/>
                                     </a>
                                     <div class="hover-2">

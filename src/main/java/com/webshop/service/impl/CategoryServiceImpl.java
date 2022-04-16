@@ -51,14 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category deleteCategory(Long id) {
         Category category = this.findById(id);
-        this.productRepository.findAllByCategoryId(id).forEach(t -> {
-            FileUploadUtil.deleteFile(t.getImagePath()+t.getInitialPhoto());
-            FileUploadUtil.deleteFile(t.getImagePath()+t.getHoverPhoto());
-            t.getImages().stream()
-                    .map(k -> t.getImagePath()+k)
-                    .forEach(FileUploadUtil::deleteFile);
-            this.productRepository.delete(t);
-        });
+        this.productRepository.deleteAll(this.productRepository.findAllByCategoryId(id));
         this.categoryRepository.delete(category);
         return category;
     }

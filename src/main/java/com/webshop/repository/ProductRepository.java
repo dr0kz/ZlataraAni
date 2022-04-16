@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,10 +33,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findTop10ByIdNotAndCategoryId(Long productId, Long categoryId);
 
+    @Transactional
     List<Product> findAllByCategoryParentCategoryUrl(String parentCategoryUrl);
 
     List<Product> findAllByIsDealOfTheDay(Boolean isDealOfTheDay);
 
+    @Transactional
     List<Product> findAllByIsOnDiscount(Boolean isOnDiscount);
 
 }

@@ -6,6 +6,7 @@ import com.webshop.model.dto.ProductDto;
 import com.webshop.projections.ProductProjection;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
@@ -36,7 +37,7 @@ public interface ProductService {
                           Long categoryId,
                           MultipartFile initialPhoto,
                           MultipartFile hoverPhoto,
-                          MultipartFile[] images);
+                          MultipartFile[] images) throws IOException;
 
 
     void deleteProduct(Long id);

@@ -2,10 +2,12 @@ package com.webshop.service.impl;
 
 import com.webshop.configuration.FileUploadUtil;
 import com.webshop.model.Category;
+import com.webshop.model.Image;
 import com.webshop.model.ParentCategory;
 import com.webshop.model.Product;
 import com.webshop.model.exceptions.ProductNotFoundException;
 import com.webshop.projections.ProductProjection;
+import com.webshop.repository.ImageRepository;
 import com.webshop.repository.ParentCategoryRepository;
 import com.webshop.repository.ProductRepository;
 import com.webshop.service.CategoryService;
@@ -25,11 +27,13 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryService categoryService;
     private final ProductRepository productRepository;
     private final ParentCategoryRepository parentCategoryRepository;
+    private final ImageRepository imageRepository;
 
-    public ProductServiceImpl(CategoryService categoryService, ProductRepository productRepository, ParentCategoryRepository parentCategoryRepository) {
+    public ProductServiceImpl(CategoryService categoryService, ProductRepository productRepository, ParentCategoryRepository parentCategoryRepository, ImageRepository imageRepository) {
         this.categoryService = categoryService;
         this.productRepository = productRepository;
         this.parentCategoryRepository = parentCategoryRepository;
+        this.imageRepository = imageRepository;
     }
 
     @Override
@@ -85,30 +89,34 @@ public class ProductServiceImpl implements ProductService {
                                  Long categoryId,
                                  MultipartFile initialPhoto,
                                  MultipartFile hoverPhoto,
-                                 MultipartFile[] images) {
+                                 MultipartFile[] images) throws IOException {
 
         Category category = this.categoryService.findById(categoryId);
 
-        String fileNameInitialPhoto = getFileWithSizeAdded(initialPhoto,"_initial_300x300");
 
-        String fileNameHoverPhoto = "";
-        if (!hoverPhoto.isEmpty()){
-            fileNameHoverPhoto = getFileWithSizeAdded(hoverPhoto, "_hover_300x300");
+        byte[] initialPhotoBytes = initialPhoto.getBytes();
+        byte[] hoverPhotoBytes = hoverPhoto.getBytes();
+        List<byte[]> imagesBytes = new ArrayList<>();
+        for (MultipartFile multipartFile : images) {
+            imagesBytes.add(multipartFile.getBytes());
         }
+        Image initialImage = new Image(initialPhotoBytes);
+        Image hoverImage = new Image(hoverPhotoBytes);
+        List<Image> imagesList = new ArrayList<>();
+        imagesBytes.forEach(t -> imagesList.add(new Image(t)));
+
+        this.imageRepository.save(initialImage);
+        this.imageRepository.save(hoverImage);
+        this.imageRepository.saveAll(imagesList);
+
 
         List<String> fileNames = Arrays.stream(images).map(image -> getFileWithSizeAdded(image,"600x600")).collect(Collectors.toList());
 
         Product product = new Product(name, code, description, stocks,
                 price, discountPrice, isNew, isOnDiscount, isDealOfTheDay,
-                fileNameInitialPhoto, fileNameHoverPhoto, fileNames, category);
+                initialImage, hoverImage, imagesList, category);
 
         this.productRepository.save(product);
-
-        saveFiles(Product.UPLOAD_DIR + "/" + product.getId(), List.of(fileNameInitialPhoto), List.of(initialPhoto));
-        if(!hoverPhoto.isEmpty()){
-            saveFiles(Product.UPLOAD_DIR + "/" + product.getId(), List.of(fileNameHoverPhoto), List.of(hoverPhoto)); //save the newly added images on server
-        }
-        saveFiles(Product.UPLOAD_DIR + "/" + product.getId(), fileNames, Arrays.stream(images).collect(Collectors.toList()));
 
         return product;
     }
@@ -145,12 +153,6 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id) {
         Product product = this.findById(id);
         if(product!=null){
-            product.getImages()
-                    .stream()
-                    .map(t -> product.getImagePath() + t)
-                    .forEach(FileUploadUtil::deleteFile);
-            FileUploadUtil.deleteFile(product.getImagePath()+product.getInitialPhoto());
-            FileUploadUtil.deleteFile(product.getImagePath()+product.getHoverPhoto());
             this.productRepository.delete(product);
         }
     }
@@ -194,27 +196,27 @@ public class ProductServiceImpl implements ProductService {
         product.setIsDealOfTheDay(isDealOfTheDay);
         product.setCategory(category);
 
-        if(!images[0].isEmpty()){
-            List<MultipartFile> multipartFiles = filterFiles(images, product);
-            product.getImages().stream().map(t ->Product.UPLOAD_DIR + "/" + id+"/"+t).forEach(FileUploadUtil::deleteFile);
-            List<String> fileNames = multipartFiles.stream().map(image -> getFileWithSizeAdded(image,"600x600")).collect(Collectors.toList()); //get filenames for the newly added images
-            product.setImages(fileNames);
-            saveFiles(Product.UPLOAD_DIR + "/" + id, fileNames,  multipartFiles);
-        }
-        if(!initialPhoto.isEmpty()){
-            FileUploadUtil.deleteFile(Product.UPLOAD_DIR +"/"+id+"/"+product.getInitialPhoto());
-            String fileNameInitialPhoto = getFileWithSizeAdded(initialPhoto, "300x300");
-            product.setInitialPhoto(fileNameInitialPhoto);
-            saveFiles(Product.UPLOAD_DIR + "/" + id, List.of(fileNameInitialPhoto), List.of(initialPhoto));
-        }
-        if(!hoverPhoto.isEmpty()){
-            if(product.getHoverPhoto()!=null){
-                FileUploadUtil.deleteFile(Product.UPLOAD_DIR +"/"+id+"/"+product.getHoverPhoto());
-            }
-            String fileNameHoverPhoto = getFileWithSizeAdded(hoverPhoto, "300x300");
-            product.setHoverPhoto(fileNameHoverPhoto);
-            saveFiles(Product.UPLOAD_DIR + "/" + id, List.of(fileNameHoverPhoto), List.of(hoverPhoto));
-        }
+//        if(!images[0].isEmpty()){
+//            List<MultipartFile> multipartFiles = filterFiles(images, product);
+//            product.getImages().stream().map(t ->Product.UPLOAD_DIR + "/" + id+"/"+t).forEach(FileUploadUtil::deleteFile);
+//            List<String> fileNames = multipartFiles.stream().map(image -> getFileWithSizeAdded(image,"600x600")).collect(Collectors.toList()); //get filenames for the newly added images
+//            product.setImages(fileNames);
+//            saveFiles(Product.UPLOAD_DIR + "/" + id, fileNames,  multipartFiles);
+//        }
+//        if(!initialPhoto.isEmpty()){
+//            FileUploadUtil.deleteFile(Product.UPLOAD_DIR +"/"+id+"/"+product.getInitialPhoto());
+//            String fileNameInitialPhoto = getFileWithSizeAdded(initialPhoto, "300x300");
+//            product.setInitialPhoto(fileNameInitialPhoto);
+//            saveFiles(Product.UPLOAD_DIR + "/" + id, List.of(fileNameInitialPhoto), List.of(initialPhoto));
+//        }
+//        if(!hoverPhoto.isEmpty()){
+//            if(product.getHoverPhoto()!=null){
+//                FileUploadUtil.deleteFile(Product.UPLOAD_DIR +"/"+id+"/"+product.getHoverPhoto());
+//            }
+//            String fileNameHoverPhoto = getFileWithSizeAdded(hoverPhoto, "300x300");
+//            product.setHoverPhoto(fileNameHoverPhoto);
+//            saveFiles(Product.UPLOAD_DIR + "/" + id, List.of(fileNameHoverPhoto), List.of(hoverPhoto));
+//        }
 
         this.productRepository.save(product);
 

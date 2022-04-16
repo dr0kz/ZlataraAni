@@ -39,13 +39,13 @@ public class Interceptor implements HandlerInterceptor {
         Cookie cookie;
         if (cookies == null) {
             cookie = generateCookie();
-            cookie.setDomain("z-ani.herokuapp.com");
+//            cookie.setDomain("z-ani.herokuapp.com");
             cookie.setPath("/");
             response.addCookie(cookie);
             response.addHeader("COOKIE", "" + cookie.getValue());
         } else if (Arrays.stream(cookies).noneMatch(t -> t.getName().equals("CART"))) {
             cookie = generateCookie();
-            cookie.setDomain("z-ani.herokuapp.com");
+//            cookie.setDomain("z-ani.herokuapp.com");
             cookie.setPath("/");
             response.addCookie(cookie);
             response.addHeader("COOKIE", "" + cookie.getValue());
@@ -75,13 +75,16 @@ public class Interceptor implements HandlerInterceptor {
         OrderCart orderCart = this.orderCartService.findOrderCartById(orderCartId);
         modelAndView.getModelMap().addAttribute("isCookieAccepted", orderCart.getIsAccepted());
         List<ProductInOrderCart> productInOrderCarts = productInOrderCartService.findAllProductsInOrderCart(orderCart);
+
         modelAndView.getModelMap().addAttribute("productsInCart", productInOrderCarts);
+        modelAndView.getModelMap().addAttribute("totalPrice",getTotal(productInOrderCarts));
         modelAndView.getModelMap().addAttribute("productsInCartSize", productInOrderCarts.size());
-        modelAndView.getModelMap().addAttribute("productsInCartTotalPrice", getTotal(productInOrderCarts));
     }
 
     private long getTotal(List<ProductInOrderCart> productsInOrderCart) {
-        return productsInOrderCart.stream().mapToInt(p -> p.getProduct().getPrice() * p.getQuantity()).summaryStatistics().getSum();
+        return productsInOrderCart.stream()
+                .mapToInt(p -> p.getProduct().calculateDiscountPrice() * p.getQuantity())
+                .sum();
     }
 
     private Cookie generateCookie() {

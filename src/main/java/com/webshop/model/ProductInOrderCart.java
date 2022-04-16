@@ -36,4 +36,5 @@ public class ProductInOrderCart {
         this.product = product;
         this.quantity = quantity;
     }
+
 }

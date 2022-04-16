@@ -96,8 +96,9 @@
                             type="button" aria-label="Close">Се согласувам
                     </button>
 
-                    <button  onclick="location.href = '/politika-na-kolacinja';" id="btnDeclineCookiePolicy" class="  align-center" data-dismiss="alert"
-                             type="button" aria-label="Close">Политика на колачиња
+                    <button onclick="location.href = '/politika-na-kolacinja';" id="btnDeclineCookiePolicy"
+                            class="  align-center" data-dismiss="alert"
+                            type="button" aria-label="Close">Политика на колачиња
                     </button>
                 </div>
             </div>
@@ -165,10 +166,10 @@
                                     <a href="/za-nas">За нас</a>
                                     <i class="fa fa-angle-down dropdown-trigger"></i>
                                 </li>
-<!--                                <li class="dropdown">-->
-<!--                                    <a href="/kontakt">Контакт</a>-->
-<!--                                    <i class="fa fa-angle-down dropdown-trigger"></i>-->
-<!--                                </li>&lt;!&ndash; end elements &ndash;&gt;-->
+                                <!--                                <li class="dropdown">-->
+                                <!--                                    <a href="/kontakt">Контакт</a>-->
+                                <!--                                    <i class="fa fa-angle-down dropdown-trigger"></i>-->
+                                <!--                                </li>&lt;!&ndash; end elements &ndash;&gt;-->
 
 
                                 <!-- Mobile search -->
@@ -188,11 +189,11 @@
                     <div class="flex-child flex-right nav-right hidden-sm hidden-xs">
                         <ul>
 
-<!--                            <li class="nav-search-wrap style-2 hidden-sm hidden-xs">-->
-<!--                                <a href="#" class="nav-search search-trigger">-->
-<!--                                    <i class="fa fa-search"></i>-->
-<!--                                </a>-->
-<!--                            </li>-->
+                            <!--                            <li class="nav-search-wrap style-2 hidden-sm hidden-xs">-->
+                            <!--                                <a href="#" class="nav-search search-trigger">-->
+                            <!--                                    <i class="fa fa-search"></i>-->
+                            <!--                                </a>-->
+                            <!--                            </li>-->
                             <li class="nav-cart">
                                 <div class="nav-cart-outer">
                                     <div class="nav-cart-inner">
@@ -206,31 +207,31 @@
 
                                             <div th:each="productQuantity : ${productsInCart}"
                                                  class="nav-cart-item clearfix">
-                                                <div class="nav-cart-img">
-                                                    <a href="#">
-                                                        <img th:src="${productQuantity.product.getImagePath()+productQuantity.product.getInitialPhoto()}"
-                                                             alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="nav-cart-title">
-                                                    <a href="#" th:text="${productQuantity.product.getName()}">
-
-                                                    </a>
-                                                    <div class="nav-cart-price">
-                                                        <span th:text="${productQuantity.getQuantity() + ' x'}"></span>
-                                                        <span th:text="${productQuantity.product.getPrice()}"></span>
+                                                <a th:href="@{'/proizvodi/{id}'(id=${productQuantity.product.id})}">
+                                                    <div class="nav-cart-img">
+                                                            <img th:src="*{productQuantity.product.getInitialPhotoEncoded()}"
+                                                                 alt="">
                                                     </div>
-                                                </div>
-                                                <div class="nav-cart-remove">
-                                                    <a href="#" class="remove"><i class="ui-close"></i></a>
-                                                </div>
+                                                    <div class="nav-cart-title">
+                                                        <p href="#" th:text="${productQuantity.product.getName()}">
+
+                                                        </p>
+                                                        <div class="nav-cart-price">
+                                                            <span th:text="${productQuantity.getQuantity() + ' x'}"></span>
+                                                            <span th:text="${productQuantity.product.calculateDiscountPrice()}"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="nav-cart-remove">
+                                                        <p href="#" class="remove"><i class="ui-close"></i></p>
+                                                    </div>
+                                                </a>
                                             </div>
 
                                         </div> <!-- end cart items -->
 
                                         <div class="nav-cart-summary">
-                                            <span>Cart Subtotal</span>
-                                            <span class="total-price" th:text="${productsInCartTotalPrice}"></span>
+                                            <span>Вкупно</span>
+                                            <span class="total-price" th:text="${totalPrice+' ден'}"></span>
                                         </div>
 
                                         <div class="nav-cart-actions mt-20">

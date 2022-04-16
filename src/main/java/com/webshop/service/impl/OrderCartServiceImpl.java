@@ -33,7 +33,8 @@ public class OrderCartServiceImpl implements OrderCartService {
 
     @Override
     public OrderCart findOrderCartById(Long id) {
-        return orderCartRepository.findById(id).orElseThrow(OrderCartNotFoundException::new);
+        return orderCartRepository.findById(id)
+                .orElseThrow(OrderCartNotFoundException::new);
     }
 
     @Override

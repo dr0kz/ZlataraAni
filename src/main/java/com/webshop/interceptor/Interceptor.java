@@ -4,6 +4,7 @@ import com.webshop.model.Category;
 import com.webshop.model.OrderCart;
 import com.webshop.model.ParentCategory;
 import com.webshop.model.ProductInOrderCart;
+import com.webshop.model.exceptions.OrderCartNotFoundException;
 import com.webshop.service.CategoryService;
 import com.webshop.service.OrderCartService;
 import com.webshop.service.ParentCategoryService;
@@ -37,13 +38,7 @@ public class Interceptor implements HandlerInterceptor {
 
         Cookie[] cookies = request.getCookies();
         Cookie cookie;
-        if (cookies == null) {
-            cookie = generateCookie();
-//            cookie.setDomain("z-ani.herokuapp.com");
-            cookie.setPath("/");
-            response.addCookie(cookie);
-            response.addHeader("COOKIE", "" + cookie.getValue());
-        } else if (Arrays.stream(cookies).noneMatch(t -> t.getName().equals("CART"))) {
+        if (cookies == null || Arrays.stream(cookies).noneMatch(t -> t.getName().equals("CART"))) {
             cookie = generateCookie();
 //            cookie.setDomain("z-ani.herokuapp.com");
             cookie.setPath("/");

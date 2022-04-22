@@ -47,7 +47,7 @@
 
                 </div>
                 <div class="row">
-                    <div class="col-md-12 catalogue-col right mb-50">
+                    <div class="col-md-9 catalogue-col right mb-50">
                         <div class="shop-catalogue grid-view">
                             <div class="row items-grid">
                                 <div th:each="product : ${products}" class="col-md-3 col-xs-6 product product-grid">
@@ -109,20 +109,10 @@
                         </div>
                         <!-- end grid mode -->
                         <!-- Pagination -->
-                        <div class="pagination-wrap clearfix">
-                            <p class="result-count">Приказ: 12 од 80</p>
-                            <nav class="pagination right clearfix">
-                                <a href="#"><i class="fa fa-angle-left"></i></a>
-                                <span class="page-numbers current">1</span>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#">4</a>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
-                            </nav>
-                        </div>
+
                     </div>
                     <!-- end col -->
-                    <aside class="col-md-3 sidebar left-sidebar">
+                    <aside class="col-md-3 sidebar ">
 
                         <!-- Categories -->
 
@@ -149,9 +139,20 @@
 
 
                         <!-- Tags -->
-
+                        </div>
 
                     </aside>
+                    <div class="pagination-wrap clearfix">
+                        <p class="result-count">Приказ: 12 од 80</p>
+                        <nav class="pagination right clearfix">
+                            <a href="#"><i class="fa fa-angle-left"></i></a>
+                            <span class="page-numbers current">1</span>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#">4</a>
+                            <a href="#"><i class="fa fa-angle-right"></i></a>
+                        </nav>
+                    </div>
                 </div>
                 <!-- end row -->
             </div>

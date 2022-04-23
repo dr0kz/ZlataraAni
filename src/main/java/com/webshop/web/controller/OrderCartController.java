@@ -1,6 +1,5 @@
 package com.webshop.web.controller;
 
-import com.webshop.model.ProductInOrderCart;
 import com.webshop.service.OrderCartService;
 import com.webshop.service.ProductInOrderCartService;
 import org.springframework.lang.Nullable;
@@ -14,9 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @Controller
 @RequestMapping("/orderCart")

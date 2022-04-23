@@ -895,7 +895,7 @@ header .flex-child.flex-right {
 .dropdown-menu > li > a:hover,
 .megamenu .menu-list > li > a:hover,
 .megamenu-wide .menu-list > li > a:hover {
-	background-color: #d5d5d5;
+	background-color: #ceaf71;
 	color:black !important;
 }
 
@@ -4401,9 +4401,9 @@ footer{
 @media (max-width: 480px) {
 	.page-404 h1 {
 		font-size: 100px; }
-	#products-grid .product-item,
-	.product {
-		width: 100%; }
+	/*#products-grid .product-item,*/
+	/*.product {*/
+	/*	width: 100%; }*/
 	.newsletter .newsletter-form {
 		width: 100%;
 		margin-right: 0; }
@@ -5347,3 +5347,4 @@ footer{
 	vertical-align: middle;
 	text-align: center;
 }
+

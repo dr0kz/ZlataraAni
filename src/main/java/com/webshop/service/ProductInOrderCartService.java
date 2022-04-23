@@ -3,18 +3,36 @@ package com.webshop.service;
 import com.webshop.model.OrderCart;
 import com.webshop.model.Product;
 import com.webshop.model.ProductInOrderCart;
+import com.webshop.repository.ProductInOrderCartRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductInOrderCartService {
+@Service
+public class ProductInOrderCartService {
 
-    ProductInOrderCart create(OrderCart orderCart, Product product, int quantity);
+    private final ProductInOrderCartRepository productInOrderCartRepository;
 
-    List<ProductInOrderCart> findAllProductsInOrderCart(OrderCart orderCart);
+    public ProductInOrderCartService(ProductInOrderCartRepository productInOrderCartRepository) {
+        this.productInOrderCartRepository = productInOrderCartRepository;
+    }
 
-    Optional<ProductInOrderCart> findByProductAndOrderCart(Product product, OrderCart orderCart);
+    public ProductInOrderCart create(OrderCart orderCart, Product product, int quantity) {
+        return this.productInOrderCartRepository.save(new ProductInOrderCart(orderCart, product, quantity));
+    }
 
-    ProductInOrderCart updateQuantity(ProductInOrderCart productInOrderCart, int quantity);
+    public List<ProductInOrderCart> findAllProductsInOrderCart(OrderCart orderCart) {
+        return this.productInOrderCartRepository.findAllByOrderCart(orderCart);
+    }
 
+    public Optional<ProductInOrderCart> findByProductAndOrderCart(Product product, OrderCart orderCart) {
+        return this.productInOrderCartRepository.findProductInOrderCartByProductAndOrderCart(product, orderCart);
+    }
+
+    public ProductInOrderCart updateQuantity(ProductInOrderCart productInOrderCart, int quantity) {
+        int currentQuantity = productInOrderCart.getQuantity();
+        productInOrderCart.setQuantity(currentQuantity + quantity);
+        return this.productInOrderCartRepository.save(productInOrderCart);
+    }
 }

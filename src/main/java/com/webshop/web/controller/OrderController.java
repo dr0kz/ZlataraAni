@@ -1,19 +1,14 @@
 package com.webshop.web.controller;
 
-import com.webshop.model.OrderCart;
-import com.webshop.model.ProductInOrderCart;
 import com.webshop.model.enumerations.Payment;
 import com.webshop.service.OrderCartService;
 import com.webshop.service.OrderService;
 import com.webshop.service.ProductInOrderCartService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.List;
 
 @Controller
 @RequestMapping("/orders")

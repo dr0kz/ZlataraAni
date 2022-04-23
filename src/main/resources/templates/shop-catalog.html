@@ -33,24 +33,37 @@
                 <div class="shop-filter">
                     <div class="filter-show hidden-xs">
                         <span>Прикажи:</span>
-                        <a href="#" class="active">12</a>
-                        <a href="#">24</a>
-                        <a href="#">сите</a>
+                        <a th:class="${pageSize==12 ? 'productsCount active' : 'productsCount'}" href="#">12</a>
+                        <a th:class="${pageSize==24 ? 'productsCount active' : 'productsCount'}" href="#">24</a>
+                        <a th:class="${pageSize!=12 && pageSize!=24? 'productsCount active' : 'productsCount'}" href="#">сите</a>
                     </div>
                     <form class="ecommerce-ordering flex flex-row">
-                        <select>
-                            <option value="default-sorting">Стандардно сортирање</option>
-                            <option value="price-low-to-high">Највисока цена прво</option>
-                            <option value="price-high-to-low">Најниска цена прво</option>
+                        <select class="sortOption">
+                            <option th:selected="${sort==null ? true : sort=='bez-sortiranje'}" value="bez-sortiranje">
+                                Стандардно сортирање
+                            </option>
+                            <option th:selected="${sort!=null && sort=='cena-najvisoka-prvo'}"
+                                    value="cena-najvisoka-prvo">Највисока цена прво
+                            </option>
+                            <option th:selected="${sort!=null && sort=='cena-najniska-prvo'}"
+                                    value="cena-najniska-prvo">Најниска цена прво
+                            </option>
                         </select>
                     </form>
 
                 </div>
+                <input type="hidden" th:value="${maxPrice}" id="maxPrice"/>
+                <input type="hidden" th:value="${priceFromTo}" id="priceFromTo"/>
+                <input type="hidden" th:value="${page}" id="page"/>
+                <input type="hidden" th:value="${pageSize}" id="pageSize"/>
+                <input type="hidden" th:value="${totalPages}" id="totalPages"/>
                 <div class="row">
                     <div class="col-md-9 catalogue-col right mb-50">
                         <div class="shop-catalogue grid-view">
                             <div class="row items-grid">
-                                <div th:each="product : ${products}" class="col-md-3 col-xs-6 product product-grid">
+
+                                <div th:each="product : ${products}"
+                                     class="col-xxs-6 col-xs-4 col-md-3 product product-grid">
                                     <div class="product-item clearfix relative">
                                         <!--                                        <a th:href="@{'/admin/products?id={id}'(id=${product.getId()})}"-->
                                         <!--                                           class="btn btn-md btn-dark" type="button" sec:authorize="isAuthenticated()"-->
@@ -63,7 +76,8 @@
                                                      th:src="*{product.getInitialPhotoEncoded()}"
                                                      alt=""
                                                      th:class="${product.getHoverPhoto()!=null} ? 'front-image' : ''"/>
-                                                <img style="position: absolute;top:0;left:0;z-index: -1"
+                                                <img th:if="${product.getHoverPhoto()!=null}"
+                                                     style="position: absolute;top:0;left:0;z-index: -1"
                                                      th:src="*{product.getHoverPhotoEncoded()}"
                                                      alt=""/>
                                             </a>
@@ -103,56 +117,46 @@
                   </span>
                                     </div>
                                 </div>
-                                <!-- end product -->
                             </div>
-                            <!-- end row -->
                         </div>
-                        <!-- end grid mode -->
-                        <!-- Pagination -->
-
                     </div>
                     <!-- end col -->
                     <aside class="col-md-3 sidebar ">
-
-                        <!-- Categories -->
-
-                        <!-- Filter by Price -->
                         <div class="widget filter-by-price clearfix">
-                            <h3 class="widget-title heading uppercase relative bottom-line full-grey">Филтер за цена</h3>
+                            <h3 class="widget-title heading uppercase relative bottom-line full-grey">Филтер за
+                                цена</h3>
 
-                            <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 10.6667%; width: 42.6667%;"></div><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 10.6667%;"></span><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 53.3333%;"></span></div>
-                            <p>
+                            <div id="slider-range"
+                                 class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                <div class="ui-slider-range ui-widget-header ui-corner-all"
+                                ></div>
+                                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
+                                ></span><span
+                                    class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
+                            ></span></div>
+                            <div class="d-flex justify-content-between ">
                                 <label for="amount">Цена:</label>
                                 <input type="text" id="amount">
-                                <a href="#" class="btn btn-sm btn-stroke"><span>Филтер</span></a>
-                            </p>
+                                <a class="btn btn-sm btn-stroke filterPrice"><span>Филтер</span></a>
+                            </div>
                         </div>
-
-                        <!-- Color -->
                         <div class="widget filter-by-color">
-
-
-                        <!-- Size -->
-
-
-                        <!-- Best Sellers -->
-
-
-                        <!-- Tags -->
                         </div>
-
                     </aside>
-                    <div class="pagination-wrap clearfix">
-                        <p class="result-count">Приказ: 12 од 80</p>
-                        <nav class="pagination right clearfix">
-                            <a href="#"><i class="fa fa-angle-left"></i></a>
-                            <span class="page-numbers current">1</span>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <a href="#"><i class="fa fa-angle-right"></i></a>
-                        </nav>
-                    </div>
+                </div>
+
+                <div class="pagination-wrap clearfix">
+                    <p class="result-count">Приказ: 12 од 80</p>
+                    <nav class="pagination right clearfix">
+                        <a id="beforePage" href="#"><i class="fa fa-angle-left"></i></a>
+
+                        <!--                        <span class="page-numbers current">1</span>-->
+                        <a href="#" th:style="'background-color:'+${pageNumber==page+1 ? '#ceaf71' : ''}"
+                           class="pageNumber"
+                           th:each="pageNumber : ${pageNumbers}" th:text="${pageNumber}"></a>
+
+                        <a id="afterPage" href="#"><i class="fa fa-angle-right"></i></a>
+                    </nav>
                 </div>
                 <!-- end row -->
             </div>
@@ -164,5 +168,81 @@
 </main>
 <!-- end main wrapper -->
 <!-- jQuery Scripts -->
+<script>
+    $(document).ready(function () {
+        $('#beforePage').on('click',function(){
+            if($('#page').val()!=0){
+                $('#page').val($('#page').val()-1)
+                window.location.href = urlMaker()
+            }
+
+        })
+        $('#afterPage').on('click',function(){
+            console.log($('#page').val()+' ' +$('#totalPages').val())
+            if(parseInt($('#page').val())+1!=$('#totalPages').val()){
+                $('#page').val(parseInt($('#page').val())+1)
+                window.location.href = urlMaker()
+            }
+        })
+
+        $(function () {
+            let priceFromTo = $('#priceFromTo').val().toString().replaceAll(" ", "")
+            let maxPrice = $('#maxPrice').val()
+            let max = priceFromTo.split('-')[1]
+            let min = priceFromTo.split('-')[0]
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: maxPrice,
+                values: [min, max],
+                slide: function (event, ui) {
+                    $("#amount").val(+ui.values[0] + " - " + ui.values[1]);
+                }
+            });
+            $("#amount").val(+$("#slider-range").slider("values", 0) +
+                " - " + $("#slider-range").slider("values", 1));
+        });
+
+
+        function urlMaker() {
+            let url = '?'
+            let sortOption = $('.sortOption').val()
+            let priceFilter = $('#amount').val()
+            if (sortOption !== 'bez-sortiranje') {
+                url += "sortiranje=" + sortOption + "&"
+            }
+            url += "cenaOdDo=" + priceFilter.replaceAll(" ", "") + "&"
+            let page = $('#page').val()
+            if (page != "0") {
+                url += "strana=" + $('#page').val() + "&"
+            }
+            let pageSize = $('#pageSize').val()
+            if (pageSize != "2") {
+                url += "produktiPoStrana=" + pageSize + "&"
+            }
+            return url;
+        }
+
+        $('.productsCount').on('click', function () {
+            if ($(this).text() == 'сите') {
+                    $('#pageSize').val(99)
+            } else {
+                $('#pageSize').val($(this).text())
+            }
+            window.location.href = urlMaker()
+        })
+
+        $('.filterPrice').on('click', function () {
+            window.location.href = urlMaker()
+        })
+        $('.sortOption').on('change', function () {
+            window.location.href = urlMaker()
+        })
+        $('.pageNumber').on('click', function () {
+            $('#page').val($(this).text() - 1)
+            window.location.href = urlMaker()
+        })
+    });
+</script>
 </body>
 </html>

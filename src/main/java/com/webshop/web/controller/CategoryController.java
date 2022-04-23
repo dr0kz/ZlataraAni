@@ -1,6 +1,7 @@
 package com.webshop.web.controller;
 
 import com.webshop.model.Product;
+import com.webshop.model.dto.ProductsTotalPages;
 import com.webshop.model.exceptions.CategoryAlreadyExists;
 import com.webshop.service.CategoryService;
 import com.webshop.service.ProductService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,7 +35,6 @@ public class CategoryController {
                                     @RequestParam String categoryName,
                                     @RequestParam Long parentCategoryId,
                                     @RequestParam String urlName) {
-
         try {
             if (id != null) {
                 this.categoryService.editCategory(id, categoryName, parentCategoryId, urlName);
@@ -47,15 +48,61 @@ public class CategoryController {
         return "redirect:/admin/categories";
     }
 
-    @GetMapping("/{parentCategoryUrl}")
-    public String listAllByParentCategory(@PathVariable String parentCategoryUrl, Model model) {
-        model.addAttribute("products", this.productService.findAllByParentCategoryUrl(parentCategoryUrl));
-        model.addAttribute("bodyContent", "shop-catalog");
-        return "master-template";
-    }
-    @GetMapping("/{parentCategoryUrl}/{categoryUrl}")
-    public String listAllByParentCategoryAndCategory(@PathVariable String parentCategoryUrl, @PathVariable(required = false) String categoryUrl, Model model) {
-        model.addAttribute("products", this.productService.findAllByCategoryUrlAndParentCategoryUrl(parentCategoryUrl, categoryUrl));
+    @GetMapping("/{categoryUrl}/{parentCategoryUrl}")
+    public String listAllByParentCategoryAndCategory(@PathVariable String parentCategoryUrl,
+                                                     @PathVariable String categoryUrl,
+                                                     @RequestParam(required = false, defaultValue = "bez-sortiranje") String sortiranje,
+                                                     @RequestParam(required = false) String cenaOdDo,
+                                                     @RequestParam(required = false,defaultValue = "0") Integer strana,
+                                                     @RequestParam(required = false,defaultValue = "12") Integer produktiPoStrana,
+                                                     Model model) {
+        List<Product> productList;
+        Integer maxPrice = this.productService.findBiggestProductPriceByCategoryUrlAndParentCategoryUrl(categoryUrl, parentCategoryUrl);
+
+        if(cenaOdDo==null){
+            cenaOdDo = "0 - "+maxPrice;
+        }
+
+        Integer totalPages = this.productService.findTotalPagesByCategoryUrlAndParentCategoryUrl(categoryUrl, parentCategoryUrl, produktiPoStrana,cenaOdDo);
+
+        if(strana<0){
+            strana = 0;
+        }
+        if(produktiPoStrana<=0){
+            produktiPoStrana = 1;
+        }
+
+        if (strana >= totalPages && totalPages-1>=0) {
+            strana = totalPages - 1;
+        }
+
+        if (categoryUrl.equals("produkti")) {
+            productList = this.productService.findAllByParentCategoryUrl(parentCategoryUrl, sortiranje, strana, produktiPoStrana);
+        } else {
+            productList =
+                    this.productService.findAllByCategoryUrlAndParentCategoryUrl(parentCategoryUrl, categoryUrl, sortiranje, strana, produktiPoStrana, cenaOdDo);
+        }
+
+        List<Integer> pageNumbers = new ArrayList<>();
+        if (strana >= 3) {
+            for (int i = Math.max(1, strana - 2 - (strana == totalPages ? 2 : strana == totalPages - 1 ? 1 : 0)); i <= Math.min(totalPages, strana + 2); i++) {
+                pageNumbers.add(i);
+            }
+        } else {
+            for (int i = 1; i <= Math.min(totalPages, 5); i++) {
+                pageNumbers.add(i);
+            }
+        }
+        model.addAttribute("totalPages",totalPages);
+        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("products", productList);
+        model.addAttribute("maxPrice", maxPrice);
+        model.addAttribute("priceFromTo", cenaOdDo);
+        model.addAttribute("page", strana);
+        model.addAttribute("pageSize", produktiPoStrana);
+        model.addAttribute("sort", sortiranje);
+        model.addAttribute("categoryUrl", categoryUrl);
+        model.addAttribute("parentCategoryUrl", parentCategoryUrl);
         model.addAttribute("bodyContent", "shop-catalog");
         return "master-template";
     }

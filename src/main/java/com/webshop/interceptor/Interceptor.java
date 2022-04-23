@@ -4,7 +4,6 @@ import com.webshop.model.Category;
 import com.webshop.model.OrderCart;
 import com.webshop.model.ParentCategory;
 import com.webshop.model.ProductInOrderCart;
-import com.webshop.model.exceptions.OrderCartNotFoundException;
 import com.webshop.service.CategoryService;
 import com.webshop.service.OrderCartService;
 import com.webshop.service.ParentCategoryService;

@@ -1,7 +1,6 @@
 package com.webshop.web.controller;
 
 import com.webshop.model.Product;
-import com.webshop.model.dto.ProductsTotalPages;
 import com.webshop.model.exceptions.CategoryAlreadyExists;
 import com.webshop.service.CategoryService;
 import com.webshop.service.ProductService;

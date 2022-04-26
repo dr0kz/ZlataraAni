@@ -35,7 +35,8 @@
                         <span>Прикажи:</span>
                         <a th:class="${pageSize==12 ? 'productsCount active' : 'productsCount'}" href="#">12</a>
                         <a th:class="${pageSize==24 ? 'productsCount active' : 'productsCount'}" href="#">24</a>
-                        <a th:class="${pageSize!=12 && pageSize!=24? 'productsCount active' : 'productsCount'}" href="#">сите</a>
+                        <a th:class="${pageSize!=12 && pageSize!=24? 'productsCount active' : 'productsCount'}"
+                           href="#">сите</a>
                     </div>
                     <form class="ecommerce-ordering flex flex-row">
                         <select class="sortOption">
@@ -51,9 +52,37 @@
                         </select>
                     </form>
 
+
                 </div>
                 <div class="row">
-                    <div class="col-md-9 catalogue-col right mb-50">
+                    <aside class="col-md-3 sidebar ">
+
+                        <div class="widget filter-by-price clearfix">
+                            <h3 class="widget-title heading uppercase relative bottom-line full-grey">Филтер за
+                                цена</h3>
+
+                            <div id="slider-range"
+                                 class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                <div class="ui-slider-range ui-widget-header ui-corner-all"
+                                     style="left: 10.6667%; width: 42.6667%;"></div>
+                                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
+                                      style="left: 10.6667%;"></span><span
+                                    class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
+                                    style="left: 53.3333%;"></span>
+                            </div>
+                            <p>
+                                <label for="amount">Цена:</label>
+                                <input type="text" id="amount">
+                                <a href="#" class="btn btn-sm btn-stroke"><span>Филтер</span></a>
+                            </p>
+                        </div>
+
+                        <!-- Color -->
+                        <div class="widget filter-by-color">
+
+                        </div>
+                    </aside>
+                    <div class="col-md-9 catalogue-col  mb-50">
                         <div class="shop-catalogue grid-view">
                             <div class="row items-grid">
 
@@ -118,50 +147,22 @@
                         </div>
                         <!-- end grid mode -->
                         <!-- Pagination -->
+                        <div class="pagination-wrap clearfix">
+
+                            <nav class="pagination right clearfix">
+                                <a href="#"><i class="fa fa-angle-left"></i></a>
+                                <span class="page-numbers current">1</span>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <a href="#">4</a>
+                                <a href="#"><i class="fa fa-angle-right"></i></a>
+                            </nav>
+                        </div>
 
                     </div>
                     <!-- end col -->
-                    <aside class="col-md-3 sidebar ">
-
-                        <!-- Categories -->
-
-                        <!-- Filter by Price -->
-                        <div class="widget filter-by-price clearfix">
-                            <h3 class="widget-title heading uppercase relative bottom-line full-grey">Филтер за цена</h3>
-
-                            <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 10.6667%; width: 42.6667%;"></div><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 10.6667%;"></span><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 53.3333%;"></span></div>
-                            <p>
-                                <label for="amount">Цена:</label>
-                                <input type="text" id="amount">
-                                <a href="#" class="btn btn-sm btn-stroke"><span>Филтер</span></a>
-                            </p>
-                        </div>
-
-                        <!-- Color -->
-                        <div class="widget filter-by-color">
 
 
-                        <!-- Size -->
-
-
-                        <!-- Best Sellers -->
-
-
-                        <!-- Tags -->
-                        </div>
-
-                    </aside>
-                    <div class="pagination-wrap clearfix">
-                        <p class="result-count">Приказ: 12 од 80</p>
-                        <nav class="pagination right clearfix">
-                            <a href="#"><i class="fa fa-angle-left"></i></a>
-                            <span class="page-numbers current">1</span>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <a href="#"><i class="fa fa-angle-right"></i></a>
-                        </nav>
-                    </div>
                 </div>
                 <!-- end row -->
             </div>
@@ -175,17 +176,17 @@
 <!-- jQuery Scripts -->
 <script>
     $(document).ready(function () {
-        $('#beforePage').on('click',function(){
-            if($('#page').val()!=0){
-                $('#page').val($('#page').val()-1)
+        $('#beforePage').on('click', function () {
+            if ($('#page').val() != 0) {
+                $('#page').val($('#page').val() - 1)
                 window.location.href = urlMaker()
             }
 
         })
-        $('#afterPage').on('click',function(){
-            console.log($('#page').val()+' ' +$('#totalPages').val())
-            if(parseInt($('#page').val())+1!=$('#totalPages').val()){
-                $('#page').val(parseInt($('#page').val())+1)
+        $('#afterPage').on('click', function () {
+            console.log($('#page').val() + ' ' + $('#totalPages').val())
+            if (parseInt($('#page').val()) + 1 != $('#totalPages').val()) {
+                $('#page').val(parseInt($('#page').val()) + 1)
                 window.location.href = urlMaker()
             }
         })
@@ -251,17 +252,17 @@
 </script>
 <script>
     $(document).ready(function () {
-        $('#beforePage').on('click',function(){
-            if($('#page').val()!=0){
-                $('#page').val($('#page').val()-1)
+        $('#beforePage').on('click', function () {
+            if ($('#page').val() != 0) {
+                $('#page').val($('#page').val() - 1)
                 window.location.href = urlMaker()
             }
 
         })
-        $('#afterPage').on('click',function(){
-            console.log($('#page').val()+' ' +$('#totalPages').val())
-            if(parseInt($('#page').val())+1!=$('#totalPages').val()){
-                $('#page').val(parseInt($('#page').val())+1)
+        $('#afterPage').on('click', function () {
+            console.log($('#page').val() + ' ' + $('#totalPages').val())
+            if (parseInt($('#page').val()) + 1 != $('#totalPages').val()) {
+                $('#page').val(parseInt($('#page').val()) + 1)
                 window.location.href = urlMaker()
             }
         })
@@ -306,7 +307,7 @@
 
         $('.productsCount').on('click', function () {
             if ($(this).text() == 'сите') {
-                    $('#pageSize').val(99)
+                $('#pageSize').val(99)
             } else {
                 $('#pageSize').val($(this).text())
             }

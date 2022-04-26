@@ -87,7 +87,7 @@
                             <div class="row items-grid">
 
                                 <div th:each="product : ${products}"
-                                     class="col-xxs-3 col-xs-4 col-md-3 product product-grid">
+                                     class="col-xxs-6 col-xs-4 col-md-3 product product-grid">
                                     <div class="product-item clearfix relative">
                                         <!--                                        <a th:href="@{'/admin/products?id={id}'(id=${product.getId()})}"-->
                                         <!--                                           class="btn btn-md btn-dark" type="button" sec:authorize="isAuthenticated()"-->
@@ -136,7 +136,7 @@
                                             </del>
                                             <ins>
                       <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice(): product.getPrice())+' ден'}"
-                            class="amount" >$150.00</span>
+                            class="amount" style="font-size: 16px" >$150.00</span>
                     </ins>
                   </span>
                                     </div>

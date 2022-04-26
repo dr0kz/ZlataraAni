@@ -166,6 +166,7 @@
                                              alt=""
                                              th:class="${p.getHoverPhoto()!=null} ? 'front-image' : ''"/>
                                         <img style="position: absolute;top:0;left:0;z-index: -1"
+                                             th:if="${p.getHoverPhoto()!=null}"
                                              th:src="*{p.getHoverPhotoEncoded()}"
                                              alt=""/>
                                     </a>

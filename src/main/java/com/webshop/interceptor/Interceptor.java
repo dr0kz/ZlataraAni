@@ -37,13 +37,7 @@ public class Interceptor implements HandlerInterceptor {
 
         Cookie[] cookies = request.getCookies();
         Cookie cookie;
-        if (cookies == null) {
-            cookie = generateCookie();
-//            cookie.setDomain("z-ani.herokuapp.com");
-            cookie.setPath("/");
-            response.addCookie(cookie);
-            response.addHeader("COOKIE", "" + cookie.getValue());
-        } else if (Arrays.stream(cookies).noneMatch(t -> t.getName().equals("CART"))) {
+        if (cookies == null || Arrays.stream(cookies).noneMatch(t -> t.getName().equals("CART"))) {
             cookie = generateCookie();
 //            cookie.setDomain("z-ani.herokuapp.com");
             cookie.setPath("/");

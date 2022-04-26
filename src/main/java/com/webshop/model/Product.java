@@ -31,6 +31,8 @@ public class Product {
     @Column(nullable = false)
     private Integer price;
 
+    private Integer discountPrice;
+
     private Integer discountPercentage;
 
     private LocalDateTime isDealOfTheDayStartDateTime;
@@ -77,10 +79,11 @@ public class Product {
         this.hoverPhoto = hoverPhoto;
         this.images = images;
         this.category = category;
+        this.discountPrice = calculateDiscountPrice();
     }
 
     public Integer calculateDiscountPrice() {
-        return price - price * discountPercentage / 100;
+        return isOnDiscount ? price - price * discountPercentage / 100 : price;
     }
 
     public String getInitialPhotoEncoded() {

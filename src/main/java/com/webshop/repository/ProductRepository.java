@@ -3,6 +3,8 @@ package com.webshop.repository;
 import com.webshop.model.ParentCategory;
 import com.webshop.model.Product;
 import com.webshop.projections.ProductProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,7 +31,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByCategoryId(Long categoryId);
 
-    List<Product> findAllByCategoryUrlNameAndCategoryParentCategory(String categoryName, ParentCategory parentCategory);
+
 
     List<Product> findTop10ByIdNotAndCategoryId(Long productId, Long categoryId);
 
@@ -40,5 +42,18 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Transactional
     List<Product> findAllByIsOnDiscount(Boolean isOnDiscount);
+
+    Page<Product> findAllByCategoryUrlNameAndCategoryParentCategoryUrlAndDiscountPriceBetween
+            (Pageable pageable, String categoryName, String parentCategory, Integer from, Integer to);
+
+    List<Product> findAllByCategoryUrlNameAndCategoryParentCategoryUrl(String categoryName, String parentCategory);
+
+
+    @Query("select count(p.id) from Product p where p.category.urlName = :categoryName and p.category.parentCategory.url = :parentCategory" +
+            " and p.discountPrice>=:priceFrom and p.discountPrice<=:priceTo")
+    Integer findTotalPagesByCategoryUrlNameAndCategoryParentCategoryUrl(String categoryName, String parentCategory, Integer priceFrom ,Integer priceTo);
+
+
+
 
 }

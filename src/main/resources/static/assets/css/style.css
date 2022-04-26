@@ -109,7 +109,10 @@
 
 @media (max-width: 767px) {
 	.sm-text-center {
-		text-align: center; } }
+		text-align: center; }
+	.ecommerce-ordering {
+		width: 39%;
+		margin: auto; }}
 
 @media (max-width: 480px) {
 	.xs-text-center {
@@ -2171,7 +2174,7 @@ address {
 /* Pagination
 /*-------------------------------------------------------*/
 .pagination-wrap {
-	margin-top: 50px; }
+	margin-top: 70px; }
 
 .pagination {
 	margin: 0 auto;
@@ -3297,7 +3300,7 @@ table th {
 .table.shop_table tr td.product-name a {
 	line-height: 14px;
 	margin-bottom: 5px;
-	font-size: 15px;
+	font-size: 13px;
 	font-family: "Open Sans", sans-serif;
 	text-transform: none;
 	letter-spacing: normal;
@@ -3546,16 +3549,6 @@ h2.heading-frame {
 .ecommerce-ordering {
 	float: right;
 	width: 23%; }
-@media(max-width:991px)and(min-width:767px){
-	.ecommerce-ordering{
-		width: 28%;
-	}
-}
-@media only screen and (max-width: 991px) {
-	.ecommerce-ordering {
-		padding: 0 15px;
-		width: 31%;} }
-
 .ecommerce-ordering select {
 	margin-bottom: 0;
 	padding: 0;
@@ -4367,7 +4360,11 @@ footer{
 		font-size: 22px;
 		line-height: 36px; }
 	#products-grid .product-item {
-		width: 50%; } }
+		width: 50%; }
+	.ecommerce-ordering {
+		width: 28%;
+
+		margin: auto; }}
 
 @media (max-width: 767px) {
 	.container-fluid.semi-fluid {
@@ -4381,9 +4378,9 @@ footer{
 	.entry-wrap {
 		padding-top: 30px; }
 	.ecommerce-ordering {
-		width: 39%;
-		margin: auto; } }
+		width: 60%;
 
+		margin: auto; } }
 
 @media (max-width: 640px) {
 	.col-xxs-12 {
@@ -4401,10 +4398,7 @@ footer{
 		margin-left: 5px;
 		width: 20px; }
 	.pagination a > i {
-		font-size: 20px; }
-	.ecommerce-ordering {
-		width: 44%;
-		margin: auto; }
+		font-size: 20px; } }
 
 @media (max-width: 540px) {
 	.table-wrap {
@@ -4429,17 +4423,9 @@ footer{
 		right: 0;
 		padding-left: 20px; }
 	.vertical .tab-content {
-		border-top: 0; }
-	.ecommerce-ordering {
-		width: 65%;
-		margin: auto; }}
+		border-top: 0; } }
 
-	@media (max-width: 380px) {
-		.ecommerce-ordering {
-			width: 65%;
-			margin: auto; }
-	}
-	/*-------------------------------------------------------*/
+/*-------------------------------------------------------*/
 /* Spacings
 /*-------------------------------------------------------*/
 .nomargin {
@@ -5235,7 +5221,7 @@ footer{
 
 /*COOKIE RESPONSIVE*/
 
-@media(max-width:960px){
+@media(max-width:991px){
 	#btnAcceptCookiePolicy{
 		width: 70%;
 		font-size: 2rem;
@@ -5248,11 +5234,11 @@ footer{
 
 @media(max-width:700px){
 	#btnAcceptCookiePolicy{
-		width: 60%;
+		width: 55%;
 		font-size: 2rem;
 	}
 	#btnDeclineCookiePolicy{
-		width: 60%;
+		width: 55%;
 		font-size: 2rem;
 	}
 }
@@ -5366,7 +5352,4 @@ footer{
 	display: table-cell;
 	vertical-align: middle;
 	text-align: center;
-}
-.amount{
-	font-size: 15px;
 }

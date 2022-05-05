@@ -33,6 +33,11 @@ public class HomeController {
         model.addAttribute("bodyContent","politika-na-kolacinja");
         return "master-template";
     }
+    @GetMapping("/politika-na-privatnost")
+    public String getCookiesPolicyPage(Model model){
+        model.addAttribute("bodyContent","politika-na-kolacinja");
+        return "master-template";
+    }
     @GetMapping("/za-nas")
     public String getAboutUsPage(Model model){
         model.addAttribute("bodyContent","about-us");
@@ -46,12 +51,12 @@ public class HomeController {
     }
     @GetMapping("/dzoke1")
     public String getPageDzoke1(HttpServletRequest request, HttpServletResponse response, Model model){
-        model.addAttribute("bodyContent","shop-catalog-sidebar");
+        model.addAttribute("bodyContent","politika-na-kolacinja");
         return "master-template";
     }
     @GetMapping("/dzoke2")
     public String getPageDzoke2(HttpServletRequest request, HttpServletResponse response, Model model){
-        model.addAttribute("bodyContent","shop-catalog");
+        model.addAttribute("bodyContent","politika-na-privatnost");
         return "master-template";
     }
 

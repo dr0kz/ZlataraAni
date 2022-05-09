@@ -34,8 +34,8 @@ public class HomeController {
         return "master-template";
     }
     @GetMapping("/politika-na-privatnost")
-    public String getCookiesPolicyPage(Model model){
-        model.addAttribute("bodyContent","politika-na-kolacinja");
+    public String getPrivacyPolicyPage(Model model){
+        model.addAttribute("bodyContent","politika-na-privatnost");
         return "master-template";
     }
     @GetMapping("/za-nas")

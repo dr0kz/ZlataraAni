@@ -51,12 +51,12 @@ public class HomeController {
     }
     @GetMapping("/dzoke1")
     public String getPageDzoke1(HttpServletRequest request, HttpServletResponse response, Model model){
-        model.addAttribute("bodyContent","politika-na-kolacinja");
+        model.addAttribute("bodyContent","shop-catalog.html");
         return "master-template";
     }
     @GetMapping("/dzoke2")
     public String getPageDzoke2(HttpServletRequest request, HttpServletResponse response, Model model){
-        model.addAttribute("bodyContent","politika-na-privatnost");
+        model.addAttribute("bodyContent","shop-catalog-sidebar");
         return "master-template";
     }
 

@@ -54,17 +54,7 @@
                     </div> <!-- end col img slider -->
 
                     <div class="col-md-6 col-xs-12 product-description-wrap">
-                        <ol class="breadcrumb">
-                            <li>
-                                <a href="home.html">Home</a>
-                            </li>
-                            <li>
-                                <a href="home.html">Shop</a>
-                            </li>
-                            <li class="active">
-                                Catalog
-                            </li>
-                        </ol>
+
                         <input type="hidden" id="productId" th:value="${product.getId()}"/>
                         <h2 th:text="${product.getName()}" class="product-title"></h2>
                         <p style="font-weight: 500;font-size:16px; color:black;" th:text="${product.getCode()}"></p>
@@ -128,15 +118,7 @@
                             </div>
 
 
-                            <div class="socials-share clearfix">
-                                <span>Сподели:</span>
-                                <div class="social-icons nobase">
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-google"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
-                                </div>
-                            </div>
+
                         </div> <!-- end col product description -->
                     </div> <!-- end row -->
 

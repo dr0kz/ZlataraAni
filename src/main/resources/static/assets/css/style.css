@@ -3825,7 +3825,6 @@ header + hr {
 
 .single-product .product-actions {
 	margin: 40px 0 24px;
-	display: flex;
 	align-items: center; }
 
 .single-product .product-add-to-wishlist {
@@ -3909,7 +3908,7 @@ header + hr {
 .quantity.buttons_added {
 	white-space: nowrap;
 	position: relative;
-	margin-right: 20px; }
+ }
 .quantity.buttons_added .quantity-adjust {
 	float: left; }
 .quantity.buttons_added .minus,

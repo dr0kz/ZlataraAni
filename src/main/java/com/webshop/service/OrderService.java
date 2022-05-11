@@ -38,19 +38,30 @@ public class OrderService {
         //return this.orderRepository.findAllByClientPersonalInfo("%"+filter+"%");
     }
 
-    public void createOrder(String clientName, String clientSurname, String mobileNumber,
-                            Payment orderType, Integer postalCode, String street, String city, String cookieValue) {
-        Long id = Long.parseLong(cookieValue);
-        OrderCart orderCart = this.orderCartRepository.findById(id).orElseThrow(OrderCartNotFoundException::new);
+    public void createOrder(String clientName,
+                            String clientSurname,
+                            String city,
+                            String street,
+                            String postalCode,
+                            String email,
+                            String mobileNumber,
+                            Payment orderType,
+                            Long orderCartId) {
+        OrderCart orderCart = this.orderCartRepository.findById(orderCartId).orElseThrow(OrderCartNotFoundException::new);
 
         int totalPrice = getOrderTotalPrice(this.productInOrderCartService
                 .findAllProductsInOrderCart(orderCart)
                 .stream()
-                .map(p -> new ProductQuantityDto(p.getProduct(),p.getQuantity()))
+                .map(p -> new ProductQuantityDto(p.getProduct(), p.getQuantity()))
                 .collect(Collectors.toList())
         );
 
-        Order order = new Order(totalPrice, orderType, mobileNumber, clientName, clientSurname, postalCode, street, city, LocalDateTime.now(),"");
+        String products = this.productInOrderCartService.findAllProductsInOrderCart(orderCart)
+                .stream()
+                .map(product -> product.getProduct().getName() + " - " + product.getQuantity() + " x " + product.getProduct().getPrice() + " ден.")
+                .collect(Collectors.joining("\n"));
+
+        Order order = new Order(totalPrice, orderType, mobileNumber, clientName, clientSurname, postalCode, street, city, LocalDateTime.now(), products, email);
         this.orderRepository.save(order);
 
     }

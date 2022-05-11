@@ -47,18 +47,21 @@
                                     </a>
                                 </td>
                                 <td class="product-name">
+                                    <input type="hidden" th:value="${productInOrder.product.id}" name="productId">
                                     <a th:text="${productInOrder.product.getName()}" href="#"></a>
                                     <ul>
                                         <li th:text="${productInOrder.product.getCode()}"></li>
                                     </ul>
                                 </td>
                                 <td class="product-price">
-                                    <span th:text="${productInOrder.product.calculateDiscountPrice()+'ден.'}" class="amount"></span>
+                                    <span th:text="${productInOrder.product.calculateDiscountPrice()+'ден.'}"
+                                          class="amount"></span>
                                 </td>
                                 <td class="product-quantity">
                                     <div class="quantity buttons_added">
-                                        <input th:value="${productInOrder.quantity}" type="number" step="1" min="0" value="1" title="Qty"
-                                               class="input-text qty text">
+                                        <input th:value="${productInOrder.quantity}" type="number" step="1" min="1"
+                                               th:max="${productInOrder.product.getStocks()}" title="Qty"
+                                               class="input-text qty text" name="quantity">
                                         <div class="quantity-adjust">
                                             <a href="#" class="plus">
                                                 <i class="fa fa-angle-up"></i>
@@ -70,12 +73,16 @@
                                     </div>
                                 </td>
                                 <td class="product-subtotal">
-                                    <span th:text="${productInOrder.product.calculateDiscountPrice() * productInOrder.quantity}" class="amount"></span>
+                                    <span th:text="${productInOrder.product.calculateDiscountPrice() * productInOrder.quantity}"
+                                          class="amount"></span>
                                 </td>
                                 <td class="product-remove">
-                                    <a href="#" class="remove" title="Remove this item">
-                                        <i class="ui-close"></i>
-                                    </a>
+                                    <form th:action="@{'/orderCart/delete/{id}' (id = ${productInOrder.product.getId()})}"
+                                          method="POST">
+                                        <button type="submit" style="background: none; border: none; padding: 0;"><i
+                                                class="ui-close"></i></button>
+
+                                    </form>
                                 </td>
                             </tr>
 
@@ -93,8 +100,12 @@
 
                         <div class="col-md-7">
                             <div class="actions">
-                                <input type="submit" name="update_cart" value="Ажурирај кошничка"
-                                       class="btn btn-lg btn-stroke">
+                                <button type="submit"
+                                        class="btn btn-lg btn-stroke"
+                                        id="updateCart"
+                                >
+                                    Ажурирај кошничка
+                                </button>
                                 <div class="wc-proceed-to-checkout">
                                     <a href="/orderCart/shop-checkout" class="btn btn-lg btn-dark"><span>Продолжи кон наплата</span></a>
                                 </div>
@@ -134,7 +145,8 @@
                             <tr class="order-total">
                                 <th>Вкупно</th>
                                 <td>
-                                    <strong><span class="amount" th:text="${totalPrice+(totalPrice<1000 ? 130 : 0)+' ден'}">18000 ден</span></strong>
+                                    <strong><span class="amount"
+                                                  th:text="${totalPrice+(totalPrice<1000 ? 130 : 0)+' ден'}"></span></strong>
                                 </td>
                             </tr>
                             </tbody>
@@ -151,5 +163,40 @@
 
 </div> <!-- end content wrapper -->
 </main> <!-- end main wrapper -->
-<!-- jQuery Scripts -->
+<script>
+    function onClick(event) {
+        var productIds = $('input[name^=productId]').map(function (idx, elem) {
+            return $(elem).val();
+        }).get();
+
+        var quantity = $('input[name^=quantity]').map(function (idx, elem) {
+            return $(elem).val();
+        }).get();
+
+        console.log(productIds)
+        console.log(quantity)
+
+        $.ajax({
+            type: "post",
+            url: "/api/orderCart/update",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+                productIds: productIds,
+                productQuantities: quantity
+            }),
+            success: function (){
+                location.reload();
+            }
+        })
+
+        event.preventDefault();
+    }
+
+    $(function () {
+        $('#updateCart').click(onClick);
+    });
+</script>
 </html>

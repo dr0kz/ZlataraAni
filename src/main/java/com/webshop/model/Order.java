@@ -36,7 +36,7 @@ public class Order {
     private String clientSurname;
 
     @Column(nullable = false)
-    private Integer postalCode;
+    private String postalCode;
 
     @Column(nullable = false)
     private String street;
@@ -47,13 +47,16 @@ public class Order {
     @Column(nullable = false)
     private String products;
 
+    @Column(nullable = false)
+    private String email;
+
 
     public Order() {
     }
 
     public Order(Integer totalPrice, Payment orderType, String mobileNumber, String clientName,
-                 String clientSurname, Integer postalCode, String street,
-                 String city, LocalDateTime dateCreated, String products) {
+                 String clientSurname, String postalCode, String street,
+                 String city, LocalDateTime dateCreated, String products, String email) {
         this.totalPrice = totalPrice;
         this.orderType = orderType;
         this.mobileNumber = mobileNumber;
@@ -64,5 +67,6 @@ public class Order {
         this.city = city;
         this.dateCreated = dateCreated;
         this.products = products;
+        this.email = email;
     }
 }

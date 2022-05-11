@@ -6,6 +6,7 @@ import com.webshop.model.ProductInOrderCart;
 import com.webshop.model.exceptions.OrderCartNotFoundException;
 import com.webshop.model.exceptions.ProductNotFoundException;
 import com.webshop.repository.OrderCartRepository;
+import com.webshop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,14 +18,15 @@ import java.util.Optional;
 public class OrderCartService {
 
     private final OrderCartRepository orderCartRepository;
-    private final ProductService productService;
+    private final ProductRepository productRepository;
     private final ProductInOrderCartService productInOrderCartService;
 
-    public OrderCartService(OrderCartRepository orderCartRepository, ProductService productService, ProductInOrderCartService productInOrderCartService) {
+    public OrderCartService(OrderCartRepository orderCartRepository, ProductRepository productRepository, ProductInOrderCartService productInOrderCartService) {
         this.orderCartRepository = orderCartRepository;
-        this.productService = productService;
+        this.productRepository = productRepository;
         this.productInOrderCartService = productInOrderCartService;
     }
+
 
     public OrderCart findOrderCartById(Long id) {
         return orderCartRepository.findById(id)
@@ -34,10 +36,13 @@ public class OrderCartService {
     public List<ProductInOrderCart> addProductToOrderCart(Long productId, Long orderCartId, int quantity) {
         try {
             OrderCart orderCart = this.findOrderCartById(orderCartId);
-            Product product = this.productService.findById(productId);
+            Product product = this.productRepository.findById(productId).get();
             Optional<ProductInOrderCart> productInOrderCart = this.productInOrderCartService.findByProductAndOrderCart(product, orderCart);
             if (productInOrderCart.isEmpty()) {
-                this.productInOrderCartService.create(orderCart, product, quantity);
+                if(quantity > product.getStocks())
+                    this.productInOrderCartService.create(orderCart, product, product.getStocks());
+                else
+                    this.productInOrderCartService.create(orderCart,product,quantity);
             }
             else {
                 this.productInOrderCartService.updateQuantity(productInOrderCart.get(), quantity);

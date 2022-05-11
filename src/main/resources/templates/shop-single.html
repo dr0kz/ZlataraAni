@@ -79,7 +79,7 @@
                             <div class="product-actions">
                                 <span>Количина:</span>
                                 <div class="quantity buttons_added">
-                                    <input id="quantity" name="quantity" type="number" step="1" min="0" value="1"
+                                    <input id="quantity" name="quantity" type="number" step="1" min="1" th:max="${product.getStocks()}" value="1"
                                            title="Qty"
                                            class="input-text qty text"/>
                                     <div class="quantity-adjust">
@@ -99,7 +99,7 @@
 
 
                         <div class="product_meta">
-                            <span class="brand_as">Категорија: <a href="#" th:text="${product.getCategory().getName()}">Men T-shirt</a></span>
+                            <span class="brand_as">Категорија: <a href="#" th:text="${product.getCategory().getName()}"></a></span>
                         </div>
 
                         <!-- Accordion -->

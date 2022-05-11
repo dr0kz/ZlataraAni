@@ -31,7 +31,7 @@
       <div class="container relative">
         <div class="row">
           <div class="ecommerce col-xs-12">
-            <form name="checkout" class="checkout ecommerce-checkout row">
+            <form th:method="POST" th:action="@{/orders}">
 
               <div class="col-md-8" id="customer_details">
                 <div>
@@ -43,66 +43,55 @@
                     <label for="billing_first_name">Име
                       <abbr class="required" title="required">*</abbr>
                     </label>
-                    <input type="text" class="input-text" placeholder="Име" value name="billing_first_name" id="billing_first_name">
+                    <input type="text" class="input-text" placeholder="Име" value name="clientName" id="billing_first_name">
                   </p>
 
                   <p class="form-row form-row-last validate-required ecommerce-invalid ecommerce-invalid-required-field" id="billing_last_name_field">
                     <label for="billing_last_name">Презиме
                       <abbr class="required" title="required">*</abbr>
                     </label>
-                    <input type="text" class="input-text" placeholder="Презиме" value name="billing_last_name" id="billing_last_name">
+                    <input type="text" class="input-text" placeholder="Презиме" value name="clientSurname" id="billing_last_name">
                   </p>
 
                   <p class="form-row form-row-wide address-field validate-required" id="billing_city_field" data-o_class="form-row form-row-wide address-field validate-required">
                     <label for="billing_city">Град
                       <abbr class="required" title="required">*</abbr>
                     </label>
-                    <input type="text" class="input-text" placeholder="Град" value name="billing_city" id="billing_city">
+                    <input type="text" class="input-text" placeholder="Град" value name="city" id="billing_city">
                   </p>
 
                   <p class="form-row form-row-wide address-field validate-required ecommerce-invalid ecommerce-invalid-required-field" id="billing_address_1_field">
                     <label for="billing_address_1">Адреса
                       <abbr class="required" title="required">*</abbr>
                     </label>
-                    <input type="text" class="input-text" placeholder="Адреса на живеење" value name="billing_address_1" id="billing_address_1">
+                    <input type="text" class="input-text" placeholder="Адреса на живеење" value name="street" id="billing_address_1">
                   </p>
 
                   <p class="form-row form-row-last address-field validate-required validate-postcode ecommerce-invalid ecommerce-invalid-required-field" id="billing_postcode_field" data-o_class="form-row form-row-last address-field validate-required validate-postcode">
                     <label for="billing_postcode">Поштенски код
                       <abbr class="required" title="required">*</abbr>
                     </label>
-                    <input type="text" class="input-text" placeholder="Поштенски код" value name="billing_postcode" id="billing_postcode">
+                    <input type="text" class="input-text" placeholder="Поштенски код" value name="postalCode" id="billing_postcode">
                   </p>
 
                   <p class="form-row form-row-first validate-required validate-email" id="billing_email_field">
                     <label for="billing_email">Е-меил
                       <abbr class="required" title="required">*</abbr>
                     </label>
-                    <input type="text" class="input-text" placeholder="Е-маил" value name="billing_email" id="billing_email">
+                    <input type="text" class="input-text" placeholder="Е-маил" value name="email" id="billing_email">
                   </p>
 
                   <p class="form-row form-row-last validate-required validate-phone" id="billing_phone_field">
                     <label for="billing_phone">Телефон
                       <abbr class="required" title="required">*</abbr>
                     </label>
-                    <input type="text" class="input-text" placeholder="Телефон" value name="billing_phone" id="billing_phone">
+                    <input type="text" class="input-text" placeholder="Телефон" value name="mobileNumber" id="billing_phone">
                   </p>
 
                   <div class="clear"></div>
 
                 </div>
 
-                <div class="clear"></div>
-
-                <div>
-
-                  <p class="form-row notes ecommerce-validated" id="order_comments_field">
-                    <label for="order_comments">Забелешки</label>
-                    <textarea name="order_comments" class="input-text" id="order_comments" placeholder="Белешки за вашата нарачка, на пр. посебни белешки за испорака." rows="2" cols="6"></textarea>
-                  </p>
-                </div>
-
-                <div class="clear"></div>
 
               </div> <!-- end col -->
 
@@ -113,9 +102,9 @@
                   <table class="table shop_table ecommerce-checkout-review-order-table">
                     <tbody>
                     <tr th:each="productInCart : ${productsInCart}">
-                      <th th:text="${productInCart.product.getName()}"><span class="count" th:text="${productInCart.getQuantity()}"></span></th>
+                      <th th:text="${productInCart.product.getName()}"><span class="count" ></span></th>
                       <td>
-                        <span class="amount" th:text="${productInCart.product.calculateDiscountPrice()+' ден'}"></span>
+                        <span class="amount" th:text="${productInCart.getQuantity()+' x '+productInCart.product.calculateDiscountPrice()+' ден'}"></span>
                       </td>
                     </tr>
                     <tr class="order-total">
@@ -132,7 +121,7 @@
                     <ul class="payment_methods methods">
 
                       <li class="payment_method_bacs">
-                        <input id="payment_method_bacs" type="radio" class="input-radio" name="payment_method" value="bacs" checked="checked">
+                        <input id="payment_method_bacs" type="radio" class="input-radio" name="orderType" value="CARGO" checked="checked">
                         <label for="payment_method_bacs">Плаќање во готово при достава</label>
                         <div class="payment_box payment_method_bacs">
                           <p>Претпочиташ плаќање во кеш? Плати му на курирот при самата достава.</p>
@@ -140,7 +129,7 @@
                       </li>
 
                       <li class="payment_method_cheque">
-                        <input id="payment_method_cheque" type="radio" class="input-radio" name="payment_method" value="cheque" disabled>
+                        <input id="payment_method_cheque" type="radio" class="input-radio" name="orderType" value="ONLINE" disabled>
                         <label for="payment_method_cheque">Плаќање со картичка</label>
                         <br>
                         <p style="color: red;padding-left: 27px;">Во изработка</p>

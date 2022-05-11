@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
 @Controller
@@ -34,11 +35,22 @@ public class OrderController {
 //    }
 
     @PostMapping
-    public String createOrder(String clientName, String clientSurname, String mobileNumber,
-                              Payment orderType, Integer postalCode, String street, String city,
-                              HttpServletRequest request){
-        String cookieValue = Arrays.stream(request.getCookies()).filter(cookie1 -> cookie1.getName().equals("CART")).findFirst().get().getValue();
-        this.orderService.createOrder(clientName, clientSurname, mobileNumber, orderType, postalCode, street, city, cookieValue);
+    public String createOrder(String clientName,
+                              String clientSurname,
+                              String city,
+                              String street,
+                              String postalCode,
+                              String email,
+                              String mobileNumber,
+                              Payment orderType,
+                              HttpServletRequest request,
+                              HttpServletResponse response){
+        if(response.getHeader("COOKIE")!=null){
+            // vashata koshnica e prazna
+        }else if(request.getCookies()!=null && Arrays.stream(request.getCookies()).anyMatch(t -> t.getName().equals("CART"))){
+            Long orderCartId = Long.parseLong(Arrays.stream(request.getCookies()).filter(t -> t.getName().equals("CART")).findFirst().get().getValue());
+            this.orderService.createOrder(clientName,clientSurname,city,street,postalCode,email,mobileNumber,orderType, orderCartId);
+        }
         return "home";
     }
 }

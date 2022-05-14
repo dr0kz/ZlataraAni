@@ -137,7 +137,7 @@
                         <div class="nav-cart mobile-cart hidden-lg hidden-md">
                             <div class="nav-cart-outer">
                                 <div class="nav-cart-inner">
-                                    <a th:text="${productsInCartSize}"  class="nav-cart-icon">
+                                    <a href="/orderCart" th:text="${productsInCartSize}"  class="nav-cart-icon">
                                     </a>
                                 </div>
                             </div>
@@ -196,7 +196,7 @@
                             <li class="nav-cart">
                                 <div class="nav-cart-outer">
                                     <div class="nav-cart-inner">
-                                        <a th:text="${productsInCartSize}"  class="nav-cart-icon">
+                                        <a href="/orderCart" th:text="${productsInCartSize}"  class="nav-cart-icon">
                                         </a>
                                     </div>
                                 </div>
@@ -221,7 +221,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="nav-cart-remove">
-                                                        <p href="#" class="remove"><i class="ui-close"></i></p>
+                                                        <button class="remove-button ui-close" th:value="${productQuantity.product.getId()}"
+                                                                type="submit" style="background: none; border: none; padding: 0;"><i
+                                                                ></i></button>
                                                     </div>
                                                 </a>
                                             </div>
@@ -267,7 +269,7 @@
                              height="19"
                              src="/assets/img/logo-ani.png"
                              alt="logo">
-                        <p class="mb-30" style="color:black;font-size:16px;">Заследете не на социјалните мрежи</p>
+                        <p class="mb-30" style="color:black;font-size:16px;">Заследете нè на социјалните мрежи</p>
                         <div class="footer-socials">
                             <div class="social-icons nobase">
                                 <a target="_blank" href="https://www.instagram.com/zlatara_ani_gevgelija/"><i
@@ -294,9 +296,9 @@
                     <div class="widget footer-links">
                         <h5 class="widget-title bottom-line  grey">Корисни линкови</h5>
                         <ul class="list-no-dividers">
-                            <li><a href="/dzoke1">За него</a></li>
-                            <li><a href="/dzoke1">За неа</a></li>
-                            <li><a href="/dzoke1">Додатоци</a></li>
+                            <li><a href="/kategorii/produkti/maski">Машки</a></li>
+                            <li><a href="/kategorii/produkti/zenski">Женски</a></li>
+                            <li><a href="/kategorii/produkti/detski">Детски</a></li>
 
                         </ul>
                     </div>
@@ -363,6 +365,18 @@
 
     $(document).ready(function () {
         cookiesPolicyPrompt();
+
+        $('.remove-button').click(function () {
+            const id = $(this).val()
+            console.log(id)
+            $.ajax({
+                type: "post",
+                url: "/api/orderCart/delete/" + id,
+                success: function () {
+
+                }
+            })
+        })
 
         $(".regular").slick({
             dots: true,

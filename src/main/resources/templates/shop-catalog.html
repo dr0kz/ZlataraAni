@@ -41,7 +41,7 @@
                     <form class="ecommerce-ordering flex flex-row">
                         <select class="sortOption">
                             <option th:selected="${sort==null ? true : sort=='bez-sortiranje'}" value="bez-sortiranje">
-                                Стандардно сортирање
+                                Најнови прво
                             </option>
                             <option th:selected="${sort!=null && sort=='cena-najvisoka-prvo'}"
                                     value="cena-najvisoka-prvo">Највисока цена прво
@@ -54,6 +54,11 @@
 
 
                 </div>
+                <input type="hidden" th:value="${maxPrice}" id="maxPrice"/>
+                <input type="hidden" th:value="${priceFromTo}" id="priceFromTo"/>
+                <input type="hidden" th:value="${page}" id="page"/>
+                <input type="hidden" th:value="${pageSize}" id="pageSize"/>
+                <input type="hidden" th:value="${totalPages}" id="totalPages"/>
                 <div class="row">
                     <aside class="col-md-3 sidebar ">
 
@@ -73,7 +78,7 @@
                             <p>
                                 <label for="amount">Цена:</label>
                                 <input type="text" id="amount">
-                                <a href="#" class="btn btn-sm btn-stroke"><span>Филтер</span></a>
+                                <a href="#" class="btn btn-sm btn-stroke filterPrice"><span>Филтер</span></a>
                             </p>
                         </div>
 
@@ -84,10 +89,9 @@
                     </aside>
                     <div class="col-md-9 catalogue-col  mb-50">
                         <div class="shop-catalogue grid-view">
-                            <div class="row items-grid">
-
+                            <div class="row">
                                 <div th:each="product : ${products}"
-                                     class="col-xxs-6 col-xs-4 col-md-3 product product-grid">
+                                     class="col-xxs-6 col-xs-4 col-md-3 product">
                                     <div class="product-item clearfix relative">
                                         <!--                                        <a th:href="@{'/admin/products?id={id}'(id=${product.getId()})}"-->
                                         <!--                                           class="btn btn-md btn-dark" type="button" sec:authorize="isAuthenticated()"-->
@@ -130,15 +134,21 @@
 
                                         </div>
 
-                                        <span class="price" >
+                                        <span class="price">
                                             <del th:if="${product.isOnDiscount}">
-                                                <span th:text="${product.price +' ден'}"></span>
+                                                <span th:text="${product.getPriceAsNumber() +' ден'}"></span>
                                             </del>
                                             <ins>
-                      <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice(): product.getPrice())+' ден'}"
-                            class="amount" style="font-size: 16px" >$150.00</span>
+                      <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice(): product.getPriceAsNumber())+' ден'}"
+                            class="amount" style="font-size: 16px">$150.00</span>
                     </ins>
-                  </span>
+                                            <ins>
+
+                                                                 <del style="color:white;" th:if="${!product.isOnDiscount}">
+                                                <span style="color:white !important;">_</span>
+                                            </del>
+                  </ins>
+                                        </span>
                                     </div>
                                 </div>
                                 <!-- end product -->
@@ -148,14 +158,15 @@
                         <!-- end grid mode -->
                         <!-- Pagination -->
                         <div class="pagination-wrap clearfix">
-
                             <nav class="pagination right clearfix">
-                                <a href="#"><i class="fa fa-angle-left"></i></a>
-                                <span class="page-numbers current">1</span>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#">4</a>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
+                                <a id="beforePage" href="#"><i class="fa fa-angle-left"></i></a>
+
+                                <!--                        <span class="page-numbers current">1</span>-->
+                                <a href="#" th:style="'background-color:'+${pageNumber==page+1 ? '#ceaf71' : ''}"
+                                   class="pageNumber"
+                                   th:each="pageNumber : ${pageNumbers}" th:text="${pageNumber}"></a>
+
+                                <a id="afterPage" href="#"><i class="fa fa-angle-right"></i></a>
                             </nav>
                         </div>
 
@@ -223,9 +234,7 @@
                 url += "strana=" + $('#page').val() + "&"
             }
             let pageSize = $('#pageSize').val()
-            if (pageSize != "2") {
-                url += "produktiPoStrana=" + pageSize + "&"
-            }
+            url += "produktiPoStrana=" + pageSize + "&"
             return url;
         }
 

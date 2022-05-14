@@ -92,8 +92,8 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="productId" th:value="${product.getId()}">
-                                <button type="submit"
-                                        class="btn btn-dark btn-lg add-to-cart"><span>Додади во кошничка</span></button>
+                                <button style="margin-left:20px;" th:class="${product.getStocks()==0 ? 'btn btn-dark btn-lg add-to-cart disabled' : 'btn btn-dark btn-lg add-to-cart'}" type="submit"
+                                        ><span th:text="${product.getStocks()==0 ? 'Нема на залиха' : 'Додади во кошничка'}">Додади во кошничка</span></button>
                             </div>
                         </form>
 

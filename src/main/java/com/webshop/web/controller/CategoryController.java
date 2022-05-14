@@ -52,31 +52,40 @@ public class CategoryController {
                                                      @PathVariable String categoryUrl,
                                                      @RequestParam(required = false, defaultValue = "bez-sortiranje") String sortiranje,
                                                      @RequestParam(required = false) String cenaOdDo,
-                                                     @RequestParam(required = false,defaultValue = "0") Integer strana,
-                                                     @RequestParam(required = false,defaultValue = "12") Integer produktiPoStrana,
+                                                     @RequestParam(required = false, defaultValue = "0") Integer strana,
+                                                     @RequestParam(required = false, defaultValue = "12") Integer produktiPoStrana,
                                                      Model model) {
         List<Product> productList;
-        Integer maxPrice = this.productService.findBiggestProductPriceByCategoryUrlAndParentCategoryUrl(categoryUrl, parentCategoryUrl);
+        Integer maxPrice = this.productService.findBiggestProductPriceByParentCategoryUrl(parentCategoryUrl);
+        if (!categoryUrl.equals("produkti")) {
+            maxPrice = this.productService.findBiggestProductPriceByCategoryUrlAndParentCategoryUrl(categoryUrl, parentCategoryUrl);
 
-        if(cenaOdDo==null){
-            cenaOdDo = "0 - "+maxPrice;
         }
 
-        Integer totalPages = this.productService.findTotalPagesByCategoryUrlAndParentCategoryUrl(categoryUrl, parentCategoryUrl, produktiPoStrana,cenaOdDo);
+        if (cenaOdDo == null) {
+            cenaOdDo = "0 - " + maxPrice;
+        }
 
-        if(strana<0){
+        Integer totalPages = 0;
+        if (!categoryUrl.equals("produkti")) {
+            totalPages = this.productService.findTotalPagesByCategoryUrlAndParentCategoryUrl(categoryUrl, parentCategoryUrl, produktiPoStrana, cenaOdDo);
+        } else {
+            totalPages = this.productService.findTotalPagesByParentCategoryUrl(parentCategoryUrl, produktiPoStrana, cenaOdDo);
+        }
+
+        if (strana < 0) {
             strana = 0;
         }
-        if(produktiPoStrana<=0){
+        if (produktiPoStrana <= 0) {
             produktiPoStrana = 1;
         }
 
-        if (strana >= totalPages && totalPages-1>=0) {
+        if (strana >= totalPages && totalPages - 1 >= 0) {
             strana = totalPages - 1;
         }
 
         if (categoryUrl.equals("produkti")) {
-            productList = this.productService.findAllByParentCategoryUrl(parentCategoryUrl, sortiranje, strana, produktiPoStrana);
+            productList = this.productService.findAllByParentCategoryUrl(parentCategoryUrl, sortiranje, strana, produktiPoStrana, cenaOdDo);
         } else {
             productList =
                     this.productService.findAllByCategoryUrlAndParentCategoryUrl(parentCategoryUrl, categoryUrl, sortiranje, strana, produktiPoStrana, cenaOdDo);
@@ -92,7 +101,7 @@ public class CategoryController {
                 pageNumbers.add(i);
             }
         }
-        model.addAttribute("totalPages",totalPages);
+        model.addAttribute("totalPages", totalPages);
         model.addAttribute("pageNumbers", pageNumbers);
         model.addAttribute("products", productList);
         model.addAttribute("maxPrice", maxPrice);
@@ -106,8 +115,8 @@ public class CategoryController {
         return "master-template";
     }
 
-    @PostMapping("/delete")
-    public String deleteCategory(@RequestParam Long id, Model model) {
+    @PostMapping("/delete/{id}")
+    public String deleteCategory(@PathVariable Long id) {
         this.categoryService.deleteCategory(id);
         return "redirect:/admin/categories";
     }

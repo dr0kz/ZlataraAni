@@ -4,8 +4,8 @@
 <body>
 <div id="logo">
     <span class="big-logo">Златара</span>
-</div>
 
+</div>
 <div id="main-content">
     <div id="header">
         <div class="header-left float-left">
@@ -14,79 +14,45 @@
     </div>
 
     <div id="page-container">
-        <div class="row">
-            <div class="col-lg-6">
+        <div class="card">
+            <div class="content">
                 <div class="card">
-                    <div class="title">Листа на главни категории</div>
+                    <form action=""></form>
+                    <div class="title">Листа на прифатени нарачки</div>
                     <div class="content">
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <td style="font-size:21px; font-weight: 800">Име</td>
-                                                    <td style="font-size:21px; font-weight: 800">Патека</td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr th:each="category : ${parentCategories}">
-                                                    <td style="font-size:20px" th:text="${category.getName()}"></td>
-                                                    <td style="font-size:20px" th:text="${'/'+category.getUrl()}"></td>
-                                                    <td><a th:href="@{'/admin/parent-categories?id={id}'(id=${category.getId()})}" class="btn btn-info">Измени</a></td>
-                                                    <form method="post" th:action="@{'/parent-categories/delete/{id}'(id=${category.getId()})}">
-                                                        <td><button type="submit" class="btn btn-danger">Избриши</button></td>
-                                                    </form>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Клиент</th>
+                                            <th>Датум</th>
+                                            <th>E-меил</th>
+                                            <th>Телефонски број</th>
+                                            <th>Нарачка</th>
+                                            <th>Вкупно</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="order : ${orders}">
+                                            <td th:text="${order.getClientName()+' '+order.getClientSurname()}"></td>
+                                            <td th:text="${order.getDateCreated()}"></td>
+                                            <td th:text="${order.getEmail()}"></td>
+                                            <td th:text="${order.getMobileNumber()}"></td>
+                                            <td th:text="${order.getProducts()}"></td>
+                                            <td th:text="${order.getTotalPrice()+' ден'}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="title">Додади категорија</div>
-                    <div class="content">
-                        <div class="container-fluid">
-                            <form th:method="post" action="/parent-categories/add">
-                                <input type="hidden" name="id" th:value="${parentCategory?.id}"/>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <label>Име на категорија</label>
-                                            <input oninput="validate(this)" th:value="${parentCategory?.getName()}" required
-                                                   type="text" name="parentCategoryName" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <label>Url</label>
-                                            <input oninput="validate(this)" th:value="${parentCategory?.getUrl()}" required
-                                                   type="text" name="parentCategoryUrlName" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div th:if="${errorMessage!=null}">
-                                    <p class="text-danger" th:text="${errorMessage}"></p>
-                                </div>
-                                <button th:text="${parentCategory!=null ? 'Зачувај промени' : 'Додади категорија'}"
-                                        class="btn btn-primary" type="submit"></button>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 <script>
 

@@ -4,8 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,7 +52,7 @@ public class Product {
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Image hoverPhoto;
 
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "product")
     private List<Image> images;
 
     @ManyToOne
@@ -79,11 +79,23 @@ public class Product {
         this.hoverPhoto = hoverPhoto;
         this.images = images;
         this.category = category;
-        this.discountPrice = calculateDiscountPrice();
+        this.discountPrice = calculateDiscount();
     }
 
-    public Integer calculateDiscountPrice() {
+    public Integer calculateDiscount() {
         return isOnDiscount ? price - price * discountPercentage / 100 : price;
+    }
+
+    public String getPriceAsNumber(){
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(price).replace(",",".");
+    }
+
+
+    public String calculateDiscountPrice() {
+        int discPrice =isOnDiscount ? price - price * discountPercentage / 100 : price;
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(discPrice).replace(",",".");
     }
 
     public String getInitialPhotoEncoded() {

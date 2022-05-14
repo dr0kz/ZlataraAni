@@ -1,6 +1,8 @@
 package com.webshop.web.controller;
 
+import com.webshop.model.Order;
 import com.webshop.service.CategoryService;
+import com.webshop.service.OrderService;
 import com.webshop.service.ParentCategoryService;
 import com.webshop.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -16,10 +20,12 @@ public class AdminController {
     private final CategoryService categoryService;
     private final ParentCategoryService parentCategoryService;
     private final ProductService productService;
-    public AdminController(CategoryService categoryService, ParentCategoryService parentCategoryService, ProductService productService) {
+    private final OrderService orderService;
+    public AdminController(CategoryService categoryService, ParentCategoryService parentCategoryService, ProductService productService, OrderService orderService) {
         this.categoryService = categoryService;
         this.parentCategoryService = parentCategoryService;
         this.productService = productService;
+        this.orderService = orderService;
     }
     @GetMapping({"","/login"})
     public String getLoginPage(@RequestParam(required = false) String error, Model model){
@@ -64,6 +70,14 @@ public class AdminController {
     @GetMapping("/orders")
     public String getOrdersPage(Model model){
         model.addAttribute("bodyContent","admin-orders");
+        model.addAttribute("orders", this.orderService.listAll().stream().filter(t->!t.getIsConfirmed()).collect(Collectors.toList()));
+        return "admin-master-template";
+    }
+
+    @GetMapping("/accepted-orders")
+    public String getAcceptedOrdersPage(Model model){
+        model.addAttribute("bodyContent","admin-accepted-orders");
+        model.addAttribute("orders", this.orderService.listAll().stream().filter(Order::getIsConfirmed).collect(Collectors.toList()));
         return "admin-master-template";
     }
 

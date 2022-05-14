@@ -17,6 +17,8 @@ public class Image {
     @Column(nullable = false)
     private byte[] image;
 
+    @ManyToOne
+    private Product product;
 
     public Image() {
     }

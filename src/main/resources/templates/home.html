@@ -15,7 +15,7 @@
         <div></div>
     </div>
 </div>
-<div id="myModal" class="modal fade" role="dialog">
+<div th:if="${dealOfTheDayProducts.size()!=0}" id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -36,7 +36,6 @@
                         </div>
                     </a>
                 </div>
-                <a class="pre-order-btn" href="/dzoke1">Види повеќе</a>
             </div>
             <div class="modal-footer">
             </div>
@@ -98,33 +97,33 @@
                 <div class="row">
 
                     <div class="col-xs-4 col-xxs-12 mb-30 promo-banner">
-                        <a href="#">
+                        <a href="/kategorii/produkti/zenski">
                             <img src="/assets/img/shop/collection_2.jpg" width="360" height="620" alt="">
                             <div class="overlay"></div>
                             <div class="promo-inner valign">
-                                <h2>За Неа</h2>
+                                <h2>Женски</h2>
                                 <span>Најпродавани зделки</span>
                             </div>
                         </a>
                     </div>
 
                     <div class="col-xs-4 col-xxs-12 mb-30 promo-banner">
-                        <a href="#">
+                        <a href="/kategorii/produkti/detski">
                             <img src="/assets/img/shop/collection_3.jpg" width="360" height="620" alt="">
                             <div class="overlay"></div>
                             <div class="promo-inner valign">
-                                <h2>Додатоци</h2>
+                                <h2>Детски</h2>
                                 <span>Топ Трендови</span>
                             </div>
                         </a>
                     </div>
 
                     <div class="col-xs-4 col-xxs-12 mb-30 promo-banner">
-                        <a href="#">
+                        <a href="/kategorii/produkti/maski">
                             <img src="/assets/img/shop/collection_1.jpg" width="360" height="620" alt="">
                             <div class="overlay"></div>
                             <div class="promo-inner valign">
-                                <h2>За него</h2>
+                                <h2>Машки</h2>
                                 <span>Нова Колекција</span>
                             </div>
                         </a>
@@ -141,7 +140,6 @@
 
                 <div class="row heading-row">
                     <div class="col-md-12 text-center">
-                        <span class="subheading">Топ артикли за оваа година</span>
                         <h2 class="heading bottom-line">
                             Производи на попуст
                         </h2>
@@ -202,10 +200,10 @@
 
                                 <span class="price">
                                     <del th:if="${p.isOnDiscount}">
-                                        <span th:text="${p.price+' ден'}"></span>
+                                        <span th:text="${p.getPriceAsNumber()+' ден'}"></span>
                                     </del>
                                     <ins>
-                                    <span th:text="${(p.isOnDiscount ? p.calculateDiscountPrice(): p.getPrice())+' ден'}"
+                                    <span th:text="${(p.isOnDiscount ? p.calculateDiscountPrice(): p.getPriceAsNumber())+' ден'}"
                                           class="amount"></span>
                                     </ins>
                   </span>
@@ -215,7 +213,7 @@
                     </div> <!-- end slider -->
 
                 </div>
-                <section class="brands-bar">
+                <section class="brands-bar mt-50">
                     <div class="container">
                         <div class="row middle-xs center-xs " style="padding-bottom: 30px;">
                             <div class="row heading-row">
@@ -226,27 +224,24 @@
                                     </h2>
                                 </div>
                             </div>
-                            <section class="regular slider">
-                                <div>
+                            <div class="row" style="display:flex;">
+                                <div class="col-3">
                                     <img style="width:100%" class="img img-responsive"
                                          th:src="@{/assets/img/casiologo.png}">
                                 </div>
-                                <div>
+                                <div class="col-3">
                                     <img style="width:100%" class="img img-responsive"
                                          th:src="@{/assets/img/danielcleinlogo.png}">
                                 </div>
-                                <div>
+                                <div class="col-3">
                                     <img style="width:100%" class="img img-responsive"
                                          th:src="@{/assets/img/espritlogo.png}">
                                 </div>
-
-                                <div>
+                                <div class="col-3">
                                     <img style="width:100%" class="img img-responsive"
                                          th:src="@{/assets/img/obakulogo.png}">
                                 </div>
-
-                            </section>
-
+                            </div>
                         </div>
                     </div>
                 </section>

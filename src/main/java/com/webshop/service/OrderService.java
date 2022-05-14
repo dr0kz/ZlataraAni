@@ -2,6 +2,7 @@ package com.webshop.service;
 
 import com.webshop.model.Order;
 import com.webshop.model.OrderCart;
+import com.webshop.model.ProductInOrderCart;
 import com.webshop.model.dto.ProductQuantityDto;
 import com.webshop.model.enumerations.Payment;
 import com.webshop.model.exceptions.OrderCartNotFoundException;
@@ -38,6 +39,10 @@ public class OrderService {
         //return this.orderRepository.findAllByClientPersonalInfo("%"+filter+"%");
     }
 
+    public Order findById(Long id){
+        return this.orderRepository.findById(id).get();
+    }
+
     public void createOrder(String clientName,
                             String clientSurname,
                             String city,
@@ -56,19 +61,25 @@ public class OrderService {
                 .collect(Collectors.toList())
         );
 
-        String products = this.productInOrderCartService.findAllProductsInOrderCart(orderCart)
+        List<ProductInOrderCart> t = this.productInOrderCartService.findAllProductsInOrderCart(orderCart);
+
+        String products = t
                 .stream()
-                .map(product -> product.getProduct().getName() + " - " + product.getQuantity() + " x " + product.getProduct().getPrice() + " ден.")
+                .map(product -> product.getProduct().getName() + " - " + product.getQuantity() + " x " + product.getProduct().getPriceAsNumber() + " ден.")
                 .collect(Collectors.joining("\n"));
 
-        Order order = new Order(totalPrice, orderType, mobileNumber, clientName, clientSurname, postalCode, street, city, LocalDateTime.now(), products, email);
-        this.orderRepository.save(order);
+        String productIds = t.stream()
+                .map(k -> k.getProduct().getId().toString()+"-"+k.getQuantity())
+                .collect(Collectors.joining(" "));
 
+        Order order = new Order(totalPrice, orderType, mobileNumber, clientName, clientSurname, postalCode, street, city, LocalDateTime.now(), products, email, productIds);
+        this.orderRepository.save(order);
+        this.productInOrderCartService.deleteOrderCart(orderCart);
     }
 
     private int getOrderTotalPrice(List<ProductQuantityDto> productQuantities) {
         return productQuantities.stream()
-                .mapToInt(t -> t.getQuantity() * t.getProduct().getPrice())
+                .mapToInt(t -> t.getQuantity() * t.getProduct().calculateDiscount())
                 .sum();
     }
 

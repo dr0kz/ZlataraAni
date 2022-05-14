@@ -46,12 +46,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findAllByCategoryUrlNameAndCategoryParentCategoryUrlAndDiscountPriceBetween
             (Pageable pageable, String categoryName, String parentCategory, Integer from, Integer to);
 
+    Page<Product> findAllByCategoryParentCategoryUrlAndDiscountPriceBetween
+            (Pageable pageable,String parentCategory, Integer from, Integer to);
+
     List<Product> findAllByCategoryUrlNameAndCategoryParentCategoryUrl(String categoryName, String parentCategory);
 
 
     @Query("select count(p.id) from Product p where p.category.urlName = :categoryName and p.category.parentCategory.url = :parentCategory" +
             " and p.discountPrice>=:priceFrom and p.discountPrice<=:priceTo")
     Integer findTotalPagesByCategoryUrlNameAndCategoryParentCategoryUrl(String categoryName, String parentCategory, Integer priceFrom ,Integer priceTo);
+
+    @Query("select count(p.id) from Product p where p.category.parentCategory.url = :parentCategory" +
+            " and p.discountPrice>=:priceFrom and p.discountPrice<=:priceTo")
+    Integer findTotalPagesByCategoryParentCategoryUrl(String parentCategory, Integer priceFrom ,Integer priceTo);
 
 
 

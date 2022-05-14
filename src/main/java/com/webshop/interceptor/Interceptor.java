@@ -50,7 +50,7 @@ public class Interceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
         if (modelAndView != null && !request.getRequestURI().contains("/admin")) {
-            Map<ParentCategory, List<Category>> map = new HashMap<>();
+            Map<ParentCategory, List<Category>> map = new LinkedHashMap<>();
             this.parentCategoryService.findAll().forEach(parentCategory -> {
                 map.put(parentCategory, this.categoryService.findAllCategoryNamesByParentCategory(parentCategory.getId()));
             });
@@ -77,7 +77,7 @@ public class Interceptor implements HandlerInterceptor {
 
     private long getTotal(List<ProductInOrderCart> productsInOrderCart) {
         return productsInOrderCart.stream()
-                .mapToInt(p -> p.getProduct().calculateDiscountPrice() * p.getQuantity())
+                .mapToInt(p -> p.getProduct().calculateDiscount() * p.getQuantity())
                 .sum();
     }
 

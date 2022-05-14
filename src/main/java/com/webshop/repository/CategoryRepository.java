@@ -17,7 +17,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(value = "SELECT c FROM Category c")
     List<Category> findAllWithProducts();
 
-    @Query(value = "SELECT c.name as name, c.id as id,c.parentCategory as parentCategory  FROM Category c")
+    @Query(value = "SELECT c.name as name,c.urlName as urlName, c.id as id,c.parentCategory as parentCategory  FROM Category c")
     List<CategoryProjection> findAllByNameUrlNameAndParentCategoryProjection();
 
     List<Category> findAllByParentCategoryId(Long parentCategoryId);

@@ -34,7 +34,7 @@ public class ParentCategoryController {
 
     @PostMapping("/delete/{id}")
     public String deleteParentCategory(@PathVariable Long id){
-
+        this.parentCategoryService.deleteParentCategory(id);
         return "redirect:/admin/parent-categories";
     }
 }

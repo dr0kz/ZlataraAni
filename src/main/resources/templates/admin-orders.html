@@ -26,19 +26,29 @@
                                     <table>
                                         <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Број на нарачка</th>
                                             <th>Клиент</th>
                                             <th>Датум</th>
-                                            <th>Тип достава</th>
-                                            <th>Вкупна цена</th>
+                                            <th>E-меил</th>
+                                            <th>Телефонски број</th>
+                                            <th>Нарачка</th>
+                                            <th>Вкупно</th>
                                             <th>Акции</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <td>a</td>
-                                        <td>b</td>
-                                        <td>c</td>
+                                        <tr th:each="order : ${orders}">
+                                            <td th:text="${order.getClientName()+' '+order.getClientSurname()}"></td>
+                                            <td th:text="${order.getDateCreated()}"></td>
+                                            <td th:text="${order.getEmail()}"></td>
+                                            <td th:text="${order.getMobileNumber()}"></td>
+                                            <td th:text="${order.getProducts()}"></td>
+                                            <td th:text="${order.getTotalPrice()+' ден'}"></td>
+                                            <td>
+                                                <form method="post" th:action="@{'/orders/accept-order/{id}'(id=${order.getId()})}">
+                                                    <button class="btn-primary">Прифати</button>
+                                                </form>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

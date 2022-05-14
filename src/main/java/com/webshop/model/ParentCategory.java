@@ -2,10 +2,8 @@ package com.webshop.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,6 +15,9 @@ public class ParentCategory {
     private String name;
 
     private String url;
+
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.REMOVE)
+    private List<Category> categories;
 
     public ParentCategory() {
     }

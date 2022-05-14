@@ -4,7 +4,6 @@ import com.webshop.model.OrderCart;
 import com.webshop.model.Product;
 import com.webshop.model.ProductInOrderCart;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,5 +15,7 @@ public interface ProductInOrderCartRepository extends JpaRepository<ProductInOrd
     List<ProductInOrderCart> findAllByOrderCart(OrderCart orderCart);
 
     Optional<ProductInOrderCart> findProductInOrderCartByProductAndOrderCart(Product product, OrderCart orderCart);
+
+    void deleteAllByOrderCart(OrderCart orderCart);
 
 }

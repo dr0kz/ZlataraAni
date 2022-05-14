@@ -10,6 +10,7 @@ import com.webshop.repository.ProductInOrderCartRepository;
 import com.webshop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -94,5 +95,10 @@ public class ProductInOrderCartService {
                 }
         );
 
+    }
+
+    @Transactional
+    public void deleteOrderCart(OrderCart orderCart){
+        this.productInOrderCartRepository.deleteAllByOrderCart(orderCart);
     }
 }

@@ -50,13 +50,17 @@ public class Order {
     @Column(nullable = false)
     private String email;
 
+    private String productIds;
+
+    private Boolean isConfirmed;
+
 
     public Order() {
     }
 
     public Order(Integer totalPrice, Payment orderType, String mobileNumber, String clientName,
                  String clientSurname, String postalCode, String street,
-                 String city, LocalDateTime dateCreated, String products, String email) {
+                 String city, LocalDateTime dateCreated, String products, String email, String productIds) {
         this.totalPrice = totalPrice;
         this.orderType = orderType;
         this.mobileNumber = mobileNumber;
@@ -68,5 +72,7 @@ public class Order {
         this.dateCreated = dateCreated;
         this.products = products;
         this.email = email;
+        this.productIds = productIds;
+        this.isConfirmed = false;
     }
 }

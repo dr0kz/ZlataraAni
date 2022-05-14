@@ -30,7 +30,9 @@
 
                 <div class="col-md-12">
                     <div class="table-wrap mb-30">
-                        <table class="shop_table cart table">
+                        <h6 style="border-bottom:1px solid lightgray;padding:20px;" class="text-danger"
+                            th:if="${productsInCart.size()==0}">Вашата кошничка е празна</h6>
+                        <table th:if="${productsInCart.size() != 0}" class="shop_table cart table">
                             <thead>
                             <tr style="color:black">
                                 <th class="product-name" colspan="2">Производ</th>
@@ -77,12 +79,10 @@
                                           class="amount"></span>
                                 </td>
                                 <td class="product-remove">
-                                    <form th:action="@{'/orderCart/delete/{id}' (id = ${productInOrder.product.getId()})}"
-                                          method="POST">
-                                        <button type="submit" style="background: none; border: none; padding: 0;"><i
-                                                class="ui-close"></i></button>
+                                    <button class="remove-button" th:value="${productInOrder.product.getId()}"
+                                            type="submit" style="background: none; border: none; padding: 0;"><i
+                                            class="ui-close"></i></button>
 
-                                    </form>
                                 </td>
                             </tr>
 
@@ -100,12 +100,12 @@
 
                         <div class="col-md-7">
                             <div class="actions">
-                                <button type="submit"
-                                        class="btn btn-lg btn-stroke"
-                                        id="updateCart"
+                                <a type="submit"
+                                   class="btn btn-lg btn-stroke"
+                                   id="updateCart"
                                 >
-                                    Ажурирај кошничка
-                                </button>
+                                    <span>Ажурирај кошничка</span>
+                                </a>
                                 <div class="wc-proceed-to-checkout">
                                     <a href="/orderCart/shop-checkout" class="btn btn-lg btn-dark"><span>Продолжи кон наплата</span></a>
                                 </div>
@@ -164,6 +164,19 @@
 </div> <!-- end content wrapper -->
 </main> <!-- end main wrapper -->
 <script>
+
+    $('.remove-button').click(function () {
+        const id = $(this).val()
+        console.log(id)
+        $.ajax({
+            type: "post",
+            url: "/api/orderCart/delete/" + id,
+            success: function () {
+                location.reload();
+            }
+        })
+    })
+
     function onClick(event) {
         var productIds = $('input[name^=productId]').map(function (idx, elem) {
             return $(elem).val();
@@ -187,7 +200,7 @@
                 productIds: productIds,
                 productQuantities: quantity
             }),
-            success: function (){
+            success: function () {
                 location.reload();
             }
         })

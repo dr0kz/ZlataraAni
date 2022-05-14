@@ -36,13 +36,6 @@ public class ProductService {
         this.imageRepository = imageRepository;
     }
 
-    public List<Product> findAll() {
-        return this.productRepository.findAll();
-    }
-
-    public List<Product> findAllWithImages() {
-        return this.productRepository.findAllWithImages();
-    }
 
     public Product findById(Long id) {
         return this.productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
@@ -100,14 +93,15 @@ public class ProductService {
         this.imageRepository.save(initialImage);
         if (!hoverPhoto.isEmpty())
             this.imageRepository.save(hoverImage);
-        this.imageRepository.saveAll(imagesList);
+        List<Image> savedImages = this.imageRepository.saveAll(imagesList);
 
 
         Product product = new Product(name, code, description, stocks,
                 price, discountPrice, isNew, isOnDiscount, isDealOfTheDay,
-                initialImage, !hoverPhoto.isEmpty() ? hoverImage : null, imagesList, category);
-
+                initialImage, !hoverPhoto.isEmpty() ? hoverImage : null, savedImages, category);
         this.productRepository.save(product);
+        this.imageRepository.saveAll(savedImages.stream().peek(t -> t.setProduct(product)).collect(Collectors.toList()));
+
 
         return product;
     }
@@ -170,7 +164,7 @@ public class ProductService {
                                Long categoryId,
                                MultipartFile initialPhoto,
                                MultipartFile hoverPhoto,
-                               MultipartFile[] images) {
+                               MultipartFile[] images) throws IOException {
 
         Product product = this.findById(id);
         Category category = this.categoryService.findById(categoryId);
@@ -185,34 +179,43 @@ public class ProductService {
         product.setIsDealOfTheDay(isDealOfTheDay);
         product.setCategory(category);
 
-//        if(!images[0].isEmpty()){
-//            List<MultipartFile> multipartFiles = filterFiles(images, product);
-//            product.getImages().stream().map(t ->Product.UPLOAD_DIR + "/" + id+"/"+t).forEach(FileUploadUtil::deleteFile);
-//            List<String> fileNames = multipartFiles.stream().map(image -> getFileWithSizeAdded(image,"600x600")).collect(Collectors.toList()); //get filenames for the newly added images
-//            product.setImages(fileNames);
-//            saveFiles(Product.UPLOAD_DIR + "/" + id, fileNames,  multipartFiles);
-//        }
-//        if(!initialPhoto.isEmpty()){
-//            FileUploadUtil.deleteFile(Product.UPLOAD_DIR +"/"+id+"/"+product.getInitialPhoto());
-//            String fileNameInitialPhoto = getFileWithSizeAdded(initialPhoto, "300x300");
-//            product.setInitialPhoto(fileNameInitialPhoto);
-//            saveFiles(Product.UPLOAD_DIR + "/" + id, List.of(fileNameInitialPhoto), List.of(initialPhoto));
-//        }
-//        if(!hoverPhoto.isEmpty()){
-//            if(product.getHoverPhoto()!=null){
-//                FileUploadUtil.deleteFile(Product.UPLOAD_DIR +"/"+id+"/"+product.getHoverPhoto());
-//            }
-//            String fileNameHoverPhoto = getFileWithSizeAdded(hoverPhoto, "300x300");
-//            product.setHoverPhoto(fileNameHoverPhoto);
-//            saveFiles(Product.UPLOAD_DIR + "/" + id, List.of(fileNameHoverPhoto), List.of(hoverPhoto));
-//        }
+        if (!images[0].isEmpty()) {
+            List<Image> forDelete = product.getImages();
+            this.imageRepository.deleteAll(forDelete);
+            List<byte[]> imagesBytes = new ArrayList<>();
+            for (MultipartFile multipartFile : images) {
+                imagesBytes.add(multipartFile.getBytes());
+            }
+            List<Image> imagesList = new ArrayList<>();
+            imagesBytes.forEach(t -> imagesList.add(new Image(t)));
 
+            imagesList.forEach(t -> t.setProduct(product));
+            List<Image> saved = this.imageRepository.saveAll(imagesList);
+            product.setImages(saved);
+        }
+        if (!initialPhoto.isEmpty()) {
+            Image i = product.getInitialPhoto();
+            byte[] initialPhotoBytes = initialPhoto.getBytes();
+            Image initialImage = new Image(initialPhotoBytes);
+            product.setInitialPhoto(initialImage);
+            this.imageRepository.save(initialImage);
+            this.imageRepository.delete(i);
+        }
+        if (!hoverPhoto.isEmpty()) {
+            Image i = product.getHoverPhoto();
+            byte[] hoverPhotoBytes = hoverPhoto.getBytes();
+            Image hoverImage = new Image(hoverPhotoBytes);
+            product.setHoverPhoto(hoverImage);
+            this.imageRepository.save(hoverImage);
+            this.imageRepository.delete(i);
+        }
         this.productRepository.save(product);
 
         return product;
     }
 
-    public List<Product> findAllByCategoryUrlAndParentCategoryUrl(String parentCategoryUrl, String categoryUrl, String sort, Integer page, Integer pageSize, String priceInterval) {
+    public List<Product> findAllByCategoryUrlAndParentCategoryUrl(String parentCategoryUrl, String
+            categoryUrl, String sort, Integer page, Integer pageSize, String priceInterval) {
 
         Pageable pageable;
         if (sort.equals("cena-najvisoka-prvo")) {
@@ -242,7 +245,8 @@ public class ProductService {
         return productList;
     }
 
-    public Integer findTotalPagesByCategoryUrlAndParentCategoryUrl(String categoryUrl, String parentCategoryUrl, Integer pagesize, String priceInterval) {
+    public Integer findTotalPagesByCategoryUrlAndParentCategoryUrl(String categoryUrl, String
+            parentCategoryUrl, Integer pagesize, String priceInterval) {
         priceInterval = priceInterval.replaceAll(" ", "");
         Integer from;
         Integer to;
@@ -260,12 +264,40 @@ public class ProductService {
         return (int) Math.ceil(1.0d * this.productRepository.findTotalPagesByCategoryUrlNameAndCategoryParentCategoryUrl(categoryUrl, parentCategoryUrl, from, to) / pagesize);
     }
 
-    public Integer findBiggestProductPriceByCategoryUrlAndParentCategoryUrl(String categoryUrl, String parentCategoryUrl) {
+    public Integer findTotalPagesByParentCategoryUrl(String parentCategoryUrl, Integer pagesize, String
+            priceInterval) {
+        priceInterval = priceInterval.replaceAll(" ", "");
+        Integer from;
+        Integer to;
+        try {
+            from = Integer.parseInt(priceInterval.split("-")[0]);
+        } catch (Exception ex) {
+            from = 0;
+        }
+        try {
+            to = Integer.parseInt(priceInterval.split("-")[1]);
+        } catch (Exception ex) {
+            to = findBiggestProductPriceByParentCategoryUrl(parentCategoryUrl);
+        }
+
+        return (int) Math.ceil(1.0d * this.productRepository.findTotalPagesByCategoryParentCategoryUrl(parentCategoryUrl, from, to) / pagesize);
+    }
+
+    public Integer findBiggestProductPriceByCategoryUrlAndParentCategoryUrl(String categoryUrl, String
+            parentCategoryUrl) {
         return this.productRepository.findAllByCategoryUrlNameAndCategoryParentCategoryUrl(categoryUrl, parentCategoryUrl)
                 .stream()
-                .mapToInt(Product::calculateDiscountPrice)
+                .mapToInt(Product::calculateDiscount)
                 .max()
-                .getAsInt();
+                .orElse(0);
+    }
+
+    public Integer findBiggestProductPriceByParentCategoryUrl(String parentCategoryUrl) {
+        return this.productRepository.findAllByCategoryParentCategoryUrl(parentCategoryUrl)
+                .stream()
+                .mapToInt(Product::calculateDiscount)
+                .max()
+                .orElse(0);
     }
 
 
@@ -273,7 +305,33 @@ public class ProductService {
         return this.productRepository.findTop10ByIdNotAndCategoryId(productId, categoryId);
     }
 
-    public List<Product> findAllByParentCategoryUrl(String parentCategoryUrl, String sort, Integer page, Integer pagesize) {
-        return this.productRepository.findAllByCategoryParentCategoryUrl(parentCategoryUrl);
+    public List<Product> findAllByParentCategoryUrl(String parentCategoryUrl, String sort, Integer page, Integer
+            pageSize, String priceInterval) {
+        Pageable pageable;
+        if (sort.equals("cena-najvisoka-prvo")) {
+            pageable = PageRequest.of(page, pageSize, Sort.by("price").descending());
+        } else if (sort.equals("cena-najniska-prvo")) {
+            pageable = PageRequest.of(page, pageSize, Sort.by("price").ascending());
+        } else {
+            pageable = PageRequest.of(page, pageSize);
+        }
+
+        priceInterval = priceInterval.replaceAll(" ", "");
+        Integer from;
+        Integer to;
+        try {
+            from = Integer.parseInt(priceInterval.split("-")[0]);
+        } catch (Exception ex) {
+            from = 0;
+        }
+        try {
+            to = Integer.parseInt(priceInterval.split("-")[1]);
+        } catch (Exception ex) {
+            to = findBiggestProductPriceByParentCategoryUrl(parentCategoryUrl);
+        }
+
+        List<Product> productList = this.productRepository.findAllByCategoryParentCategoryUrlAndDiscountPriceBetween(pageable, parentCategoryUrl, from, to).toList();
+
+        return productList;
     }
 }

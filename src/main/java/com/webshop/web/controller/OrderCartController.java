@@ -10,6 +10,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 
 @Controller
@@ -24,21 +28,12 @@ public class OrderCartController {
         this.productInOrderCartService = productInOrderCartService;
     }
 
-    @PostMapping("/delete/{productId}")
-    public String deleteProductFromCart(@PathVariable Long productId, HttpServletRequest request, HttpServletResponse response) {
-        int size = 0;
-        if (request.getCookies() != null && Arrays.stream(request.getCookies()).anyMatch(t -> t.getName().equals("CART"))) {
-            Long orderCartId = Long.parseLong(Arrays.stream(request.getCookies()).filter(t -> t.getName().equals("CART")).findFirst().get().getValue());
-            size = productInOrderCartService.deleteProduct(productId,orderCartId);
-        }
-        if (size != 0){
-            return "redirect:/orderCart";
-        }
-        return "redirect:/";
-    }
 
     @PostMapping("/add")
-    public String addProductToCart(HttpServletRequest request, @RequestParam Long productId, @RequestParam int quantity, HttpServletResponse response) {
+    public String addProductToCart(HttpServletRequest request, @RequestParam Long productId, @RequestParam int quantity, HttpServletResponse response) throws MalformedURLException, URISyntaxException {
+
+        System.out.println(request.getAttribute("javax.servlet.forward.request_uri"));
+
         if (response.getHeader("COOKIE") != null) {
             Long orderCartId = Long.parseLong(response.getHeader("COOKIE"));
             this.orderCartService

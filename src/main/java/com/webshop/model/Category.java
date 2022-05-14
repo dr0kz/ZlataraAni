@@ -3,6 +3,7 @@ package com.webshop.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,6 +20,9 @@ public class Category {
 
     @ManyToOne
     private ParentCategory parentCategory;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
+    private List<Product> productList;
 
     public Category() {
     }

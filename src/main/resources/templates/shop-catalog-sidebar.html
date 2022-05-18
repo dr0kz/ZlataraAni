@@ -35,6 +35,7 @@
 
               <div class="col-md-8" id="customer_details">
                 <div>
+                  <h6 class="text-danger" th:if="${error!=null}">Вашата кошничка е празна!</h6>
                   <h2 class="heading uppercase bottom-line full-grey mb-30">адреса за наплата</h2>
 
                   <p class="form-row form-row-wide address-field update_totals_on_change validate-required ecommerce-validated" id="billing_country_field">

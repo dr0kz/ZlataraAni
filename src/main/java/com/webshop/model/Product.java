@@ -86,6 +86,7 @@ public class Product {
         return isOnDiscount ? price - price * discountPercentage / 100 : price;
     }
 
+
     public String getPriceAsNumber(){
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(price).replace(",",".");
@@ -94,6 +95,12 @@ public class Product {
 
     public String calculateDiscountPrice() {
         int discPrice =isOnDiscount ? price - price * discountPercentage / 100 : price;
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(discPrice).replace(",",".");
+    }
+
+    public String calculateDiscountPrice(int quantity) {
+        int discPrice = (isOnDiscount ? price - price * discountPercentage / 100 : price)*quantity;
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(discPrice).replace(",",".");
     }

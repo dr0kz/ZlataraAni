@@ -60,12 +60,15 @@ public class OrderService {
                 .map(p -> new ProductQuantityDto(p.getProduct(), p.getQuantity()))
                 .collect(Collectors.toList())
         );
+        if(totalPrice<1000){
+            totalPrice+=130;
+        }
 
         List<ProductInOrderCart> t = this.productInOrderCartService.findAllProductsInOrderCart(orderCart);
 
         String products = t
                 .stream()
-                .map(product -> product.getProduct().getName() + " - " + product.getQuantity() + " x " + product.getProduct().getPriceAsNumber() + " ден.")
+                .map(product -> product.getProduct().getName() + " - " + product.getQuantity() + " x " + product.getProduct().calculateDiscount() + " ден.")
                 .collect(Collectors.joining("\n"));
 
         String productIds = t.stream()

@@ -56,7 +56,7 @@
                                     </ul>
                                 </td>
                                 <td class="product-price">
-                                    <span th:text="${productInOrder.product.calculateDiscountPrice()+'ден.'}"
+                                    <span th:text="${productInOrder.product.calculateDiscountPrice()+' ден'}"
                                           class="amount"></span>
                                 </td>
                                 <td class="product-quantity">
@@ -75,14 +75,15 @@
                                     </div>
                                 </td>
                                 <td class="product-subtotal">
-                                    <span th:text="${productInOrder.product.calculateDiscountPrice() * productInOrder.quantity}"
+                                    <span th:text="${productInOrder.product.calculateDiscountPrice(productInOrder.quantity)+' ден'}"
                                           class="amount"></span>
                                 </td>
                                 <td class="product-remove">
-                                    <button class="remove-button" th:value="${productInOrder.product.getId()}"
-                                            type="submit" style="background: none; border: none; padding: 0;"><i
-                                            class="ui-close"></i></button>
-
+                                    <form method="post" th:action="@{'/orderCart/delete/{id}'(id=${productInOrder.product.getId()})}">
+                                        <button  class="remove-button ui-close"
+                                                 type="submit" style="background: none; border: none; padding: 0;"><i
+                                        ></i></button>
+                                    </form>
                                 </td>
                             </tr>
 
@@ -133,19 +134,19 @@
                             <tr class="cart-subtotal">
                                 <th>Вкупно цена на продуктите</th>
                                 <td>
-                                    <span class="amount" th:text="${totalPrice+' ден'}"></span>
+                                    <span id="totalPrice" class="amount" th:text="${totalPrice+' ден'}"></span>
                                 </td>
                             </tr>
                             <tr class="shipping">
                                 <th>Достава</th>
                                 <td>
-                                    <span th:text="${totalPrice>=1000 ? 'Бесплатна достава' : '130 ден'}"></span>
+                                    <span id="totalPriceCargo" th:text="${totalPrice>=1000 ? 'Бесплатна достава' : '130 ден'}"></span>
                                 </td>
                             </tr>
                             <tr class="order-total">
                                 <th>Вкупно</th>
                                 <td>
-                                    <strong><span class="amount"
+                                    <strong><span id="totalPriceFinal" class="amount"
                                                   th:text="${totalPrice+(totalPrice<1000 ? 130 : 0)+' ден'}"></span></strong>
                                 </td>
                             </tr>
@@ -165,17 +166,14 @@
 </main> <!-- end main wrapper -->
 <script>
 
-    $('.remove-button').click(function () {
-        const id = $(this).val()
-        console.log(id)
-        $.ajax({
-            type: "post",
-            url: "/api/orderCart/delete/" + id,
-            success: function () {
-                location.reload();
-            }
-        })
+
+    $(document).ready(function(){
+        $('#totalPrice').text($('#totalPrice').text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(',','.'))
+        $('#totalPriceCargo').text($('#totalPriceCargo').text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(',','.'))
+        $('#totalPriceFinal').text($('#totalPriceFinal').text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(',','.'))
     })
+
+
 
     function onClick(event) {
         var productIds = $('input[name^=productId]').map(function (idx, elem) {

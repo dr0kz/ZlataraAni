@@ -137,7 +137,7 @@
                         <div class="nav-cart mobile-cart hidden-lg hidden-md">
                             <div class="nav-cart-outer">
                                 <div class="nav-cart-inner">
-                                    <a href="/orderCart" th:text="${productsInCartSize}"  class="nav-cart-icon">
+                                    <a href="/orderCart" th:text="${productsInCartSize}" class="nav-cart-icon">
                                     </a>
                                 </div>
                             </div>
@@ -172,14 +172,14 @@
 
 
                                 <!-- Mobile search -->
-<!--                                <li id="mobile-search" class="hidden-lg hidden-md">-->
-<!--                                    <form method="get" class="mobile-search">-->
-<!--                                        <input type="search" class="form-control" placeholder="Search...">-->
-<!--                                        <button type="submit" class="search-button">-->
-<!--                                            <i class="fa fa-search"></i>-->
-<!--                                        </button>-->
-<!--                                    </form>-->
-<!--                                </li>-->
+                                <!--                                <li id="mobile-search" class="hidden-lg hidden-md">-->
+                                <!--                                    <form method="get" class="mobile-search">-->
+                                <!--                                        <input type="search" class="form-control" placeholder="Search...">-->
+                                <!--                                        <button type="submit" class="search-button">-->
+                                <!--                                            <i class="fa fa-search"></i>-->
+                                <!--                                        </button>-->
+                                <!--                                    </form>-->
+                                <!--                                </li>-->
 
                             </ul> <!-- end menu -->
                         </div> <!-- end collapse -->
@@ -196,7 +196,7 @@
                             <li class="nav-cart">
                                 <div class="nav-cart-outer">
                                     <div class="nav-cart-inner">
-                                        <a href="/orderCart" th:text="${productsInCartSize}"  class="nav-cart-icon">
+                                        <a href="/orderCart" th:text="${productsInCartSize}" class="nav-cart-icon">
                                         </a>
                                     </div>
                                 </div>
@@ -208,8 +208,8 @@
                                                  class="nav-cart-item clearfix">
                                                 <a th:href="@{'/proizvodi/{id}'(id=${productQuantity.product.id})}">
                                                     <div class="nav-cart-img">
-                                                            <img th:src="*{productQuantity.product.getInitialPhotoEncoded()}"
-                                                                 alt="">
+                                                        <img th:src="*{productQuantity.product.getInitialPhotoEncoded()}"
+                                                             alt="">
                                                     </div>
                                                     <div class="nav-cart-title">
                                                         <p href="#" th:text="${productQuantity.product.getName()}">
@@ -221,9 +221,11 @@
                                                         </div>
                                                     </div>
                                                     <div class="nav-cart-remove">
-                                                        <button class="remove-button ui-close" th:value="${productQuantity.product.getId()}"
-                                                                type="submit" style="background: none; border: none; padding: 0;"><i
-                                                                ></i></button>
+                                                        <button class="remove-button ui-close"
+                                                                th:value="${productQuantity.product.getId()}"
+                                                                type="submit"
+                                                                style="background: none; border: none; padding: 0;"><i
+                                                        ></i></button>
                                                     </div>
                                                 </a>
                                             </div>
@@ -232,7 +234,8 @@
 
                                         <div class="nav-cart-summary">
                                             <span>Вкупно</span>
-                                            <span class="total-price" th:text="${totalPrice+' ден'}"></span>
+                                            <span id="totalPriceCart" class="total-price"
+                                                  th:text="${totalPrice+' ден'}"></span>
                                         </div>
 
                                         <div class="nav-cart-actions mt-20">
@@ -274,7 +277,8 @@
                             <div class="social-icons nobase">
                                 <a target="_blank" href="https://www.instagram.com/zlatara_ani_gevgelija/"><i
                                         class="fa fa-instagram"></i></a>
-                                <a target="_blanks" href="https://www.facebook.com/zlataraani"><i class="fa fa-facebook"></i></a>
+                                <a target="_blanks" href="https://www.facebook.com/zlataraani"><i
+                                        class="fa fa-facebook"></i></a>
 
                             </div>
                         </div>
@@ -365,6 +369,7 @@
 
     $(document).ready(function () {
         cookiesPolicyPrompt();
+        $('#totalPriceCart').text($('#totalPriceCart').text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace(',', '.'))
 
         $('.remove-button').click(function () {
             const id = $(this).val()
@@ -384,6 +389,7 @@
             slidesToShow: 3,
             slidesToScroll: 3
         });
+
         function cookiesPolicyPrompt() {
             $('#btnAcceptCookiePolicy').on('click', function () {
                 $("#alertCookiePolicy").hide("slow");

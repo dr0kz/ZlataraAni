@@ -72,6 +72,7 @@ public class Interceptor implements HandlerInterceptor {
 
         modelAndView.getModelMap().addAttribute("productsInCart", productInOrderCarts);
         modelAndView.getModelMap().addAttribute("totalPrice",getTotal(productInOrderCarts));
+        modelAndView.getModelMap().addAttribute("totalPriceString",getTotal(productInOrderCarts));
         modelAndView.getModelMap().addAttribute("productsInCartSize", productInOrderCarts.size());
     }
 

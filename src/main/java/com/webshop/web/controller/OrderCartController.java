@@ -48,7 +48,10 @@ public class OrderCartController {
     }
 
     @GetMapping("/shop-checkout")
-    public String getShopCheckoutPage(Model model) {
+    public String getShopCheckoutPage(@RequestParam(required = false) String error, Model model) {
+        if(error!=null){
+            model.addAttribute("error","Вашата кошничка е празна");
+        }
         model.addAttribute("bodyContent", "shop-catalog-sidebar");
         return "master-template";
     }
@@ -57,6 +60,16 @@ public class OrderCartController {
     public String getShoppingCartPage(Model model, @Nullable ModelAndView modelAndView) {
         model.addAttribute("bodyContent", "shop-cart");
         return "master-template";
+    }
+
+    @PostMapping("/delete/{productId}")
+    public String deleteProductFromCart(@PathVariable Long productId, HttpServletRequest request, HttpServletResponse response) {
+        int size = 0;
+        if (request.getCookies() != null && Arrays.stream(request.getCookies()).anyMatch(t -> t.getName().equals("CART"))) {
+            Long orderCartId = Long.parseLong(Arrays.stream(request.getCookies()).filter(t -> t.getName().equals("CART")).findFirst().get().getValue());
+            size = productInOrderCartService.deleteProduct(productId,orderCartId);
+        }
+        return "redirect:/orderCart";
     }
 
 }

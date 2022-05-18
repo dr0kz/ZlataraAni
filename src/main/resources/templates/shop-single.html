@@ -61,10 +61,10 @@
                         <hr>
                         <span class="price">
                 <del th:if="${product.isOnDiscount}">
-                  <span th:text="${product.getPrice()+'ден.'}"></span>
+                  <span th:text="${product.getPriceAsNumber()+' ден'}"></span>
                 </del>
                 <ins>
-                  <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice() : product.getPrice())+'ден.'}"
+                  <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice() : product.getPrice())+' ден'}"
                         class="amount"></span>
                 </ins>
               </span>
@@ -92,7 +92,7 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="productId" th:value="${product.getId()}">
-                                <button style="margin-left:20px;" th:class="${product.getStocks()==0 ? 'btn btn-dark btn-lg add-to-cart disabled' : 'btn btn-dark btn-lg add-to-cart'}" type="submit"
+                                <button style="margin-left:20px;" th:class="${product.getStocks()<=0 ? 'btn btn-dark btn-lg add-to-cart disabled' : 'btn btn-dark btn-lg add-to-cart'}" type="submit"
                                         ><span th:text="${product.getStocks()==0 ? 'Нема на залиха' : 'Додади во кошничка'}">Додади во кошничка</span></button>
                             </div>
                         </form>
@@ -140,6 +140,10 @@
                 <div class="row">
                     <div id="owl-related-items" class="owl-carousel owl-theme">
                         <div th:each="p : ${relatedProducts}" class="product">
+                            <div th:if="${p.stocks>0}" class="circle">
+                                <span style="font-size:17px;" class="circle__content"
+                                      th:text="${'-'+p.discountPercentage+'%'}"></span>
+                            </div>
                             <div class="product-item hover-trigger">
                                 <div class="product-img">
                                     <a th:href="@{'/products/{id}'(id=${p.getId()})}" style="position: relative;">
@@ -159,10 +163,10 @@
                                     <!--                                            </a>-->
                                     <!--                                        </div>-->
                                     <!--                                    </div>-->
-                                    <div th:if="${p.isNew && p.stocks!=0}" class="product-label">
+                                    <div th:if="${p.isNew && p.stocks>0}" class="product-label">
                                         <span class="sale">НОВО</span>
                                     </div>
-                                    <div th:if="${p.stocks==0}" class="product-label">
+                                    <div th:if="${p.stocks<=0}" class="product-label">
                                         <span class="out-of-stock">НЕМА НА ЗАЛИХА</span>
                                     </div>
                                     <a th:href="@{'/products/{id}'(id=${p.getId()})}"
@@ -177,10 +181,13 @@
                     </span>
                                 </div>
                                 <span class="price">
-                    <ins>
-                      <span th:text="${(p.isOnDiscount ? p.calculateDiscountPrice(): p.getPrice())+'ден.'}"
-                            class="amount">$150.00</span>
-                    </ins>
+                                    <del th:if="${p.isOnDiscount}">
+                                        <span th:text="${p.getPriceAsNumber()+' ден'}"></span>
+                                    </del>
+                                    <ins>
+                                    <span th:text="${(p.isOnDiscount ? p.calculateDiscountPrice(): p.getPriceAsNumber())+' ден'}"
+                                          class="amount"></span>
+                                    </ins>
                   </span>
                             </div>
                         </div>

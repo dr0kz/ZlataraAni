@@ -30,12 +30,4 @@ public class OrderCartRestController {
         }
     }
 
-    @PostMapping("/delete/{productId}")
-    public void deleteProductFromCart(@PathVariable Long productId, HttpServletRequest request, HttpServletResponse response) {
-        int size = 0;
-        if (request.getCookies() != null && Arrays.stream(request.getCookies()).anyMatch(t -> t.getName().equals("CART"))) {
-            Long orderCartId = Long.parseLong(Arrays.stream(request.getCookies()).filter(t -> t.getName().equals("CART")).findFirst().get().getValue());
-            size = productInOrderCartService.deleteProduct(productId,orderCartId);
-        }
-    }
 }

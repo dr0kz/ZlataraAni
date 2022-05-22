@@ -95,4 +95,9 @@ public class OrderController {
         this.orderRepository.save(o);
         return "redirect:/admin/orders";
     }
+    @PostMapping("/delete-order/{id}")
+    public String deleteOrder(@PathVariable Long id){
+        this.orderService.deleteOrder(id);
+        return "redirect:/admin/orders";
+    }
 }

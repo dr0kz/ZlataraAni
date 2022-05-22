@@ -26,7 +26,7 @@ public class Order {
     @Column(nullable = false)
     private LocalDateTime dateCreated;
 
-    @Column(length = 9)
+    @Column(nullable = false)
     private String mobileNumber;
 
     @Column(nullable = false)

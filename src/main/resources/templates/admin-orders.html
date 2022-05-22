@@ -47,6 +47,9 @@
                                                 <form method="post" th:action="@{'/orders/accept-order/{id}'(id=${order.getId()})}">
                                                     <button class="btn-primary">Прифати</button>
                                                 </form>
+                                                <form method="post" th:action="@{'/orders/delete-order/{id}'(id=${order.getId()})}">
+                                                    <button class="btn-danger">Избриши</button>
+                                                </form>
                                             </td>
                                         </tr>
                                         </tbody>

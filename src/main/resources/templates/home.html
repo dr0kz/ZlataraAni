@@ -32,11 +32,11 @@
                         <img height="150" width="150" th:src="*{product.getInitialPhotoEncoded()}"/>
                         <div>
                             <h6 th:text="${product.getName()}"></h6>
-                            <div style="display:flex; justify-content: center;">
-                                <del  th:if="${product.isOnDiscount}">
-                                    <p th:text="${product.getPriceAsNumber()+' ден.'}"></p>
+                            <div>
+                                <del th:if="${product.isOnDiscount}">
+                                    <p  style="margin:0;" th:text="${product.getPriceAsNumber()+' ден.'}"></p>
                                 </del>
-                                <p style="font-weight: 600;margin-left:10px;" th:text="${product.calculateDiscountPrice()+' ден.'}"></p>
+                                <p style="font-weight: 600;margin: 0 0 0 10px; color:black;" th:text="${product.calculateDiscountPrice()+' ден.'}"></p>
 
                             </div>
 

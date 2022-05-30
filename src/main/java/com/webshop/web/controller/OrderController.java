@@ -52,6 +52,12 @@ public class OrderController {
         return "master-template";
     }
 
+    @GetMapping("/naracka-neuspesna")
+    public String orderDenied(Model model){
+        model.addAttribute("bodyContent","order-denied");
+        return "master-template";
+    }
+
     @PostMapping
     public String createOrder(String clientName,
                               String clientSurname,
@@ -69,7 +75,9 @@ public class OrderController {
         } else if (request.getCookies() != null && Arrays.stream(request.getCookies()).anyMatch(t -> t.getName().equals("CART"))) {
             Long orderCartId = Long.parseLong(Arrays.stream(request.getCookies()).filter(t -> t.getName().equals("CART")).findFirst().get().getValue());
             if (this.productInOrderCartService.findAllProductsInOrderCart(this.orderCartService.findOrderCartById(orderCartId)).size() != 0) {
-                this.orderService.createOrder(clientName, clientSurname, city, street, postalCode, email, mobileNumber, orderType, orderCartId);
+                boolean noStock = this.orderService.createOrder(clientName, clientSurname, city, street, postalCode, email, mobileNumber, orderType, orderCartId);
+                if (!noStock)
+                    return "redirect:/orders/naracka-neuspesna";
             }else{
                 return "redirect:/orderCart/shop-checkout?error=emptyOrderCart";
             }

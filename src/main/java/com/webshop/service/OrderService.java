@@ -9,6 +9,7 @@ import com.webshop.model.exceptions.OrderCartNotFoundException;
 import com.webshop.model.exceptions.OrderNotFoundException;
 import com.webshop.repository.OrderCartRepository;
 import com.webshop.repository.OrderRepository;
+import com.webshop.repository.ProductInOrderCartRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,11 +22,13 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderCartRepository orderCartRepository;
     private final ProductInOrderCartService productInOrderCartService;
+    private final ProductInOrderCartRepository productInOrderCartRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderCartRepository orderCartRepository, ProductInOrderCartService productInOrderCartService) {
+    public OrderService(OrderRepository orderRepository, OrderCartRepository orderCartRepository, ProductInOrderCartService productInOrderCartService, ProductInOrderCartRepository productInOrderCartRepository) {
         this.orderRepository = orderRepository;
         this.orderCartRepository = orderCartRepository;
         this.productInOrderCartService = productInOrderCartService;
+        this.productInOrderCartRepository = productInOrderCartRepository;
     }
 
 
@@ -43,7 +46,7 @@ public class OrderService {
         return this.orderRepository.findById(id).get();
     }
 
-    public void createOrder(String clientName,
+    public boolean createOrder(String clientName,
                             String clientSurname,
                             String city,
                             String street,
@@ -54,9 +57,18 @@ public class OrderService {
                             Long orderCartId) {
         OrderCart orderCart = this.orderCartRepository.findById(orderCartId).orElseThrow(OrderCartNotFoundException::new);
 
-        int totalPrice = getOrderTotalPrice(this.productInOrderCartService
-                .findAllProductsInOrderCart(orderCart)
-                .stream()
+        List<ProductInOrderCart> productsInOrderCart = this.productInOrderCartService
+                .findAllProductsInOrderCart(orderCart);
+
+        boolean noStock = productsInOrderCart.stream().anyMatch(productInOrderCart -> productInOrderCart.getProduct().getStocks() <= 0);
+
+        if (noStock) {
+            productsInOrderCart = productsInOrderCart.stream().filter(productInOrderCart -> productInOrderCart.getProduct().getStocks() <= 0).collect(Collectors.toList());
+            this.productInOrderCartRepository.deleteAll(productsInOrderCart);
+            return false;
+        }
+
+        int totalPrice = getOrderTotalPrice(productsInOrderCart.stream()
                 .map(p -> new ProductQuantityDto(p.getProduct(), p.getQuantity()))
                 .collect(Collectors.toList())
         );
@@ -78,6 +90,7 @@ public class OrderService {
         Order order = new Order(totalPrice, orderType, mobileNumber, clientName, clientSurname, postalCode, street, city, LocalDateTime.now(), products, email, productIds);
         this.orderRepository.save(order);
         this.productInOrderCartService.deleteOrderCart(orderCart);
+        return true;
     }
 
     private int getOrderTotalPrice(List<ProductQuantityDto> productQuantities) {

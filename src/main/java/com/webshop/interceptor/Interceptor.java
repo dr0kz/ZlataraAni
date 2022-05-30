@@ -37,14 +37,26 @@ public class Interceptor implements HandlerInterceptor {
 
         Cookie[] cookies = request.getCookies();
         Cookie cookie;
-        if (cookies == null || Arrays.stream(cookies).noneMatch(t -> t.getName().equals("CART"))) {
+        //ili ima cookie , nema vo baza
+        if (cookies == null || Arrays.stream(cookies).noneMatch(t -> t.getName().equals("CART")) || cookieNotFound(request)) {
             cookie = generateCookie();
-//            cookie.setDomain("z-ani.herokuapp.com");
+            cookie.setDomain("zlatara-ani.com");
             cookie.setPath("/");
             response.addCookie(cookie);
             response.addHeader("COOKIE", "" + cookie.getValue());
         }
         return true;
+    }
+
+    public boolean cookieNotFound(HttpServletRequest request){
+        Cookie cookie = Arrays.stream(request.getCookies()).filter(t -> t.getName().equals("CART")).findFirst().get();
+        Long orderCartId = Long.parseLong(cookie.getValue());
+        try{
+            this.orderCartService.findOrderCartById(orderCartId);
+            return false;
+        }catch(Exception ex){
+            return true;
+        }
     }
 
     @Override

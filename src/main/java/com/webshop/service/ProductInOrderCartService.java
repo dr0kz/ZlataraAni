@@ -72,13 +72,14 @@ public class ProductInOrderCartService {
         List<Long> productIds = orderCartProductsDto.getProductIds().stream().mapToLong(Long::parseLong).boxed().collect(Collectors.toList());
         List<Integer> quantities = orderCartProductsDto.getProductQuantities().stream().mapToInt(Integer::parseInt).boxed().collect(Collectors.toList());
 
+
         List<ProductQuantityDto> productsWithQuantity = new ArrayList<>();
         List<Product> products = this.productRepository.findAllById(productIds);
 
         products.forEach(
                 product -> {
                     int index = productIds.indexOf(productIds.stream().filter(id -> id == product.getId()).findFirst().get());
-                    int productQuantity = quantities.get(index);
+                    int productQuantity = quantities.get(index)<0 ? 1 : quantities.get(index);
                     productsWithQuantity.add(new ProductQuantityDto(product, productQuantity));
                 }
         );

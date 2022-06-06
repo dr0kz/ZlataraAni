@@ -27,10 +27,8 @@
                 <p>Проверете ги следните продукти по неверојатна цена</p>
                 <div class="deal-of-the-day-products">
 
-                    <a th:href="@{'/proizvodi/{id}'(id=${product.getId()})}" th:if="${product.stocks>0 && product.isOnDiscount}"
-                       style="padding:10px; border:1px solid gold; border-radius:10px;"
-                       th:each="product : ${dealOfTheDayProducts}">
-                         <span style="font-size:17px; color:white;   font-size: 17px;float: right; background-color: #ceaf71;border: 1px solid #ceaf71;border-radius: 73px;padding-top: 15px;padding-bottom: 16px;padding-left: 11px;padding-right: 9px;position: relative;left: 20px;bottom: 20px;" class="circle__content"
+                    <a th:href="@{'/proizvodi/{id}'(id=${product.getId()})}" th:if="${product.stocks>0 && product.isOnDiscount}" th:each="product : ${dealOfTheDayProducts}">
+                         <span style="font-size: 17px;color: white;font-size: 17px;float: right;background-color: #ceaf71;border: 1px solid #ceaf71;border-radius: 73px;padding-top: 10px;padding-bottom: 6px;/* padding-left: 11px; */ /* padding-right: 9px; */ position: relative;left: -3px; bottom: -45px;" class="circle__content"
                                th:text="${'-'+product.discountPercentage+'%'}"></span>
                         <img height="150" width="150" th:src="*{product.getInitialPhotoEncoded()}"/>
                         <div>

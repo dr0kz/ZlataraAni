@@ -54,7 +54,10 @@ public class ProductService {
     }
 
     public List<Product> findAllDealOfTheDayProducts() {
-        return this.productRepository.findAllByIsDealOfTheDay(true);
+        return this.productRepository.findAllByIsDealOfTheDay(true)
+                .stream()
+                .filter(product -> product.getStocks() > 0)
+                .collect(Collectors.toList());
     }
 
     private boolean isImage(String fileName) {

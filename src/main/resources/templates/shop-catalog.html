@@ -91,7 +91,7 @@
                         <div class="shop-catalogue grid-view">
                             <div class="row">
                                 <div th:each="product : ${products}"
-                                     class="col-xxs-6 col-xs-4 col-md-3 product">
+                                     class="col-xxs-6 col-xs-4 col-md-4 product">
                                     <div th:if="${product.stocks>0 && product.isOnDiscount}" class="circle">
                                 <span style="font-size:17px;" class="circle__content"
                                       th:text="${'-'+product.discountPercentage+'%'}"></span>

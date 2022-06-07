@@ -77,7 +77,7 @@ public class AdminController {
     @GetMapping("/accepted-orders")
     public String getAcceptedOrdersPage(Model model){
         model.addAttribute("bodyContent","admin-accepted-orders");
-        model.addAttribute("orders", this.orderService.listAll().stream().filter(Order::getIsConfirmed).collect(Collectors.toList()));
+        model.addAttribute("orders", this.orderService.listAllAcceptedOrders());
         return "admin-master-template";
     }
 

@@ -2,7 +2,9 @@ package com.webshop.service;
 
 import com.webshop.model.Order;
 import com.webshop.model.OrderCart;
+import com.webshop.model.Product;
 import com.webshop.model.ProductInOrderCart;
+import com.webshop.model.dto.AcceptedOrderDto;
 import com.webshop.model.dto.ProductQuantityDto;
 import com.webshop.model.enumerations.Payment;
 import com.webshop.model.exceptions.OrderCartNotFoundException;
@@ -13,6 +15,7 @@ import com.webshop.repository.ProductInOrderCartRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,12 +26,14 @@ public class OrderService {
     private final OrderCartRepository orderCartRepository;
     private final ProductInOrderCartService productInOrderCartService;
     private final ProductInOrderCartRepository productInOrderCartRepository;
+    private final ProductService productService;
 
-    public OrderService(OrderRepository orderRepository, OrderCartRepository orderCartRepository, ProductInOrderCartService productInOrderCartService, ProductInOrderCartRepository productInOrderCartRepository) {
+    public OrderService(OrderRepository orderRepository, OrderCartRepository orderCartRepository, ProductInOrderCartService productInOrderCartService, ProductInOrderCartRepository productInOrderCartRepository, ProductService productService) {
         this.orderRepository = orderRepository;
         this.orderCartRepository = orderCartRepository;
         this.productInOrderCartService = productInOrderCartService;
         this.productInOrderCartRepository = productInOrderCartRepository;
+        this.productService = productService;
     }
 
 
@@ -42,19 +47,19 @@ public class OrderService {
         //return this.orderRepository.findAllByClientPersonalInfo("%"+filter+"%");
     }
 
-    public Order findById(Long id){
+    public Order findById(Long id) {
         return this.orderRepository.findById(id).get();
     }
 
     public boolean createOrder(String clientName,
-                            String clientSurname,
-                            String city,
-                            String street,
-                            String postalCode,
-                            String email,
-                            String mobileNumber,
-                            Payment orderType,
-                            Long orderCartId) {
+                               String clientSurname,
+                               String city,
+                               String street,
+                               String postalCode,
+                               String email,
+                               String mobileNumber,
+                               Payment orderType,
+                               Long orderCartId) {
         OrderCart orderCart = this.orderCartRepository.findById(orderCartId).orElseThrow(OrderCartNotFoundException::new);
 
         List<ProductInOrderCart> productsInOrderCart = this.productInOrderCartService
@@ -72,25 +77,41 @@ public class OrderService {
                 .map(p -> new ProductQuantityDto(p.getProduct(), p.getQuantity()))
                 .collect(Collectors.toList())
         );
-        if(totalPrice<1000){
-            totalPrice+=130;
+        if (totalPrice < 1000) {
+            totalPrice += 130;
         }
 
         List<ProductInOrderCart> t = this.productInOrderCartService.findAllProductsInOrderCart(orderCart);
 
-        String products = t
-                .stream()
+        String products = t.stream()
                 .map(product -> product.getProduct().getName() + " - " + product.getQuantity() + " x " + product.getProduct().calculateDiscount() + " ден.")
                 .collect(Collectors.joining("\n"));
 
         String productIds = t.stream()
-                .map(k -> k.getProduct().getId().toString()+"-"+k.getQuantity())
+                .map(k -> k.getProduct().getId().toString() + "-" + k.getQuantity())
                 .collect(Collectors.joining(" "));
 
         Order order = new Order(totalPrice, orderType, mobileNumber, clientName, clientSurname, postalCode, street, city, LocalDateTime.now(), products, email, productIds);
         this.orderRepository.save(order);
         this.productInOrderCartService.deleteOrderCart(orderCart);
         return true;
+    }
+
+    public List<AcceptedOrderDto> listAllAcceptedOrders() {
+        return this.listAll()
+                .stream()
+                .filter(Order::getIsConfirmed)
+                .map(order -> {
+                    List<ProductQuantityDto> products = Arrays.stream(order.getProductIds().split(" "))
+                            .map(t -> {
+                                        Long i = Long.parseLong(t.split("-")[0]);
+                                        Integer q = Integer.parseInt(t.split("-")[1]);
+
+                                        Product product = this.productService.findById(i);
+                                        return new ProductQuantityDto(product, q);
+                                    }).collect(Collectors.toList());
+                    return new AcceptedOrderDto(order, products);
+                }).collect(Collectors.toList());
     }
 
     private int getOrderTotalPrice(List<ProductQuantityDto> productQuantities) {

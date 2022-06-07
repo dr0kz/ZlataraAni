@@ -40,7 +40,7 @@ public class Interceptor implements HandlerInterceptor {
         //ili ima cookie , nema vo baza
         if (cookies == null || Arrays.stream(cookies).noneMatch(t -> t.getName().equals("CART")) || cookieNotFound(request)) {
             cookie = generateCookie();
-            cookie.setDomain("zlatara-ani.com");
+//            cookie.setDomain("zlatara-ani.com");
             cookie.setPath("/");
             response.addCookie(cookie);
             response.addHeader("COOKIE", "" + cookie.getValue());

@@ -1,5 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    .openModal {
+        background: none !important;
+        border: none;
+        padding: 0 !important;
+        color: cadetblue;
+        cursor: pointer;
+    }
+</style>
+
 
 <body>
 <div id="logo">
@@ -36,24 +46,63 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="order : ${orders}">
-                                            <td th:text="${order.getClientName()+' '+order.getClientSurname()}"></td>
-                                            <td th:text="${order.getDateCreated()}"></td>
-                                            <td th:text="${order.getEmail()}"></td>
-                                            <td th:text="${order.getMobileNumber()}"></td>
-                                            <td th:text="${order.getProducts()}"></td>
-                                            <td th:text="${order.getTotalPrice()+' ден'}"></td>
+                                        <tr th:each="acceptedOrder : ${orders}">
+                                            <td th:text="${acceptedOrder.order.getClientName()+' '+acceptedOrder.order.getClientSurname()}"></td>
+                                            <td th:text="${acceptedOrder.order.getDateCreated()}"></td>
+                                            <td th:text="${acceptedOrder.order.getEmail()}"></td>
+                                            <td th:text="${acceptedOrder.order.getMobileNumber()}"></td>
+                                            <td th:each="product : ${acceptedOrder.products}">
+                                                <p class="openModal" th:data-id="${product.getProduct().getId()}"
+                                                   th:text="${product.getProduct().getName() + ' - ' + product.getQuantity() + ' x ' + product.getProduct().calculateDiscount()}"></p>
+                                            </td>
+                                            <td th:text="${acceptedOrder.order.getTotalPrice()+' ден'}"></td>
                                             <td>
-                                                <form method="post" th:action="@{'/orders/accept-order/{id}'(id=${order.getId()})}">
+                                                <form method="post"
+                                                      th:action="@{'/orders/accept-order/{id}'(id=${acceptedOrder.order.getId()})}">
                                                     <button class="btn-primary">Прифати</button>
                                                 </form>
-                                                <form method="post" th:action="@{'/orders/delete-order/{id}'(id=${order.getId()})}">
+                                                <form method="post"
+                                                      th:action="@{'/orders/delete-order/{id}'(id=${acceptedOrder.order.getId()})}">
                                                     <button class="btn-danger">Избриши</button>
                                                 </form>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <div id="myModal" class="modal fade" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Детали за продукт</h5>
+                                                    <button type="button" id="closeX" class="close"
+                                                            data-dismiss="modal">&times;
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <img src="#" id="productImage">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <label for="productName">Име на продукт:</label>
+                                                                <p id="productName"></p>
+                                                                <label for="productCode">Код на продукт:</label>
+                                                                <p id="productCode"></p>
+                                                                <label for="productPrice">Цена на продукт:</label>
+                                                                <p id="productPrice"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" id="close" class="btn btn-secondary"
+                                                            data-dismiss="modal">Затвори
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -65,6 +114,36 @@
 </body>
 <script>
 
+    $(document).ready(function () {
+        $(".openModal").click(function () {
+            var id = $(this).data('id');
+            $.ajax({
+                type: "get",
+                url: "/api/product/" + id,
+                success: function (data) {
+                    $('#productImage').attr('src', data.image)
+                    $('#productImage').attr('height', '100%')
+                    $('#productImage').attr('width', '100%')
+                    $('#productName').text(data.name)
+                    $('#productCode').text(data.code)
+                    $('#productPrice').text(data.price)
+                    $("#myModal").modal('show');
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('#close').click(function () {
+            $("#myModal").modal('hide');
+        })
+    });
+
+    $(document).ready(function () {
+        $('#closeX').click(function () {
+            $("#myModal").modal('hide');
+        })
+    });
 
     $('#toggle-left-menu').click(function () {
         if ($('#left-menu').hasClass('small-left-menu')) {

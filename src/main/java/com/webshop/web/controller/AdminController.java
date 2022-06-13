@@ -70,14 +70,14 @@ public class AdminController {
     @GetMapping("/orders")
     public String getOrdersPage(Model model){
         model.addAttribute("bodyContent","admin-orders");
-        model.addAttribute("orders", this.orderService.listAll().stream().filter(t->!t.getIsConfirmed()).collect(Collectors.toList()));
+        model.addAttribute("orders", this.orderService.listAllOrders(false));
         return "admin-master-template";
     }
 
     @GetMapping("/accepted-orders")
     public String getAcceptedOrdersPage(Model model){
         model.addAttribute("bodyContent","admin-accepted-orders");
-        model.addAttribute("orders", this.orderService.listAllAcceptedOrders());
+        model.addAttribute("orders", this.orderService.listAllOrders(true));
         return "admin-master-template";
     }
 

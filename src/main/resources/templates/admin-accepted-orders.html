@@ -6,7 +6,7 @@
         background: none !important;
         border: none;
         padding: 0 !important;
-        color: #888da8;
+        color: cadetblue;
         cursor: pointer;
     }
 </style>
@@ -52,7 +52,7 @@
                                             <td th:text="${acceptedOrder.order.getMobileNumber()}"></td>
                                             <td th:each="product : ${acceptedOrder.products}">
                                                 <p class="openModal" th:data-id="${product.getProduct().getId()}"
-                                                        th:text="${product.getProduct().getName() + ' - ' + product.getQuantity() + ' x ' + product.getProduct().calculateDiscount()}"></p>
+                                                   th:text="${product.getProduct().getName() + ' - ' + product.getQuantity() + ' x ' + product.getProduct().calculateDiscount()}"></p>
                                             </td>
                                             <td th:text="${acceptedOrder.order.getTotalPrice()+' ден'}"></td>
                                         </tr>
@@ -63,7 +63,8 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Детали за продукт</h5>
-                                                    <button type="button" id="closeX" class="close" data-dismiss="modal">&times;
+                                                    <button type="button" id="closeX" class="close"
+                                                            data-dismiss="modal">&times;
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
@@ -103,8 +104,8 @@
 </body>
 <script>
 
-    $(document).ready(function(){
-        $(".openModal").click(function(){
+    $(document).ready(function () {
+        $(".openModal").click(function () {
             var id = $(this).data('id');
             $.ajax({
                 type: "get",
@@ -119,18 +120,17 @@
                     $("#myModal").modal('show');
                 }
             });
-
         });
     });
 
-    $(document).ready(function (){
-        $('#close').click(function (){
+    $(document).ready(function () {
+        $('#close').click(function () {
             $("#myModal").modal('hide');
         })
     });
 
-    $(document).ready(function (){
-        $('#closeX').click(function (){
+    $(document).ready(function () {
+        $('#closeX').click(function () {
             $("#myModal").modal('hide');
         })
     })

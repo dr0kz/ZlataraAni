@@ -97,10 +97,10 @@ public class OrderService {
         return true;
     }
 
-    public List<AcceptedOrderDto> listAllAcceptedOrders() {
+    public List<AcceptedOrderDto> listAllOrders(boolean confirmed) {
         return this.listAll()
                 .stream()
-                .filter(Order::getIsConfirmed)
+                .filter(order -> order.getIsConfirmed() == confirmed)
                 .map(order -> {
                     List<ProductQuantityDto> products = Arrays.stream(order.getProductIds().split(" "))
                             .map(t -> {

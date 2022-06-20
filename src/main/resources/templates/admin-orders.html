@@ -5,8 +5,10 @@
         background: none !important;
         border: none;
         padding: 0 !important;
-        color: cadetblue;
         cursor: pointer;
+    }
+    .hov:hover{
+        color:black;
     }
 </style>
 
@@ -46,13 +48,13 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="acceptedOrder : ${orders}">
+                                        <tr style="border-bottom:1px solid black;"  th:each="acceptedOrder : ${orders}">
                                             <td th:text="${acceptedOrder.order.getClientName()+' '+acceptedOrder.order.getClientSurname()}"></td>
                                             <td th:text="${acceptedOrder.order.getDateCreated()}"></td>
                                             <td th:text="${acceptedOrder.order.getEmail()}"></td>
                                             <td th:text="${acceptedOrder.order.getMobileNumber()}"></td>
-                                            <td th:each="product : ${acceptedOrder.products}">
-                                                <p class="openModal" th:data-id="${product.getProduct().getId()}"
+                                            <td>
+                                                <p style="font-weight: 600;" th:each="product : ${acceptedOrder.products}" class="hov openModal" th:data-id="${product.getProduct().getId()}"
                                                    th:text="${product.getProduct().getName() + ' - ' + product.getQuantity() + ' x ' + product.getProduct().calculateDiscount()}"></p>
                                             </td>
                                             <td th:text="${acceptedOrder.order.getTotalPrice()+' ден'}"></td>

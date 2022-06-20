@@ -150,19 +150,19 @@
                             <ul class="nav navbar-nav">
 
                                 <li class="dropdown" th:each="element : ${categoriesMap}">
-                                    <a th:href="@{'/kategorii/produkti/{parentCategoryUrl}'(parentCategoryUrl=${element.key.getUrl()})}"
+                                    <a style="font-size:16px;" th:href="@{'/kategorii/produkti/{parentCategoryUrl}'(parentCategoryUrl=${element.key.getUrl()})}"
                                        th:text="${element.key.getName()}"></a>
                                     <i class="fa fa-angle-down dropdown-trigger"></i>
                                     <ul class="dropdown-menu" th:if="${element.value.size()!=0}">
                                         <li th:each="category : ${element.value}">
-                                            <a th:href="@{'/kategorii/{categoryUrl}/{parentCategoryUrl}' (parentCategoryUrl=${element.key.getUrl()},categoryUrl=${category.getUrlName()})}"
+                                            <a style="font-size:13px;font-weight: 600;" th:href="@{'/kategorii/{categoryUrl}/{parentCategoryUrl}' (parentCategoryUrl=${element.key.getUrl()},categoryUrl=${category.getUrlName()})}"
                                                th:text="${category.getName()}"></a>
                                         </li>
                                     </ul>
                                 </li>
 
                                 <li class="dropdown">
-                                    <a href="/za-nas">За нас</a>
+                                    <a style="font-size:16px;" href="/za-nas">За нас</a>
                                     <i class="fa fa-angle-down dropdown-trigger"></i>
                                 </li>
                                 <!--                                <li class="dropdown">-->

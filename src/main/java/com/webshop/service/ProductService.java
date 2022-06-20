@@ -222,11 +222,11 @@ public class ProductService {
 
         Pageable pageable;
         if (sort.equals("cena-najvisoka-prvo")) {
-            pageable = PageRequest.of(page, pageSize, Sort.by("price").descending());
+            pageable = PageRequest.of(page, pageSize, Sort.by("discountPrice").descending());
         } else if (sort.equals("cena-najniska-prvo")) {
-            pageable = PageRequest.of(page, pageSize, Sort.by("price").ascending());
+            pageable = PageRequest.of(page, pageSize, Sort.by("discountPrice").ascending());
         } else {
-            pageable = PageRequest.of(page, pageSize);
+            pageable = PageRequest.of(page, pageSize, Sort.by("id").descending());
         }
 
         priceInterval = priceInterval.replaceAll(" ", "");
@@ -312,11 +312,11 @@ public class ProductService {
             pageSize, String priceInterval) {
         Pageable pageable;
         if (sort.equals("cena-najvisoka-prvo")) {
-            pageable = PageRequest.of(page, pageSize, Sort.by("price").descending());
+            pageable = PageRequest.of(page, pageSize, Sort.by("discountPrice").descending());
         } else if (sort.equals("cena-najniska-prvo")) {
-            pageable = PageRequest.of(page, pageSize, Sort.by("price").ascending());
+            pageable = PageRequest.of(page, pageSize, Sort.by("discountPrice").ascending());
         } else {
-            pageable = PageRequest.of(page, pageSize);
+            pageable = PageRequest.of(page, pageSize, Sort.by("id").descending());
         }
 
         priceInterval = priceInterval.replaceAll(" ", "");

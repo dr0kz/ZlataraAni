@@ -44,7 +44,7 @@
                             </div>
                         </div> <!-- end gallery main -->
 
-                        <div class="gallery-thumbs">
+                        <div class="gallery-thumbs" style="margin-top:7px;">
                             <div class="gallery-cell" th:each="image : ${product.getPhotosEncoded()}">
                                 <img class="clickme" th:value="*{image}"
                                      th:src="*{image}"/>

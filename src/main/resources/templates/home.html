@@ -4,7 +4,6 @@
     <!--    scriptive ne mi gi cita na master template, za slider logoa se, neka sedat tuka momentalno-->
 
 
-
 </head>
 <body class="relative">
 
@@ -27,19 +26,25 @@
                 <p>Проверете ги следните продукти по неверојатна цена</p>
                 <div class="deal-of-the-day-products">
 
-                    <a th:href="@{'/proizvodi/{id}'(id=${product.getId()})}" th:if="${product.stocks>0 && product.isOnDiscount}"
+                    <a th:href="@{'/proizvodi/{id}'(id=${product.getId()})}"
+                       th:if="${product.stocks>0 && product.isOnDiscount}"
 
-                       th:each="product : ${dealOfTheDayProducts}">
-                         <span style="font-size: 17px;color: white;font-size: 17px; float: right; background-color: #ceaf71;border-radius: 98px;padding-top: 8px;padding-bottom: 3px;padding-left: -3px;padding-right: -3px;position: relative;left: -11px; bottom: -36px;"
-                               th:text="${'-'+product.discountPercentage+'%'}"></span>
+                       th:each="product : ${dealOfTheDayProducts}" class="relative">
+                        <div class="circle2">
+                        <span style="font-size:15px;"
+                              class="circle__content"
+                              th:text="${'-'+product.discountPercentage+'%'}"></span>
+                        </div>
+
                         <img height="150" width="150" th:src="*{product.getInitialPhotoEncoded()}"/>
                         <div>
                             <h6 th:text="${product.getName()}"></h6>
                             <div>
                                 <del th:if="${product.isOnDiscount}">
-                                    <p  style="margin:0;" th:text="${product.getPriceAsNumber()+' ден.'}"></p>
+                                    <p style="margin:0;" th:text="${product.getPriceAsNumber()+' ден.'}"></p>
                                 </del>
-                                <p style="font-weight: 600;margin: 0 0 0 10px; color:black;" th:text="${product.calculateDiscountPrice()+' ден.'}"></p>
+                                <p style="font-weight: 600;margin: 0 0 0 10px; color:black;"
+                                   th:text="${product.calculateDiscountPrice()+' ден.'}"></p>
 
                             </div>
 
@@ -63,9 +68,9 @@
                         <div class="hero-holder">
                             <div class="hero-message">
                                 <h1 class="hero-title nocaps">Златара АНИ</h1>
-                                <h2 class="hero-subtitle lines">Најдоброто од злато и накит</h2>
+                                <h2 class="hero-subtitle lines">Најдоброто од накит</h2>
                                 <div class="buttons-holder">
-                                    <a href="/dzoke1" class="btn btn-lg btn-transparent"><span>Види повеќе</span></a>
+                                    <a href="/kategorii/produkti/zenski" class="btn btn-lg btn-transparent"><span>Види повеќе</span></a>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +84,8 @@
                                 <h2 class="hero-subtitle lines">Проверете го нашиот каталог</h2>
                                 <div class="buttons-holder">
 
-                                    <a href="/dzoke1" class="btn btn-lg btn-transparent"><span>Провери каталог</span></a>
+                                    <a href="/dzoke1"
+                                       class="btn btn-lg btn-transparent"><span>Провери каталог</span></a>
                                 </div>
                             </div>
                         </div>

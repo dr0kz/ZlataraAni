@@ -5344,6 +5344,21 @@ footer{
 	z-index: 1;
 }
 
+.circle2 {
+	display: inline-table;
+	vertical-align: middle;
+	width: 44px;
+	height: 44px;
+	background-color: #ceaf71;
+	border-radius: 50%;
+	position: absolute;
+	top: 0.3em;
+	right: 1.5em;
+	max-width: 5em;
+	color: #fff;
+	z-index: 1;
+}
+
 .circle__content {
 	display: table-cell;
 	vertical-align: middle;

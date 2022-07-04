@@ -38,7 +38,7 @@
                             <div class="haha gallery-cell" th:each="image : ${product.getPhotosEncoded()}">
                                 <a th:href="*{image}" class="lightbox-img">
                                     <img th:value="*{image}"
-                                         th:src="*{image}"/>
+                                         th:src="*{image}" style="width:100%;c"/>
                                     <i class="ui-zoom zoom-icon"></i>
                                 </a>
                             </div>

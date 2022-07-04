@@ -99,7 +99,7 @@
                             <!--                  </div>-->
                         </div>
 
-                        <div class="col-md-7">
+                        <div class="text-center" th:if="${productsInCart.size()!=0}">
                             <div class="actions">
                                 <a type="submit"
                                    class="btn btn-lg btn-stroke"
@@ -107,7 +107,7 @@
                                 >
                                     <span>Ажурирај кошничка</span>
                                 </a>
-                                <div class="wc-proceed-to-checkout">
+                                <div class="wc-proceed-to-checkout mt-10 mt-xs-0">
                                     <a href="/orderCart/shop-checkout" class="btn btn-lg btn-dark"><span>Продолжи кон наплата</span></a>
                                 </div>
                             </div>

@@ -150,7 +150,7 @@
                             <ul class="nav navbar-nav">
 
                                 <li class="dropdown" th:each="element : ${categoriesMap}">
-                                    <a style="font-size:16px;" th:href="@{'/kategorii/produkti/{parentCategoryUrl}'(parentCategoryUrl=${element.key.getUrl()})}"
+                                    <a style="font-size:14px;" th:href="@{'/kategorii/produkti/{parentCategoryUrl}'(parentCategoryUrl=${element.key.getUrl()})}"
                                        th:text="${element.key.getName()}"></a>
                                     <i class="fa fa-angle-down dropdown-trigger"></i>
                                     <ul class="dropdown-menu" th:if="${element.value.size()!=0}">
@@ -162,7 +162,7 @@
                                 </li>
 
                                 <li class="dropdown">
-                                    <a style="font-size:16px;" href="/za-nas">За нас</a>
+                                    <a style="font-size:14px;" href="/za-nas">За нас</a>
                                     <i class="fa fa-angle-down dropdown-trigger"></i>
                                 </li>
                                 <!--                                <li class="dropdown">-->

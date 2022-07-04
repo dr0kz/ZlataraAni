@@ -19,7 +19,7 @@ public class UserRepository {
 
     @PostConstruct
     private void init(){
-        user = new User("admin",passwordEncoder.encode("martin"), Role.ROLE_ADMIN);
+        user = new User("admin",passwordEncoder.encode("martin-zlatara-ani"), Role.ROLE_ADMIN);
     }
     public Optional<User> findByUsernameAndPassword(String username, String password){
         return user.getUsername().equals(username) && user.getPassword().equals(passwordEncoder.encode(password)) ? Optional.of(user)

@@ -99,7 +99,7 @@
 
 
                         <div class="product_meta">
-                            <span class="brand_as">Категорија: <a href="#" th:text="${product.getCategory().getName()}"></a></span>
+                            <span class="brand_as">Категорија: <a th:href="${'/kategorii/'+product.getCategory().getUrlName()+'/'+product.getCategory().getParentCategory().getUrl()}" th:text="${product.getCategory().getName()}"></a></span>
                         </div>
 
                         <!-- Accordion -->

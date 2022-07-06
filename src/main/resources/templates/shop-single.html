@@ -64,7 +64,7 @@
                   <span th:text="${product.getPriceAsNumber()+' ден'}"></span>
                 </del>
                 <ins>
-                  <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice() : product.getPrice())+' ден'}"
+                  <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice() : product.getPriceAsNumber())+' ден'}"
                         class="amount"></span>
                 </ins>
               </span>

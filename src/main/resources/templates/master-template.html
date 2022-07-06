@@ -80,7 +80,7 @@
     </div> <!-- end fullscreen search -->
 
     <!--    KOLACINJA-->
-    <div th:if="${!isCookieAccepted}" id="alertCookiePolicy" class="alert-cookie-policy">
+    <div style="z-index: 9999" th:if="${!isCookieAccepted}" id="alertCookiePolicy" class="alert-cookie-policy">
         <div class="alerto alert-secondary" role="alert">
             <div class="row">
                 <div class="col-sm-12 cookieInfo">

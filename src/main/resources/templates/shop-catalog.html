@@ -69,9 +69,9 @@
                             <div id="slider-range"
                                  class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                                 <div class="ui-slider-range ui-widget-header ui-corner-all"
-                                     ></div>
+                                ></div>
                                 <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
-                                      ></span><span
+                                ></span><span
                                     class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
                                     style="left: 53.3333%;"></span>
                             </div>
@@ -129,30 +129,33 @@
                                             <a th:href="@{'/products/{id}'(id=${product.getId()})}"
                                                class="product-quickview">Приказ</a>
                                         </div>
-                                        <div class="product-details">
-                                            <h3 class="product-title">
-                                                <a th:text="${product.getName()}" href="shop-single.html">Mantle Brown
-                                                    Bag</a>
-                                            </h3>
+                                        <div style="display:flex; flex-direction: column;">
+                                                    <a style="font-weight: 600;color:black;font-size:16px;" th:text="${product.getName()}" href="shop-single.html">Mantle
+                                                        Brown
+                                                        Bag</a>
+                                            </div>
 
-
+                                            <div style="display:flex;flex-direction: column; justify-content: space-between;">
+                                                <del style="font-weight: 600;" th:style="${!product.isOnDiscount ? 'color: white' : ''}" th:text="${product.isOnDiscount ? product.getPriceAsNumber()+' ден.' : '_'}"></del>
+                                                <span th:style="${product.isOnDiscount ? 'color: red; font-weight:700; font-size:16px;' :'color:black; font-weight:700;font-size:16px;'}" th:text="${product.calculateDiscountPrice()+' ден.'}">World</span>
+                                            </div>
                                         </div>
 
-                                        <span class="price">
-                                            <del th:if="${product.isOnDiscount}">
-                                                <span th:text="${product.getPriceAsNumber() +' ден'}"></span>
-                                            </del>
-                                            <ins>
-                      <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice(): product.getPriceAsNumber())+' ден'}"
-                            class="amount" style="font-size: 16px">$150.00</span>
-                    </ins>
-                                            <ins>
+                                        <!--                                        <span class="price" style="display:flex; justify-content: space-between">-->
+                                        <!--                                            <del th:if="${product.isOnDiscount}">-->
+                                        <!--                                                <span th:text="${product.getPriceAsNumber() +' ден'}"></span>-->
+                                        <!--                                            </del>-->
+                                        <!--                                            <ins>-->
+                                        <!--                      <span th:text="${(product.isOnDiscount ? product.calculateDiscountPrice(): product.getPriceAsNumber())+' ден'}"-->
+                                        <!--                            class="amount" style="font-size: 16px">$150.00</span>-->
+                                        <!--                    </ins>-->
+                                        <!--                                            <ins>-->
 
-                                                                 <del style="color:white;" th:if="${!product.isOnDiscount}">
-                                                <span style="color:white !important;">_</span>
-                                            </del>
-                  </ins>
-                                        </span>
+                                        <!--                                                                 <del style="color:white;" th:if="${!product.isOnDiscount}">-->
+                                        <!--                                                <span style="color:white !important;">_</span>-->
+                                        <!--                                            </del>-->
+                                        <!--                  </ins>-->
+                                        <!--                                        </span>-->
                                     </div>
                                 </div>
                                 <!-- end product -->
